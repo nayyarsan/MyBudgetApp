@@ -28,4 +28,11 @@ class BudgetDao extends DatabaseAccessor<AppDatabase>
       (select(monthlyBudgets)
             ..where((t) => t.month.equals(month)))
           .watch();
+
+  /// All budget rows for a given category (all months), ordered by month asc.
+  Future<List<MonthlyBudget>> getBudgetsForCategory(int categoryId) =>
+      (select(monthlyBudgets)
+            ..where((t) => t.categoryId.equals(categoryId))
+            ..orderBy([(t) => OrderingTerm.asc(t.month)]))
+          .get();
 }

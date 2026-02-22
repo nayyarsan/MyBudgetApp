@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/database/database.dart';
 import '../../core/database/providers.dart';
+import '../goals/goals_screen.dart';
 import 'budget_calculator.dart';
 import 'budget_providers.dart';
 import 'widgets/category_row.dart';
@@ -55,6 +56,15 @@ class BudgetScreen extends ConsumerWidget {
             ),
           ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.savings_outlined),
+            tooltip: 'Goals',
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const GoalsScreen()),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
