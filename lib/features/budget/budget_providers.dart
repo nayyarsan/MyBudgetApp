@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/database/database.dart';
 import '../../core/database/providers.dart';
-import '../../core/database/tables.dart';
 
 /// The currently selected budget month.
 final selectedMonthProvider = StateProvider<DateTime>(

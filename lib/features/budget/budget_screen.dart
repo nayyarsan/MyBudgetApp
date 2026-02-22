@@ -1,12 +1,316 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/database/database.dart';
+import '../../core/database/providers.dart';
+import 'budget_calculator.dart';
+import 'budget_providers.dart';
+import 'widgets/category_row.dart';
+import 'widgets/tbb_banner.dart';
 
-class BudgetScreen extends StatelessWidget {
+class BudgetScreen extends ConsumerWidget {
   const BudgetScreen({super.key});
 
   @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final month = ref.watch(selectedMonthProvider);
+    final groupsAsync = ref.watch(categoryGroupsProvider);
+    final budgetsAsync = ref.watch(monthlyBudgetsProvider);
+    final txAsync = ref.watch(transactionsForMonthProvider);
+    final incomeAsync = ref.watch(monthlyIncomeProvider);
+    final assignedAsync = ref.watch(totalAssignedProvider);
+
+    final tbbCents = incomeAsync.whenOrNull(
+          data: (income) => assignedAsync.whenOrNull(
+            data: (assigned) => BudgetCalculator.toBeBudgeted(
+              totalIncomeCents: income,
+              totalAssignedCents: assigned,
+            ),
+          ),
+        ) ??
+        0;
+
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.chevron_left),
+              tooltip: 'Previous month',
+              onPressed: () =>
+                  ref.read(selectedMonthProvider.notifier).state =
+                      DateTime(month.year, month.month - 1),
+            ),
+            Text(
+              '${_monthName(month.month)} ${month.year}',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            IconButton(
+              icon: const Icon(Icons.chevron_right),
+              tooltip: 'Next month',
+              onPressed: () =>
+                  ref.read(selectedMonthProvider.notifier).state =
+                      DateTime(month.year, month.month + 1),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          ToBeBudgetedBanner(tbbCents: tbbCents),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    'CATEGORY',
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'BUDGETED',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'SPENT',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    'AVAILABLE',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(fontSize: 11, color: Colors.grey),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 1),
+          Expanded(
+            child: groupsAsync.when(
+              data: (groups) {
+                if (groups.isEmpty) {
+                  return const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(32),
+                      child: Text(
+                        'No budget categories yet.\nTap + to get started.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    ),
+                  );
+                }
+
+                final budgets = budgetsAsync.valueOrNull ?? [];
+                final transactions = txAsync.valueOrNull ?? [];
+
+                return ListView.builder(
+                  itemCount: groups.length,
+                  itemBuilder: (context, i) => _GroupTile(
+                    group: groups[i],
+                    budgets: budgets,
+                    transactions: transactions,
+                    month: monthKey(month),
+                  ),
+                );
+              },
+              loading: () =>
+                  const Center(child: CircularProgressIndicator()),
+              error: (e, _) => Center(child: Text('Error: $e')),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _showAddCategoryDialog(context, ref),
+        icon: const Icon(Icons.add),
+        label: const Text('Add Category'),
+      ),
+    );
+  }
+
+  Future<void> _showAddCategoryDialog(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final groupCtrl = TextEditingController();
+    final catCtrl = TextEditingController();
+
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Add Category'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: groupCtrl,
+              decoration: const InputDecoration(
+                labelText: 'Group (e.g. Housing)',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: catCtrl,
+              decoration: const InputDecoration(
+                labelText: 'Category name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              if (groupCtrl.text.isNotEmpty &&
+                  catCtrl.text.isNotEmpty) {
+                final db = ref.read(databaseProvider);
+                final groupId = await db.categoriesDao
+                    .insertGroup(groupCtrl.text.trim());
+                await db.categoriesDao.insertCategory(
+                  CategoriesCompanion.insert(
+                    groupId: groupId,
+                    name: catCtrl.text.trim(),
+                  ),
+                );
+                if (ctx.mounted) Navigator.of(ctx).pop();
+              }
+            },
+            child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _monthName(int m) {
+    const names = [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    ];
+    return names[m - 1];
+  }
+}
+
+/// Collapsible group tile that lists its categories with budget columns.
+class _GroupTile extends StatelessWidget {
+  final CategoryGroup group;
+  final List<MonthlyBudget> budgets;
+  final List<Transaction> transactions;
+  final String month;
+
+  const _GroupTile({
+    required this.group,
+    required this.budgets,
+    required this.transactions,
+    required this.month,
+  });
+
+  int _spentForCategory(int categoryId) {
+    var total = 0;
+    for (final t in transactions) {
+      if (t.categoryId == categoryId && t.amountCents < 0) {
+        total += t.amountCents.abs();
+      }
+    }
+    return total;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Budget')),
+    return StreamBuilder<List<Category>>(
+      stream: AppDatabase()
+          .categoriesDao
+          .watchCategoriesForGroup(group.id),
+      builder: (context, snapshot) {
+        final cats = snapshot.data ?? [];
+
+        var groupAvailable = 0;
+        for (final cat in cats) {
+          final budget =
+              budgets.where((b) => b.categoryId == cat.id).firstOrNull;
+          final assigned = budget?.assignedCents ?? 0;
+          final spent = _spentForCategory(cat.id);
+          groupAvailable += BudgetCalculator.available(
+            assignedCents: assigned,
+            spentCents: spent,
+            rolledOverCents: 0,
+            rollover: cat.rollover,
+          );
+        }
+
+        return ExpansionTile(
+          initiallyExpanded: true,
+          title: Text(
+            group.name,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+          trailing: cats.isEmpty
+              ? null
+              : Text(
+                  '\$${(groupAvailable / 100).toStringAsFixed(0)}',
+                  style: TextStyle(
+                    color:
+                        groupAvailable < 0 ? Colors.red : Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+          children: cats.isEmpty
+              ? [
+                  const Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Text(
+                      'No categories in this group.',
+                      style: TextStyle(color: Colors.grey, fontSize: 13),
+                    ),
+                  ),
+                ]
+              : cats.map((cat) {
+                  final budget = budgets
+                      .where((b) => b.categoryId == cat.id)
+                      .firstOrNull;
+                  final assigned = budget?.assignedCents ?? 0;
+                  final spent = _spentForCategory(cat.id);
+                  final available = BudgetCalculator.available(
+                    assignedCents: assigned,
+                    spentCents: spent,
+                    rolledOverCents: 0,
+                    rollover: cat.rollover,
+                  );
+
+                  return CategoryRow(
+                    name: cat.name,
+                    assignedCents: assigned,
+                    spentCents: spent,
+                    availableCents: available,
+                  );
+                }).toList(),
+        );
+      },
     );
   }
 }
