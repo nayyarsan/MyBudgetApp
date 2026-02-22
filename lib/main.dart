@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/theme/app_theme.dart';
+import 'features/auth/biometric_lock_screen.dart';
 import 'features/shell/main_shell.dart';
 
 void main() async {
@@ -25,7 +26,7 @@ class MyYnabApp extends StatelessWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system,
-      home: const MainShell(),
+      home: const BiometricLockScreen(child: MainShell()),
     );
   }
 }
