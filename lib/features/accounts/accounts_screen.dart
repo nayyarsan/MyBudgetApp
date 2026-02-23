@@ -113,6 +113,7 @@ class AccountsScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'fab_accounts',
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (_) => const AddAccountScreen(),

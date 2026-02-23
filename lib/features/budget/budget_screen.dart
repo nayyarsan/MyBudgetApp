@@ -145,6 +145,7 @@ class BudgetScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'fab_budget',
         onPressed: () => _showAddCategoryDialog(context, ref),
         icon: const Icon(Icons.add),
         label: const Text('Add Category'),

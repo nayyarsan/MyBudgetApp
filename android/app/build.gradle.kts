@@ -17,7 +17,8 @@ if (keyPropertiesFile.exists()) {
 
 android {
     namespace = "com.myynab.myynab"
-    compileSdk = 34
+    compileSdk = 36
+    buildToolsVersion = "36.0.0"
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

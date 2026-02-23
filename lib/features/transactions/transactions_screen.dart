@@ -114,6 +114,7 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
         error: (e, _) => Center(child: Text('Error: $e')),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'fab_transactions',
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (_) => const AddTransactionScreen(),

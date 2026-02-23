@@ -22,16 +22,16 @@ dependencies:
   path: ^1.9.0
 
   # Firebase
-  firebase_core: ^2.24.2
-  firebase_auth: ^4.16.0
-  cloud_firestore: ^4.14.0
+  firebase_core: ^3.0.0
+  firebase_auth: ^5.0.0
+  cloud_firestore: ^5.0.0
   google_sign_in: ^6.2.1
 
   # Charts
   fl_chart: ^0.66.2
 
   # CSV import
-  file_picker: ^6.1.1
+  file_picker: ^10.0.0
   csv: ^6.0.0
 
   # Security

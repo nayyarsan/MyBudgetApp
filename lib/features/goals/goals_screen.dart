@@ -18,6 +18,7 @@ class GoalsScreen extends ConsumerWidget {
         centerTitle: false,
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'fab_goals',
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(builder: (_) => const AddGoalScreen()),
         ),
