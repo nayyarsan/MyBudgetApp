@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myynab/core/database/database.dart';
 import 'package:myynab/core/database/providers.dart';
-import 'package:myynab/features/auth/auth_providers.dart';
-import 'package:myynab/features/shell/main_shell.dart';
 import 'package:myynab/core/theme/app_theme.dart';
+import 'package:myynab/features/auth/auth_providers.dart';
+import 'package:myynab/features/auth/firebase_auth_service.dart';
+import 'package:myynab/features/shell/main_shell.dart';
+import 'package:myynab/features/sync/sync_service.dart';
 
 void main() {
   testWidgets('App shell builds without crashing', (WidgetTester tester) async {
@@ -15,22 +17,26 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          // Use in-memory SQLite for tests
+          // In-memory SQLite — no platform channels
           databaseProvider.overrideWithValue(db),
-          // Biometric disabled so lock screen never fires
+          // Biometric off — avoids flutter_secure_storage platform channel
           biometricEnabledProvider.overrideWith((_) async => false),
           // App starts unlocked
           isUnlockedProvider.overrideWith((_) => true),
+          // Firebase unavailable in unit tests
+          firebaseUserProvider.overrideWith((_) => Stream.value(null)),
+          isSignedInProvider.overrideWith((_) => false),
+          // Sync last-sync timestamp — avoids flutter_secure_storage
+          lastSyncProvider.overrideWith((_) async => null),
         ],
         child: MaterialApp(
           theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
           home: const MainShell(),
         ),
       ),
     );
 
-    // Let async providers settle
+    // One pump to process the first frame
     await tester.pump();
 
     expect(find.byType(NavigationBar), findsOneWidget);
