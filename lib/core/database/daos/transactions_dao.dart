@@ -59,6 +59,10 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
             ..orderBy([(t) => OrderingTerm.desc(t.date)]))
           .get();
 
+  /// All non-deleted transactions (for cloud sync).
+  Future<List<Transaction>> getAllTransactions() =>
+      (select(transactions)..where((t) => t.isDeleted.equals(false))).get();
+
   Future<int> softDelete(int id) =>
       (update(transactions)..where((t) => t.id.equals(id)))
           .write(const TransactionsCompanion(isDeleted: Value(true)));
