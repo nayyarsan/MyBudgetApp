@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:myynab/features/budget/budget_providers.dart';
+import 'package:moneyinsight/features/budget/budget_providers.dart';
 
 void main() {
   group('selectedMonthProvider', () {

@@ -1,8 +1,8 @@
-# MyYNAB Android App — Implementation Plan
+# Money in Sight — Implementation Plan
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Build a production-ready YNAB-inspired personal finance Android app with zero-based budgeting, offline-first local storage, optional Firebase cloud sync, and rich analytics.
+**Goal:** Build a production-ready personal finance Android app (Money in Sight) with zero-based budgeting, offline-first local storage, optional Firebase cloud sync, and rich analytics.
 
 **Architecture:** Feature-first Clean Architecture with Riverpod for state management, Drift (SQLite) as the local source of truth, and Firebase Firestore for background cloud sync. All UI reads from SQLite; Firestore is write-behind only.
 

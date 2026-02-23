@@ -180,7 +180,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           const _SectionHeader(title: 'About'),
           const ListTile(
             leading: Icon(Icons.info_outline),
-            title: Text('MyYNAB'),
+            title: Text('Money in Sight'),
             subtitle: Text('Version 1.0.0'),
           ),
         ],

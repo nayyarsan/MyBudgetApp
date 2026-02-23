@@ -12,16 +12,16 @@ void main() async {
   } catch (_) {
     // Firebase not configured yet — app runs in offline-only mode
   }
-  runApp(const ProviderScope(child: MyYnabApp()));
+  runApp(const ProviderScope(child: MoneyInSightApp()));
 }
 
-class MyYnabApp extends StatelessWidget {
-  const MyYnabApp({super.key});
+class MoneyInSightApp extends StatelessWidget {
+  const MoneyInSightApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MyYNAB',
+      title: 'Money in Sight',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,

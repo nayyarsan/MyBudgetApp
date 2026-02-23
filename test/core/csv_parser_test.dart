@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myynab/core/csv/csv_parser.dart';
+import 'package:moneyinsight/core/csv/csv_parser.dart';
 
 void main() {
   const sampleCsv = 'Date,Description,Amount\n'

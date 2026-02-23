@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myynab/features/transactions/add_transaction_screen.dart';
+import 'package:moneyinsight/features/transactions/add_transaction_screen.dart';
 
 void main() {
   testWidgets('shows required fields on the form', (tester) async {

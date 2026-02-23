@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:myynab/core/database/database.dart';
-import 'package:myynab/core/database/providers.dart';
-import 'package:myynab/features/auth/auth_providers.dart';
-import 'package:myynab/features/shell/main_shell.dart';
-import 'package:myynab/core/theme/app_theme.dart';
+import 'package:moneyinsight/core/database/database.dart';
+import 'package:moneyinsight/core/database/providers.dart';
+import 'package:moneyinsight/features/auth/auth_providers.dart';
+import 'package:moneyinsight/features/shell/main_shell.dart';
+import 'package:moneyinsight/core/theme/app_theme.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();

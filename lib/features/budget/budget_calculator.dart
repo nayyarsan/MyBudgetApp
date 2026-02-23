@@ -1,4 +1,4 @@
-/// Pure business logic for YNAB-style zero-based budget calculations.
+/// Pure business logic for zero-based budget calculations.
 /// No Flutter or database dependencies — all methods are static and pure.
 class BudgetCalculator {
   /// Returns the available balance for a category.

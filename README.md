@@ -1,16 +1,32 @@
-# myynab
+# Money in Sight
 
-A new Flutter project.
+A personal finance app that helps you visualize where your money goes and manage it with zero-based budgeting.
+
+## Features
+
+- **Zero-based budgeting** — assign every dollar to a category
+- **Transaction tracking** — log expenses, income, and transfers
+- **Accounts** — track multiple accounts with live running balances
+- **Savings goals** — set goals and track progress
+- **Analytics** — charts showing spending breakdown and trends
+- **CSV import** — import transactions from your bank
+- **Cloud sync** — optional Firebase sync across devices
+- **Biometric lock** — secure access with fingerprint / face unlock
+- **Offline-first** — fully functional without internet
+
+## Tech Stack
+
+Flutter · Drift (SQLite) · Riverpod · Firebase Auth + Firestore · fl_chart · local_auth
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+## Running Tests
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter test
+```

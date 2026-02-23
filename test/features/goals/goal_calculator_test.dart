@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myynab/features/goals/goal_calculator.dart';
+import 'package:moneyinsight/features/goals/goal_calculator.dart';
 
 void main() {
   group('GoalCalculator.progressPercent', () {

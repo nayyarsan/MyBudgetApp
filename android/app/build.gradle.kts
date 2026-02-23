@@ -16,7 +16,7 @@ if (keyPropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.myynab.myynab"
+    namespace = "com.moneyinsight.app"
     compileSdk = 36
     buildToolsVersion = "36.0.0"
     ndkVersion = flutter.ndkVersion
@@ -31,7 +31,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.myynab.myynab"
+        applicationId = "com.moneyinsight.app"
         minSdk = 26
         targetSdk = 34
         versionCode = flutter.versionCode

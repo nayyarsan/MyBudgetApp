@@ -1,4 +1,4 @@
-# MyYNAB Android App — Design Document
+# Money in Sight — Design Document
 
 **Date:** 2026-02-21
 **Status:** Approved

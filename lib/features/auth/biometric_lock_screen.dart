@@ -65,7 +65,7 @@ class _LockScreenState extends ConsumerState<_LockScreen> {
       }
 
       final authenticated = await auth.authenticate(
-        localizedReason: 'Authenticate to access MyYNAB',
+        localizedReason: 'Authenticate to access Money in Sight',
         options: const AuthenticationOptions(
           biometricOnly: false, // also accepts device PIN/pattern
           stickyAuth: true,
@@ -108,7 +108,7 @@ class _LockScreenState extends ConsumerState<_LockScreen> {
               const Icon(Icons.lock_outline, size: 72, color: Colors.grey),
               const SizedBox(height: 24),
               const Text(
-                'MyYNAB',
+                'Money in Sight',
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),

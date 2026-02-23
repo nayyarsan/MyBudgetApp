@@ -1,5 +1,5 @@
-name: myynab
-description: Personal budget tracker — YNAB inspired
+name: moneyinsight
+description: Personal finance app — visualize where your money goes and manage it
 publish_to: none
 version: 1.0.0+1
 

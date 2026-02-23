@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myynab/features/budget/budget_calculator.dart';
+import 'package:moneyinsight/features/budget/budget_calculator.dart';
 
 void main() {
   group('BudgetCalculator', () {
