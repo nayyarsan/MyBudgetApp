@@ -1,0 +1,9 @@
+# Copy this file to android/key.properties (gitignored) and fill in your values.
+# Generate a keystore with:
+#   keytool -genkey -v -keystore android/myynab-release.jks \
+#     -keyalg RSA -keysize 2048 -validity 10000 -alias myynab
+#
+storePassword=your_store_password
+keyPassword=your_key_password
+keyAlias=myynab
+storeFile=../myynab-release.jks

@@ -177,7 +177,7 @@ class _AddTransactionScreenState
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.account_balance),
                 ),
-                value: _selectedAccountId ??
+                initialValue: _selectedAccountId ??
                     (accounts.isNotEmpty ? accounts.first.id : null),
                 items: accounts
                     .map(
@@ -205,7 +205,7 @@ class _AddTransactionScreenState
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.label),
                   ),
-                  value: _selectedCategoryId,
+                  initialValue: _selectedCategoryId,
                   hint: const Text('Select category (optional)'),
                   items: cats
                       .map(

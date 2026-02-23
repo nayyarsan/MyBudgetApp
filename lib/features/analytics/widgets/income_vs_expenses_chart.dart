@@ -109,11 +109,11 @@ class IncomeVsExpensesChart extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const _Legend(color: Colors.green, label: 'Income'),
-            const SizedBox(width: 24),
+            _Legend(color: Colors.green, label: 'Income'),
+            SizedBox(width: 24),
             _Legend(color: Colors.red, label: 'Expenses'),
           ],
         ),

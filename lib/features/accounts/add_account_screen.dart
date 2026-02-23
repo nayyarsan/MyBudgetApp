@@ -71,7 +71,7 @@ class _AddAccountScreenState extends ConsumerState<AddAccountScreen> {
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: _type,
+              initialValue: _type,
               decoration: const InputDecoration(
                 labelText: 'Account Type',
                 border: OutlineInputBorder(),
