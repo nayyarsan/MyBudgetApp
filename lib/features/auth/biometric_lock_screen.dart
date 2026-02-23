@@ -10,34 +10,6 @@ class BiometricLockScreen extends ConsumerWidget {
 
   const BiometricLockScreen({super.key, required this.child});
 
-  Future<void> _authenticate(BuildContext context, WidgetRef ref) async {
-    final auth = ref.read(localAuthProvider);
-    try {
-      final canCheck = await auth.canCheckBiometrics;
-      final isDeviceSupported = await auth.isDeviceSupported();
-
-      if (!canCheck && !isDeviceSupported) {
-        // Device has no biometric — unlock automatically
-        ref.read(isUnlockedProvider.notifier).state = true;
-        return;
-      }
-
-      final authenticated = await auth.authenticate(
-        localizedReason: 'Authenticate to access MyYNAB',
-        options: const AuthenticationOptions(
-          biometricOnly: false,
-          stickyAuth: true,
-        ),
-      );
-
-      if (authenticated) {
-        ref.read(isUnlockedProvider.notifier).state = true;
-      }
-    } catch (_) {
-      // Authentication failed — stay locked
-    }
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final biometricAsync = ref.watch(biometricEnabledProvider);
@@ -46,20 +18,79 @@ class BiometricLockScreen extends ConsumerWidget {
     return biometricAsync.when(
       data: (enabled) {
         if (!enabled || isUnlocked) return child;
-        return _LockScreen(onUnlock: () => _authenticate(context, ref));
+        return const _LockScreen();
       },
       loading: () => const MaterialApp(
         home: Scaffold(body: Center(child: CircularProgressIndicator())),
       ),
-      error: (_, __) => child, // on error, show app normally
+      error: (_, __) => child,
     );
   }
 }
 
-class _LockScreen extends StatelessWidget {
-  final VoidCallback onUnlock;
+class _LockScreen extends ConsumerStatefulWidget {
+  const _LockScreen();
 
-  const _LockScreen({required this.onUnlock});
+  @override
+  ConsumerState<_LockScreen> createState() => _LockScreenState();
+}
+
+class _LockScreenState extends ConsumerState<_LockScreen> {
+  bool _authenticating = false;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    // Auto-trigger the auth prompt as soon as the lock screen appears.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _authenticate());
+  }
+
+  Future<void> _authenticate() async {
+    if (_authenticating) return;
+    setState(() {
+      _authenticating = true;
+      _errorMessage = null;
+    });
+
+    final auth = ref.read(localAuthProvider);
+    try {
+      final canCheck = await auth.canCheckBiometrics;
+      final isDeviceSupported = await auth.isDeviceSupported();
+
+      if (!canCheck && !isDeviceSupported) {
+        // Device has no biometric hardware — unlock automatically.
+        ref.read(isUnlockedProvider.notifier).state = true;
+        return;
+      }
+
+      final authenticated = await auth.authenticate(
+        localizedReason: 'Authenticate to access MyYNAB',
+        options: const AuthenticationOptions(
+          biometricOnly: false, // also accepts device PIN/pattern
+          stickyAuth: true,
+        ),
+      );
+
+      if (authenticated) {
+        ref.read(isUnlockedProvider.notifier).state = true;
+      } else {
+        if (mounted) {
+          setState(() {
+            _authenticating = false;
+            _errorMessage = 'Authentication failed. Try again.';
+          });
+        }
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _authenticating = false;
+          _errorMessage = 'Could not authenticate. Try again.';
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +116,28 @@ class _LockScreen extends StatelessWidget {
                 'Your budget is locked.',
                 style: TextStyle(color: Colors.grey),
               ),
+              if (_errorMessage != null) ...[
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.red, fontSize: 13),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
               const SizedBox(height: 32),
               FilledButton.icon(
-                onPressed: onUnlock,
-                icon: const Icon(Icons.fingerprint),
-                label: const Text('Unlock'),
+                onPressed: _authenticating ? null : _authenticate,
+                icon: _authenticating
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.fingerprint),
+                label: Text(_authenticating ? 'Authenticating…' : 'Unlock'),
               ),
             ],
           ),

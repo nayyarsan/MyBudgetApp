@@ -7,7 +7,10 @@ import '../../core/utils/currency_formatter.dart';
 import '../budget/budget_providers.dart';
 
 class AddTransactionScreen extends ConsumerStatefulWidget {
-  const AddTransactionScreen({super.key});
+  /// Pass an existing transaction to switch to edit mode.
+  final Transaction? initial;
+
+  const AddTransactionScreen({super.key, this.initial});
 
   @override
   ConsumerState<AddTransactionScreen> createState() =>
@@ -25,6 +28,24 @@ class _AddTransactionScreenState
   int? _selectedCategoryId;
   int? _selectedAccountId;
   bool _saving = false;
+
+  bool get _isEditing => widget.initial != null;
+
+  @override
+  void initState() {
+    super.initState();
+    if (_isEditing) {
+      final tx = widget.initial!;
+      _payeeController.text = tx.payee;
+      _amountController.text =
+          (tx.amountCents.abs() / 100).toStringAsFixed(2);
+      _selectedDate = tx.date;
+      _type = tx.type;
+      _selectedCategoryId = tx.categoryId;
+      _selectedAccountId = tx.accountId;
+      _memoController.text = tx.memo ?? '';
+    }
+  }
 
   @override
   void dispose() {
@@ -50,21 +71,40 @@ class _AddTransactionScreenState
     final accountId =
         _selectedAccountId ?? (accounts.isNotEmpty ? accounts.first.id : 1);
 
-    await db.transactionsDao.insertTransaction(
-      TransactionsCompanion.insert(
-        accountId: accountId,
-        categoryId: Value(_selectedCategoryId),
-        amountCents: cents,
-        payee: _payeeController.text.trim(),
-        date: _selectedDate,
-        memo: Value(
-          _memoController.text.trim().isEmpty
-              ? null
-              : _memoController.text.trim(),
+    if (_isEditing) {
+      await db.transactionsDao.updateTransaction(
+        widget.initial!.id,
+        TransactionsCompanion(
+          accountId: Value(accountId),
+          categoryId: Value(_selectedCategoryId),
+          amountCents: Value(cents),
+          payee: Value(_payeeController.text.trim()),
+          date: Value(_selectedDate),
+          memo: Value(
+            _memoController.text.trim().isEmpty
+                ? null
+                : _memoController.text.trim(),
+          ),
+          type: Value(_type),
         ),
-        type: _type,
-      ),
-    );
+      );
+    } else {
+      await db.transactionsDao.insertTransaction(
+        TransactionsCompanion.insert(
+          accountId: accountId,
+          categoryId: Value(_selectedCategoryId),
+          amountCents: cents,
+          payee: _payeeController.text.trim(),
+          date: _selectedDate,
+          memo: Value(
+            _memoController.text.trim().isEmpty
+                ? null
+                : _memoController.text.trim(),
+          ),
+          type: _type,
+        ),
+      );
+    }
 
     if (mounted) {
       setState(() => _saving = false);
@@ -75,12 +115,17 @@ class _AddTransactionScreenState
   @override
   Widget build(BuildContext context) {
     final accountsAsync = ref.watch(
-      StreamProvider((ref) => ref.watch(databaseProvider).accountsDao.watchAllAccounts()),
+      StreamProvider(
+        (ref) =>
+            ref.watch(databaseProvider).accountsDao.watchAllAccounts(),
+      ),
     );
     final categoriesAsync = ref.watch(allCategoriesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Transaction')),
+      appBar: AppBar(
+        title: Text(_isEditing ? 'Edit Transaction' : 'Add Transaction'),
+      ),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -123,12 +168,11 @@ class _AddTransactionScreenState
             ),
             const SizedBox(height: 12),
 
-            // Amount
+            // Amount — single $ via icon only, no prefixText
             TextFormField(
               controller: _amountController,
               decoration: const InputDecoration(
                 labelText: 'Amount',
-                prefixText: r'$',
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.attach_money),
               ),
@@ -171,25 +215,28 @@ class _AddTransactionScreenState
 
             // Account selector
             accountsAsync.when(
-              data: (accounts) => DropdownButtonFormField<int>(
+              data: (accounts) => InputDecorator(
                 decoration: const InputDecoration(
                   labelText: 'Account',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.account_balance),
                 ),
-                initialValue: _selectedAccountId ??
-                    (accounts.isNotEmpty ? accounts.first.id : null),
-                items: accounts
-                    .map(
-                      (a) => DropdownMenuItem(
-                        value: a.id,
-                        child: Text(a.name),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (v) =>
-                    setState(() => _selectedAccountId = v),
-                hint: const Text('Select account'),
+                child: DropdownButton<int>(
+                  value: _selectedAccountId ??
+                      (accounts.isNotEmpty ? accounts.first.id : null),
+                  isExpanded: true,
+                  underline: const SizedBox.shrink(),
+                  hint: const Text('Select account'),
+                  items: accounts
+                      .map(
+                        (a) => DropdownMenuItem(
+                          value: a.id,
+                          child: Text(a.name),
+                        ),
+                      )
+                      .toList(),
+                  onChanged: (v) => setState(() => _selectedAccountId = v),
+                ),
               ),
               loading: () => const LinearProgressIndicator(),
               error: (_, __) => const SizedBox.shrink(),
@@ -199,24 +246,28 @@ class _AddTransactionScreenState
             // Category selector (not shown for transfers)
             if (_type != 'transfer')
               categoriesAsync.when(
-                data: (cats) => DropdownButtonFormField<int>(
+                data: (cats) => InputDecorator(
                   decoration: const InputDecoration(
                     labelText: 'Category',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.label),
                   ),
-                  initialValue: _selectedCategoryId,
-                  hint: const Text('Select category (optional)'),
-                  items: cats
-                      .map(
-                        (c) => DropdownMenuItem(
-                          value: c.id,
-                          child: Text(c.name),
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (v) =>
-                      setState(() => _selectedCategoryId = v),
+                  child: DropdownButton<int>(
+                    value: _selectedCategoryId,
+                    isExpanded: true,
+                    underline: const SizedBox.shrink(),
+                    hint: const Text('Select category (optional)'),
+                    items: cats
+                        .map(
+                          (c) => DropdownMenuItem(
+                            value: c.id,
+                            child: Text(c.name),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (v) =>
+                        setState(() => _selectedCategoryId = v),
+                  ),
                 ),
                 loading: () => const LinearProgressIndicator(),
                 error: (_, __) => const SizedBox.shrink(),
@@ -245,7 +296,13 @@ class _AddTransactionScreenState
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.check),
-              label: Text(_saving ? 'Saving…' : 'Save Transaction'),
+              label: Text(
+                _saving
+                    ? 'Saving…'
+                    : _isEditing
+                        ? 'Save Changes'
+                        : 'Save Transaction',
+              ),
             ),
           ],
         ),

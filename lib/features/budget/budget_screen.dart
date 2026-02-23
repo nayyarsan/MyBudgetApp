@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/database/database.dart';
@@ -235,6 +236,39 @@ class _GroupTile extends ConsumerWidget {
     required this.month,
   });
 
+  Future<void> _confirmDeleteGroup(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Delete group?'),
+        content: Text(
+          'Delete "${group.name}" and all its categories? '
+          'This cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      await ref
+          .read(databaseProvider)
+          .categoriesDao
+          .softDeleteGroup(group.id);
+    }
+  }
+
   int _spentForCategory(int categoryId) {
     var total = 0;
     for (final t in transactions) {
@@ -276,9 +310,11 @@ class _GroupTile extends ConsumerWidget {
               fontSize: 15,
             ),
           ),
-          trailing: cats.isEmpty
-              ? null
-              : Text(
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (cats.isNotEmpty)
+                Text(
                   '\$${(groupAvailable / 100).toStringAsFixed(0)}',
                   style: TextStyle(
                     color:
@@ -286,6 +322,31 @@ class _GroupTile extends ConsumerWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+              PopupMenuButton<String>(
+                icon: const Icon(Icons.more_vert, size: 18),
+                onSelected: (v) {
+                  if (v == 'delete') {
+                    _confirmDeleteGroup(context, ref);
+                  }
+                },
+                itemBuilder: (_) => const [
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Row(
+                      children: [
+                        Icon(Icons.delete_outline, color: Colors.red, size: 18),
+                        SizedBox(width: 8),
+                        Text(
+                          'Delete group',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
           children: cats.isEmpty
               ? [
                   const Padding(
@@ -317,10 +378,98 @@ class _GroupTile extends ConsumerWidget {
                     assignedCents: assigned,
                     spentCents: spent,
                     availableCents: available,
+                    onTap: () =>
+                        _showBudgetDialog(context, ref, cat, assigned),
+                    onLongPress: () =>
+                        _confirmDeleteCategory(context, ref, cat),
                   );
                 }).toList(),
         );
       },
     );
+  }
+
+  Future<void> _showBudgetDialog(
+    BuildContext context,
+    WidgetRef ref,
+    Category cat,
+    int currentCents,
+  ) async {
+    final ctrl = TextEditingController(
+      text: currentCents == 0
+          ? ''
+          : (currentCents / 100).toStringAsFixed(2),
+    );
+
+    await showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Budget: ${cat.name}'),
+        content: TextField(
+          controller: ctrl,
+          decoration: const InputDecoration(
+            labelText: 'Amount',
+            prefixIcon: Icon(Icons.attach_money),
+            border: OutlineInputBorder(),
+          ),
+          keyboardType:
+              const TextInputType.numberWithOptions(decimal: true),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              final dollars =
+                  double.tryParse(ctrl.text.replaceAll(',', '')) ?? 0;
+              final cents = (dollars * 100).round();
+              await ref.read(databaseProvider).budgetDao.upsertBudget(
+                    MonthlyBudgetsCompanion.insert(
+                      categoryId: cat.id,
+                      month: month,
+                      assignedCents: Value(cents),
+                    ),
+                  );
+              if (ctx.mounted) Navigator.of(ctx).pop();
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _confirmDeleteCategory(
+    BuildContext context,
+    WidgetRef ref,
+    Category cat,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Delete category?'),
+        content: Text('Delete "${cat.name}"? This cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      await ref
+          .read(databaseProvider)
+          .categoriesDao
+          .softDeleteCategory(cat.id);
+    }
   }
 }

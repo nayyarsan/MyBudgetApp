@@ -63,6 +63,13 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
   Future<List<Transaction>> getAllTransactions() =>
       (select(transactions)..where((t) => t.isDeleted.equals(false))).get();
 
+  /// Reactive stream of all non-deleted transactions (for running balances).
+  Stream<List<Transaction>> watchAllTransactions() =>
+      (select(transactions)..where((t) => t.isDeleted.equals(false))).watch();
+
+  Future<void> updateTransaction(int id, TransactionsCompanion data) =>
+      (update(transactions)..where((t) => t.id.equals(id))).write(data);
+
   Future<int> softDelete(int id) =>
       (update(transactions)..where((t) => t.id.equals(id)))
           .write(const TransactionsCompanion(isDeleted: Value(true)));

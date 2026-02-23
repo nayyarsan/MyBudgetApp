@@ -40,5 +40,11 @@ void main() {
     await tester.pump();
 
     expect(find.byType(NavigationBar), findsOneWidget);
+
+    // Explicitly dispose the widget tree so we can drain the Drift
+    // stream-cleanup timers that fire during ProviderScope disposal,
+    // before the test framework asserts no timers are pending.
+    await tester.pumpWidget(const SizedBox.shrink());
+    await tester.pump(Duration.zero);
   });
 }

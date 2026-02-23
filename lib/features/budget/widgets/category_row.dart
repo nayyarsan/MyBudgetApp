@@ -8,6 +8,7 @@ class CategoryRow extends StatelessWidget {
   final int spentCents;
   final int availableCents;
   final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
 
   const CategoryRow({
     super.key,
@@ -16,6 +17,7 @@ class CategoryRow extends StatelessWidget {
     required this.spentCents,
     required this.availableCents,
     this.onTap,
+    this.onLongPress,
   });
 
   @override
@@ -24,6 +26,7 @@ class CategoryRow extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Row(

@@ -51,4 +51,15 @@ class CategoriesDao extends DatabaseAccessor<AppDatabase>
                   t.goalAmountCents.isNotNull(),
             ))
           .watch();
+
+  Future<int> softDeleteCategory(int id) =>
+      (update(categories)..where((t) => t.id.equals(id)))
+          .write(const CategoriesCompanion(isDeleted: Value(true)));
+
+  Future<void> softDeleteGroup(int id) async {
+    await (update(categories)..where((t) => t.groupId.equals(id)))
+        .write(const CategoriesCompanion(isDeleted: Value(true)));
+    await (update(categoryGroups)..where((t) => t.id.equals(id)))
+        .write(const CategoryGroupsCompanion(isDeleted: Value(true)));
+  }
 }

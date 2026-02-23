@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/database/providers.dart';
 import '../../core/utils/currency_formatter.dart';
 import 'account_providers.dart';
 import 'add_account_screen.dart';
@@ -11,6 +12,7 @@ class AccountsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final accountsAsync = ref.watch(accountsProvider);
     final netWorthAsync = ref.watch(netWorthProvider);
+    final balancesAsync = ref.watch(accountRunningBalancesProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Accounts')),
@@ -70,35 +72,93 @@ class AccountsScreen extends ConsumerWidget {
                   );
                 }
 
+                final balances = balancesAsync.valueOrNull ?? {};
+
                 return ListView.separated(
                   itemCount: accounts.length,
                   separatorBuilder: (_, __) => const Divider(height: 1),
                   itemBuilder: (context, i) {
                     final a = accounts[i];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .primaryContainer,
-                        child: Icon(
-                          _accountIcon(a.type),
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onPrimaryContainer,
+                    final currentBalance = balances[a.id] ?? a.balanceCents;
+
+                    return Dismissible(
+                      key: Key('account-${a.id}'),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        color: Colors.red.shade700,
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20),
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
+                      confirmDismiss: (_) => showDialog<bool>(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text('Delete account?'),
+                          content: Text(
+                            'Delete "${a.name}"? This cannot be undone.',
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(ctx).pop(false),
+                              child: const Text('Cancel'),
+                            ),
+                            FilledButton(
+                              onPressed: () => Navigator.of(ctx).pop(true),
+                              style: FilledButton.styleFrom(
+                                backgroundColor: Colors.red,
+                              ),
+                              child: const Text('Delete'),
+                            ),
+                          ],
                         ),
                       ),
-                      title: Text(a.name),
-                      subtitle: Text(
-                        '${a.institution ?? a.type}'
-                        '${a.type == 'credit' ? ' (credit)' : ''}',
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                      trailing: Text(
-                        CurrencyFormatter.format(a.balanceCents),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: a.balanceCents < 0 ? Colors.red : null,
+                      onDismissed: (_) => ref
+                          .read(databaseProvider)
+                          .accountsDao
+                          .softDeleteAccount(a.id),
+                      child: ListTile(
+                        onTap: () => Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => AddAccountScreen(initial: a),
+                          ),
+                        ),
+                        leading: CircleAvatar(
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .primaryContainer,
+                          child: Icon(
+                            _accountIcon(a.type),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
+                          ),
+                        ),
+                        title: Text(a.name),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${a.institution ?? a.type}'
+                              '${a.type == 'credit' ? ' (credit)' : ''}',
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                            if (a.balanceCents != currentBalance)
+                              Text(
+                                'Opening: ${CurrencyFormatter.format(a.balanceCents)}',
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                          ],
+                        ),
+                        trailing: Text(
+                          CurrencyFormatter.format(currentBalance),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: currentBalance < 0 ? Colors.red : null,
+                          ),
                         ),
                       ),
                     );

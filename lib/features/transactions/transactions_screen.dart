@@ -102,6 +102,11 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
               final tx = filtered[i];
               return TransactionTile(
                 transaction: tx,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => AddTransactionScreen(initial: tx),
+                  ),
+                ),
                 onDelete: () => ref
                     .read(databaseProvider)
                     .transactionsDao

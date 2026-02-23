@@ -5,11 +5,13 @@ import '../../../core/utils/currency_formatter.dart';
 class TransactionTile extends StatelessWidget {
   final Transaction transaction;
   final VoidCallback onDelete;
+  final VoidCallback? onTap;
 
   const TransactionTile({
     super.key,
     required this.transaction,
     required this.onDelete,
+    this.onTap,
   });
 
   @override
@@ -51,6 +53,7 @@ class TransactionTile extends StatelessWidget {
       },
       onDismissed: (_) => onDelete(),
       child: ListTile(
+        onTap: onTap,
         leading: CircleAvatar(
           backgroundColor: isExpense
               ? Colors.red.shade50
