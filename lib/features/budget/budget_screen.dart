@@ -221,7 +221,7 @@ class BudgetScreen extends ConsumerWidget {
 }
 
 /// Collapsible group tile that lists its categories with budget columns.
-class _GroupTile extends StatelessWidget {
+class _GroupTile extends ConsumerWidget {
   final CategoryGroup group;
   final List<MonthlyBudget> budgets;
   final List<Transaction> transactions;
@@ -245,11 +245,10 @@ class _GroupTile extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final db = ref.watch(databaseProvider);
     return StreamBuilder<List<Category>>(
-      stream: AppDatabase()
-          .categoriesDao
-          .watchCategoriesForGroup(group.id),
+      stream: db.categoriesDao.watchCategoriesForGroup(group.id),
       builder: (context, snapshot) {
         final cats = snapshot.data ?? [];
 
