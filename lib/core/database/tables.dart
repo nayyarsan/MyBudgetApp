@@ -77,6 +77,8 @@ class Transactions extends Table {
       dateTime().withDefault(currentDateAndTime)();
   DateTimeColumn get updatedAt =>
       dateTime().withDefault(currentDateAndTime)();
+  IntColumn get toAccountId =>
+      integer().nullable().references(Accounts, #id)();
   BoolColumn get isDeleted =>
       boolean().withDefault(const Constant(false))();
 }

@@ -59,6 +59,15 @@ class TransactionsDao extends DatabaseAccessor<AppDatabase>
             ..orderBy([(t) => OrderingTerm.desc(t.date)]))
           .get();
 
+  Stream<List<Transaction>> watchTransactionsForAccount(int accountId) =>
+      (select(transactions)
+            ..where(
+              (t) =>
+                  t.accountId.equals(accountId) & t.isDeleted.equals(false),
+            )
+            ..orderBy([(t) => OrderingTerm.desc(t.date)]))
+          .watch();
+
   /// All non-deleted transactions (for cloud sync).
   Future<List<Transaction>> getAllTransactions() =>
       (select(transactions)..where((t) => t.isDeleted.equals(false))).get();
