@@ -1,4 +1,4 @@
-package com.myynab.myynab
+package com.moneyinsight.app
 
 import io.flutter.embedding.android.FlutterActivity
 
