@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/database/providers.dart';
 import '../../core/utils/currency_formatter.dart';
+import 'account_detail_screen.dart';
 import 'account_providers.dart';
 import 'add_account_screen.dart';
 
@@ -119,7 +120,7 @@ class AccountsScreen extends ConsumerWidget {
                       child: ListTile(
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute<void>(
-                            builder: (_) => AddAccountScreen(initial: a),
+                            builder: (_) => AccountDetailScreen(account: a),
                           ),
                         ),
                         leading: CircleAvatar(

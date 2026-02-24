@@ -6,12 +6,16 @@ class TransactionTile extends StatelessWidget {
   final Transaction transaction;
   final VoidCallback onDelete;
   final VoidCallback? onTap;
+  final String? accountName;
+  final String? toAccountName;
 
   const TransactionTile({
     super.key,
     required this.transaction,
     required this.onDelete,
     this.onTap,
+    this.accountName,
+    this.toAccountName,
   });
 
   @override
@@ -79,10 +83,7 @@ class TransactionTile extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: Text(
-          _dateLabel() +
-              (transaction.memo != null && transaction.memo!.isNotEmpty
-                  ? ' · ${transaction.memo}'
-                  : ''),
+          _subtitleText(),
           style: const TextStyle(fontSize: 12),
           overflow: TextOverflow.ellipsis,
         ),
@@ -100,6 +101,19 @@ class TransactionTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _subtitleText() {
+    final date = _dateLabel();
+    final memo = (transaction.memo != null && transaction.memo!.isNotEmpty)
+        ? ' · ${transaction.memo}'
+        : '';
+    final accountPart = toAccountName != null
+        ? ' · ${accountName ?? ''} → $toAccountName'
+        : accountName != null
+            ? ' · $accountName'
+            : '';
+    return '$date$accountPart$memo';
   }
 
   String _dateLabel() {

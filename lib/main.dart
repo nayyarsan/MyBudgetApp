@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/biometric_lock_screen.dart';
+import 'features/onboarding/onboarding_providers.dart';
+import 'features/onboarding/onboarding_screen.dart';
 import 'features/shell/main_shell.dart';
 
 void main() async {
@@ -26,7 +28,22 @@ class MoneyInSightApp extends StatelessWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.system,
-      home: const BiometricLockScreen(child: MainShell()),
+      home: const BiometricLockScreen(child: _AppStartup()),
+    );
+  }
+}
+
+class _AppStartup extends ConsumerWidget {
+  const _AppStartup();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(onboardingCompleteProvider).when(
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (_, __) => const MainShell(),
+      data: (done) => done ? const MainShell() : const OnboardingScreen(),
     );
   }
 }

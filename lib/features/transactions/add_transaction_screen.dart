@@ -10,7 +10,10 @@ class AddTransactionScreen extends ConsumerStatefulWidget {
   /// Pass an existing transaction to switch to edit mode.
   final Transaction? initial;
 
-  const AddTransactionScreen({super.key, this.initial});
+  /// Pre-select an account (used when launching from AccountDetailScreen).
+  final int? initialAccountId;
+
+  const AddTransactionScreen({super.key, this.initial, this.initialAccountId});
 
   @override
   ConsumerState<AddTransactionScreen> createState() =>
@@ -27,6 +30,7 @@ class _AddTransactionScreenState
   String _type = 'expense';
   int? _selectedCategoryId;
   int? _selectedAccountId;
+  int? _toAccountId;
   bool _saving = false;
 
   bool get _isEditing => widget.initial != null;
@@ -43,7 +47,10 @@ class _AddTransactionScreenState
       _type = tx.type;
       _selectedCategoryId = tx.categoryId;
       _selectedAccountId = tx.accountId;
+      _toAccountId = tx.toAccountId;
       _memoController.text = tx.memo ?? '';
+    } else if (widget.initialAccountId != null) {
+      _selectedAccountId = widget.initialAccountId;
     }
   }
 
@@ -86,6 +93,7 @@ class _AddTransactionScreenState
                 : _memoController.text.trim(),
           ),
           type: Value(_type),
+          toAccountId: Value(_type == 'transfer' ? _toAccountId : null),
         ),
       );
     } else {
@@ -102,6 +110,7 @@ class _AddTransactionScreenState
                 : _memoController.text.trim(),
           ),
           type: _type,
+          toAccountId: Value(_type == 'transfer' ? _toAccountId : null),
         ),
       );
     }
@@ -242,6 +251,49 @@ class _AddTransactionScreenState
               error: (_, __) => const SizedBox.shrink(),
             ),
             const SizedBox(height: 12),
+
+            // To Account selector (only for transfers)
+            if (_type == 'transfer')
+              accountsAsync.when(
+                data: (accounts) {
+                  final fromId = _selectedAccountId ??
+                      (accounts.isNotEmpty ? accounts.first.id : null);
+                  final toAccounts =
+                      accounts.where((a) => a.id != fromId).toList();
+                  return Column(
+                    children: [
+                      InputDecorator(
+                        decoration: const InputDecoration(
+                          labelText: 'To Account',
+                          border: OutlineInputBorder(),
+                          prefixIcon: Icon(Icons.account_balance_wallet),
+                        ),
+                        child: DropdownButton<int>(
+                          value: toAccounts.any((a) => a.id == _toAccountId)
+                              ? _toAccountId
+                              : null,
+                          isExpanded: true,
+                          underline: const SizedBox.shrink(),
+                          hint: const Text('Select destination account'),
+                          items: toAccounts
+                              .map(
+                                (a) => DropdownMenuItem(
+                                  value: a.id,
+                                  child: Text(a.name),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (v) =>
+                              setState(() => _toAccountId = v),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  );
+                },
+                loading: () => const LinearProgressIndicator(),
+                error: (_, __) => const SizedBox.shrink(),
+              ),
 
             // Category selector (not shown for transfers)
             if (_type != 'transfer')
