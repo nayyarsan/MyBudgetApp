@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/theme/app_theme.dart';
+import 'core/services/month_boundary_provider.dart';
 import 'features/auth/biometric_lock_screen.dart';
 import 'features/onboarding/onboarding_providers.dart';
 import 'features/onboarding/onboarding_screen.dart';
@@ -43,7 +44,14 @@ class _AppStartup extends ConsumerWidget {
         body: Center(child: CircularProgressIndicator()),
       ),
       error: (_, __) => const MainShell(),
-      data: (done) => done ? const MainShell() : const OnboardingScreen(),
+      data: (done) {
+        if (!done) return const OnboardingScreen();
+        // Run month boundary checks after onboarding is confirmed
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ref.read(monthBoundaryServiceProvider).run();
+        });
+        return const MainShell();
+      },
     );
   }
 }
