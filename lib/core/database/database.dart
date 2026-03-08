@@ -8,6 +8,8 @@ import 'daos/accounts_dao.dart';
 import 'daos/categories_dao.dart';
 import 'daos/transactions_dao.dart';
 import 'daos/budget_dao.dart';
+import 'daos/budget_snapshots_dao.dart';
+import 'daos/recurring_queue_dao.dart';
 
 part 'database.g.dart';
 
@@ -19,12 +21,16 @@ part 'database.g.dart';
     MonthlyBudgets,
     Transactions,
     NetWorthSnapshots,
+    BudgetSnapshots,
+    PendingRecurringQueue,
   ],
   daos: [
     AccountsDao,
     CategoriesDao,
     TransactionsDao,
     BudgetDao,
+    BudgetSnapshotsDao,
+    RecurringQueueDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -33,13 +39,19 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
     onUpgrade: (m, from, to) async {
       if (from < 2) {
         await m.addColumn(transactions, transactions.toAccountId);
+      }
+      if (from < 3) {
+        await m.addColumn(transactions, transactions.nextDueDate);
+        await m.addColumn(monthlyBudgets, monthlyBudgets.rolledOverCents);
+        await m.createTable(budgetSnapshots);
+        await m.createTable(pendingRecurringQueue);
       }
     },
   );

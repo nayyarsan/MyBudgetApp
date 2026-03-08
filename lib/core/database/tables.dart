@@ -47,6 +47,8 @@ class MonthlyBudgets extends Table {
   TextColumn get month => text()(); // YYYY-MM format
   IntColumn get assignedCents =>
       integer().withDefault(const Constant(0))();
+  IntColumn get rolledOverCents =>
+      integer().withDefault(const Constant(0))();
   DateTimeColumn get updatedAt =>
       dateTime().withDefault(currentDateAndTime)();
 
@@ -72,6 +74,7 @@ class Transactions extends Table {
   BoolColumn get recurring =>
       boolean().withDefault(const Constant(false))();
   TextColumn get recurringInterval => text().nullable()();
+  DateTimeColumn get nextDueDate => dateTime().nullable()();
   TextColumn get importedFrom => text().nullable()();
   DateTimeColumn get createdAt =>
       dateTime().withDefault(currentDateAndTime)();
@@ -89,4 +92,31 @@ class NetWorthSnapshots extends Table {
   IntColumn get totalAssetsCents => integer()();
   IntColumn get totalLiabilitiesCents => integer()();
   IntColumn get netWorthCents => integer()();
+}
+
+class BudgetSnapshots extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get categoryId =>
+      integer().references(Categories, #id)();
+  TextColumn get month => text()(); // YYYY-MM
+  IntColumn get assignedCents =>
+      integer().withDefault(const Constant(0))();
+  IntColumn get spentCents =>
+      integer().withDefault(const Constant(0))();
+  DateTimeColumn get createdAt =>
+      dateTime().withDefault(currentDateAndTime)();
+
+  @override
+  List<Set<Column>> get uniqueKeys => [
+        {categoryId, month},
+      ];
+}
+
+class PendingRecurringQueue extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get sourceTransactionId =>
+      integer().references(Transactions, #id)();
+  DateTimeColumn get dueDate => dateTime()();
+  DateTimeColumn get createdAt =>
+      dateTime().withDefault(currentDateAndTime)();
 }
