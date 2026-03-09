@@ -51,3 +51,9 @@ android/key.properties
 
 # Firebase config — contains API keys, never commit
 google-services.json
+
+# Claude Code settings — machine-local, not for version control
+.claude/settings.local.json
+
+# Web platform — disabled (Drift sqlite3 FFI is not web-compatible)
+/web/
