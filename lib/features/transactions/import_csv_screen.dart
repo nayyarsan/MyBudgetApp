@@ -48,7 +48,8 @@ class _ImportCsvScreenState extends ConsumerState<ImportCsvScreen> {
         _payeeCol = _findHeader(['description', 'Description', 'payee', 'Payee', 'Merchant']);
       });
     } catch (e) {
-      setState(() => _error = 'Failed to read file: $e');
+      debugPrint('CSV import error: $e');
+      setState(() => _error = 'Could not read the file. Make sure it is a valid CSV and try again.');
     }
   }
 

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -6,8 +7,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 final firebaseUserProvider = StreamProvider<User?>((ref) {
   try {
     return FirebaseAuth.instance.authStateChanges();
-  } catch (_) {
+  } catch (e) {
     // Firebase not initialized (offline-only mode) — emit null once.
+    debugPrint('FirebaseAuth not available, running offline: $e');
     return Stream.value(null);
   }
 });
@@ -46,7 +48,8 @@ class FirebaseAuthService {
       );
       final result = await _auth.signInWithCredential(credential);
       return result.user;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Google sign-in failed: $e');
       return _auth.currentUser;
     }
   }
@@ -56,7 +59,8 @@ class FirebaseAuthService {
     try {
       final result = await _auth.signInAnonymously();
       return result.user;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Anonymous sign-in failed: $e');
       return null;
     }
   }
@@ -65,7 +69,9 @@ class FirebaseAuthService {
     try {
       await _googleSignIn.signOut();
       await _auth.signOut();
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('Sign-out error: $e');
+    }
   }
 }
 

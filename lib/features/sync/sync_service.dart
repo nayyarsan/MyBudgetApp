@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../core/database/database.dart';
@@ -103,7 +104,8 @@ class SyncService {
         value: DateTime.now().toIso8601String(),
       );
       return true;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Firestore sync failed: $e');
       return false;
     }
   }

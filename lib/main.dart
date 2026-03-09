@@ -12,8 +12,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp();
-  } catch (_) {
-    // Firebase not configured yet — app runs in offline-only mode
+  } catch (e) {
+    // Firebase not configured — app runs in offline-only mode
+    debugPrint('Firebase init skipped: $e');
   }
   runApp(const ProviderScope(child: MoneyInSightApp()));
 }

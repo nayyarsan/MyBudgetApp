@@ -104,7 +104,7 @@ class AccountDetailScreen extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (e, _) => Center(child: Text('Error: $e')),
+        error: (_, __) => const Center(child: Text('Something went wrong. Please try again.', style: TextStyle(color: Colors.grey))),
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'fab_account_detail',
