@@ -7,7 +7,9 @@ import '../goals/goals_screen.dart';
 import 'budget_calculator.dart';
 import 'budget_providers.dart';
 import '../../core/services/rollover_provider.dart';
+import 'rebalance_provider.dart';
 import 'widgets/category_row.dart';
+import 'widgets/rebalance_sheet.dart';
 import 'widgets/recurring_due_banner.dart';
 import 'widgets/tbb_banner.dart';
 
@@ -60,6 +62,24 @@ class BudgetScreen extends ConsumerWidget {
           ],
         ),
         actions: [
+          Consumer(
+            builder: (context, ref, _) {
+              final suggestionsAsync =
+                  ref.watch(rebalanceSuggestionsProvider);
+              final hasOverages =
+                  suggestionsAsync.valueOrNull?.isNotEmpty ?? false;
+              if (!hasOverages) return const SizedBox.shrink();
+              return IconButton(
+                icon: const Icon(Icons.balance),
+                tooltip: 'Rebalance budget',
+                onPressed: () => showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => const RebalanceSheet(),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.savings_outlined),
             tooltip: 'Goals',
