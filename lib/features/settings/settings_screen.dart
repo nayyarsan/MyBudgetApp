@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import '../../core/services/rollover_provider.dart';
 import '../auth/auth_providers.dart';
 import '../auth/firebase_auth_service.dart';
 import '../sync/sync_service.dart';
@@ -136,6 +137,32 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 await setBiometricEnabled(val);
                 ref.invalidate(biometricEnabledProvider);
               },
+            ),
+          ),
+
+          const Divider(),
+
+          // --- Budget section ---
+          const _SectionHeader(title: 'Budget'),
+          ref.watch(globalRolloverEnabledProvider).when(
+            loading: () => const SwitchListTile(
+              title: Text('Roll over unused budget'),
+              value: false,
+              onChanged: null,
+            ),
+            error: (_, __) => const ListTile(
+              title: Text('Rollover unavailable'),
+            ),
+            data: (enabled) => SwitchListTile(
+              secondary: const Icon(Icons.savings_outlined),
+              title: const Text('Roll over unused budget'),
+              subtitle: const Text(
+                'Carry surplus from each category into the next month',
+              ),
+              value: enabled,
+              onChanged: (val) => ref
+                  .read(globalRolloverEnabledProvider.notifier)
+                  .setEnabled(val),
             ),
           ),
 

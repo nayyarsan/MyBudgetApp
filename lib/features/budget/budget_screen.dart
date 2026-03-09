@@ -6,6 +6,7 @@ import '../../core/database/providers.dart';
 import '../goals/goals_screen.dart';
 import 'budget_calculator.dart';
 import 'budget_providers.dart';
+import '../../core/services/rollover_provider.dart';
 import 'widgets/category_row.dart';
 import 'widgets/recurring_due_banner.dart';
 import 'widgets/tbb_banner.dart';
@@ -284,6 +285,8 @@ class _GroupTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final db = ref.watch(databaseProvider);
+    final rolloverAmounts =
+        ref.watch(rolloverAmountsProvider).valueOrNull ?? {};
     return StreamBuilder<List<Category>>(
       stream: db.categoriesDao.watchCategoriesForGroup(group.id),
       builder: (context, snapshot) {
@@ -298,7 +301,7 @@ class _GroupTile extends ConsumerWidget {
           groupAvailable += BudgetCalculator.available(
             assignedCents: assigned,
             spentCents: spent,
-            rolledOverCents: 0,
+            rolledOverCents: rolloverAmounts[cat.id] ?? 0,
             rollover: cat.rollover,
           );
         }
@@ -371,7 +374,7 @@ class _GroupTile extends ConsumerWidget {
                   final available = BudgetCalculator.available(
                     assignedCents: assigned,
                     spentCents: spent,
-                    rolledOverCents: 0,
+                    rolledOverCents: rolloverAmounts[cat.id] ?? 0,
                     rollover: cat.rollover,
                   );
 
@@ -398,48 +401,73 @@ class _GroupTile extends ConsumerWidget {
     int currentCents,
   ) async {
     final ctrl = TextEditingController(
-      text: currentCents == 0
-          ? ''
-          : (currentCents / 100).toStringAsFixed(2),
+      text: currentCents == 0 ? '' : (currentCents / 100).toStringAsFixed(2),
     );
+    var rolloverOverride = cat.rollover;
+
+    final globalEnabled =
+        await ref.read(globalRolloverEnabledProvider.future);
+
+    if (!context.mounted) return;
 
     await showDialog<void>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Budget: ${cat.name}'),
-        content: TextField(
-          controller: ctrl,
-          decoration: const InputDecoration(
-            labelText: 'Amount',
-            prefixIcon: Icon(Icons.attach_money),
-            border: OutlineInputBorder(),
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setState) => AlertDialog(
+          title: Text('Budget: ${cat.name}'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: ctrl,
+                decoration: const InputDecoration(
+                  labelText: 'Amount',
+                  prefixIcon: Icon(Icons.attach_money),
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                autofocus: true,
+              ),
+              if (globalEnabled) ...[
+                const SizedBox(height: 12),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('Roll over unused'),
+                  value: rolloverOverride,
+                  onChanged: (v) => setState(() => rolloverOverride = v),
+                ),
+              ],
+            ],
           ),
-          keyboardType:
-              const TextInputType.numberWithOptions(decimal: true),
-          autofocus: true,
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () async {
+                final dollars =
+                    double.tryParse(ctrl.text.replaceAll(',', '')) ?? 0;
+                final cents = (dollars * 100).round();
+                final db = ref.read(databaseProvider);
+                await db.budgetDao.upsertBudget(
+                  MonthlyBudgetsCompanion.insert(
+                    categoryId: cat.id,
+                    month: month,
+                    assignedCents: Value(cents),
+                  ),
+                );
+                if (globalEnabled) {
+                  await db.categoriesDao
+                      .updateRollover(cat.id, rolloverOverride);
+                }
+                if (ctx.mounted) Navigator.of(ctx).pop();
+              },
+              child: const Text('Save'),
+            ),
+          ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              final dollars =
-                  double.tryParse(ctrl.text.replaceAll(',', '')) ?? 0;
-              final cents = (dollars * 100).round();
-              await ref.read(databaseProvider).budgetDao.upsertBudget(
-                    MonthlyBudgetsCompanion.insert(
-                      categoryId: cat.id,
-                      month: month,
-                      assignedCents: Value(cents),
-                    ),
-                  );
-              if (ctx.mounted) Navigator.of(ctx).pop();
-            },
-            child: const Text('Save'),
-          ),
-        ],
       ),
     );
   }

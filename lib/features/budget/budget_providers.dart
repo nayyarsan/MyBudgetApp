@@ -65,3 +65,20 @@ final totalAssignedProvider = Provider<AsyncValue<int>>((ref) {
         },
       );
 });
+
+/// Rollover amounts for each category for the selected month.
+/// Map<categoryId, rolledOverCents>
+final rolloverAmountsProvider =
+    FutureProvider<Map<int, int>>((ref) async {
+  final db = ref.watch(databaseProvider);
+  final month = ref.watch(selectedMonthProvider);
+  final budgets = await db.budgetDao
+      .watchBudgetsForMonth(monthKey(month))
+      .first;
+
+  final result = <int, int>{};
+  for (final b in budgets) {
+    result[b.categoryId] = b.rolledOverCents;
+  }
+  return result;
+});

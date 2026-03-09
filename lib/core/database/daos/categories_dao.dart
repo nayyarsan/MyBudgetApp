@@ -56,6 +56,10 @@ class CategoriesDao extends DatabaseAccessor<AppDatabase>
       (update(categories)..where((t) => t.id.equals(id)))
           .write(const CategoriesCompanion(isDeleted: Value(true)));
 
+  Future<void> updateRollover(int categoryId, bool rollover) =>
+      (update(categories)..where((t) => t.id.equals(categoryId)))
+          .write(CategoriesCompanion(rollover: Value(rollover)));
+
   Future<void> softDeleteGroup(int id) async {
     await (update(categories)..where((t) => t.groupId.equals(id)))
         .write(const CategoriesCompanion(isDeleted: Value(true)));
