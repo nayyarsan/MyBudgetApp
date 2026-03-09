@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/database/database.dart';
 import '../../core/database/providers.dart';
+import '../../core/services/month_boundary_service.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../budget/budget_providers.dart';
 
@@ -32,6 +33,8 @@ class _AddTransactionScreenState
   int? _selectedAccountId;
   int? _toAccountId;
   bool _saving = false;
+  bool _recurring = false;
+  String _recurringInterval = 'monthly';
 
   bool get _isEditing => widget.initial != null;
 
@@ -49,6 +52,8 @@ class _AddTransactionScreenState
       _selectedAccountId = tx.accountId;
       _toAccountId = tx.toAccountId;
       _memoController.text = tx.memo ?? '';
+      _recurring = tx.recurring;
+      _recurringInterval = tx.recurringInterval ?? 'monthly';
     } else if (widget.initialAccountId != null) {
       _selectedAccountId = widget.initialAccountId;
     }
@@ -78,6 +83,15 @@ class _AddTransactionScreenState
     final accountId =
         _selectedAccountId ?? (accounts.isNotEmpty ? accounts.first.id : 1);
 
+    // Compute nextDueDate for new recurring transactions
+    DateTime? nextDueDate;
+    if (_recurring) {
+      nextDueDate = MonthBoundaryService.computeNextDueDate(
+        _selectedDate,
+        _recurringInterval,
+      );
+    }
+
     if (_isEditing) {
       await db.transactionsDao.updateTransaction(
         widget.initial!.id,
@@ -94,6 +108,9 @@ class _AddTransactionScreenState
           ),
           type: Value(_type),
           toAccountId: Value(_type == 'transfer' ? _toAccountId : null),
+          recurring: Value(_recurring),
+          recurringInterval: Value(_recurring ? _recurringInterval : null),
+          nextDueDate: Value(nextDueDate),
         ),
       );
     } else {
@@ -111,6 +128,9 @@ class _AddTransactionScreenState
           ),
           type: _type,
           toAccountId: Value(_type == 'transfer' ? _toAccountId : null),
+          recurring: Value(_recurring),
+          recurringInterval: Value(_recurring ? _recurringInterval : null),
+          nextDueDate: Value(nextDueDate),
         ),
       );
     }
@@ -336,6 +356,42 @@ class _AddTransactionScreenState
               ),
               maxLines: 2,
             ),
+            const SizedBox(height: 12),
+
+            // Recurring toggle
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              secondary: const Icon(Icons.repeat),
+              title: const Text('Repeats'),
+              value: _recurring,
+              onChanged: (val) => setState(() => _recurring = val),
+            ),
+
+            // Interval dropdown (only shown when recurring is on)
+            if (_recurring) ...[
+              const SizedBox(height: 8),
+              InputDecorator(
+                decoration: const InputDecoration(
+                  labelText: 'Repeat interval',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.schedule),
+                ),
+                child: DropdownButton<String>(
+                  value: _recurringInterval,
+                  isExpanded: true,
+                  underline: const SizedBox.shrink(),
+                  items: const [
+                    DropdownMenuItem(value: 'weekly', child: Text('Weekly')),
+                    DropdownMenuItem(value: 'monthly', child: Text('Monthly')),
+                    DropdownMenuItem(value: 'yearly', child: Text('Yearly')),
+                  ],
+                  onChanged: (v) =>
+                      setState(() => _recurringInterval = v ?? 'monthly'),
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+
             const SizedBox(height: 24),
 
             // Save button
