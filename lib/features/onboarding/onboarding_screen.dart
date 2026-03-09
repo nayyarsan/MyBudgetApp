@@ -267,11 +267,9 @@ class _WelcomePage extends StatelessWidget {
 // ─────────────────────────── Step 1: Accounts ──────────────────────────────
 
 class _AccountDraft {
-  String name;
-  String type;
-  double balance;
-
-  _AccountDraft({this.name = '', this.type = 'checking', this.balance = 0});
+  String name = '';
+  String type = 'checking';
+  double balance = 0;
 }
 
 class _AccountsPage extends StatefulWidget {
@@ -330,10 +328,10 @@ class _AccountsPageState extends State<_AccountsPage> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete_outline,
-                            color: Colors.red),
+                            color: Colors.red,),
                         onPressed: () {
                           setState(() =>
-                              widget.accounts.removeAt(i));
+                              widget.accounts.removeAt(i),);
                           widget.onChanged();
                         },
                       ),
@@ -386,7 +384,7 @@ class _AccountsPageState extends State<_AccountsPage> {
                             isDense: true,
                           ),
                           keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
+                              decimal: true,),
                           onChanged: (v) =>
                               draft.balance = double.tryParse(v) ?? 0,
                         ),
@@ -518,15 +516,9 @@ class _CategoriesPage extends StatelessWidget {
 // ─────────────────────────── Step 4: Goals ─────────────────────────────────
 
 class _GoalDraft {
-  String name;
-  double targetAmount;
-  DateTime targetDate;
-
-  _GoalDraft({
-    this.name = '',
-    this.targetAmount = 0,
-    DateTime? targetDate,
-  }) : targetDate = targetDate ?? DateTime.now().add(const Duration(days: 365));
+  String name = '';
+  double targetAmount = 0;
+  DateTime targetDate = DateTime.now().add(const Duration(days: 365));
 }
 
 class _GoalsPage extends StatefulWidget {
@@ -580,7 +572,7 @@ class _GoalsPageState extends State<_GoalsPage> {
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete_outline,
-                            color: Colors.red),
+                            color: Colors.red,),
                         onPressed: () {
                           setState(() => widget.goals.removeAt(i));
                           widget.onChanged();
@@ -600,7 +592,7 @@ class _GoalsPageState extends State<_GoalsPage> {
                             isDense: true,
                           ),
                           keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true),
+                              decimal: true,),
                           onChanged: (v) =>
                               draft.targetAmount = double.tryParse(v) ?? 0,
                         ),
@@ -680,7 +672,7 @@ class _DonePage extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           const Text(
-            "Your accounts and preferences have been saved.\nStart tracking your finances!",
+            'Your accounts and preferences have been saved.\nStart tracking your finances!',
             style: TextStyle(color: Colors.grey),
             textAlign: TextAlign.center,
           ),

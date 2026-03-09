@@ -35,7 +35,7 @@ class BudgetSnapshotsDao extends DatabaseAccessor<AppDatabase>
   Future<bool> hasSnapshot(int categoryId, String month) async {
     final row = await (select(budgetSnapshots)
           ..where((t) =>
-              t.categoryId.equals(categoryId) & t.month.equals(month)))
+              t.categoryId.equals(categoryId) & t.month.equals(month),))
         .getSingleOrNull();
     return row != null;
   }

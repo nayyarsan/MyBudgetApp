@@ -69,7 +69,7 @@ List<RebalanceSuggestion> computeRebalanceSuggestions({
         toCategoryId: over.id,
         toCategoryName: over.name,
         amountCents: transfer,
-      ));
+      ),);
       surplusRemaining[src.id] = available - transfer;
       deficit -= transfer;
       if (deficit <= 0) break;
@@ -110,7 +110,7 @@ final rebalanceSuggestionsProvider =
       name: cat.name,
       assigned: assigned,
       spent: spent,
-    ));
+    ),);
   }
 
   return computeRebalanceSuggestions(categoryData: data);

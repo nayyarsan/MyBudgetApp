@@ -66,7 +66,7 @@ class _BudgetTrendChart extends StatelessWidget {
     final maxY = display
         .map((m) => m.totalAssigned > m.totalSpent
             ? m.totalAssigned
-            : m.totalSpent)
+            : m.totalSpent,)
         .fold(0, (a, b) => a > b ? a : b)
         .toDouble();
 
@@ -105,9 +105,9 @@ class _BudgetTrendChart extends StatelessWidget {
               ),
             ),
             topTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false)),
+                sideTitles: SideTitles(showTitles: false),),
             rightTitles: const AxisTitles(
-                sideTitles: SideTitles(showTitles: false)),
+                sideTitles: SideTitles(showTitles: false),),
           ),
           lineBarsData: [
             // Assigned line (blue)
@@ -118,7 +118,7 @@ class _BudgetTrendChart extends StatelessWidget {
                   .map((e) => FlSpot(
                         e.key.toDouble(),
                         e.value.totalAssigned.toDouble(),
-                      ))
+                      ),)
                   .toList(),
               color: Colors.blue,
               barWidth: 2,
@@ -132,7 +132,7 @@ class _BudgetTrendChart extends StatelessWidget {
                   .map((e) => FlSpot(
                         e.key.toDouble(),
                         e.value.totalSpent.toDouble(),
-                      ))
+                      ),)
                   .toList(),
               color: Colors.red,
               barWidth: 2,
@@ -199,25 +199,25 @@ class _MonthTile extends StatelessWidget {
                         flex: 3,
                         child: Text('CATEGORY',
                             style: TextStyle(
-                                fontSize: 11, color: Colors.grey))),
+                                fontSize: 11, color: Colors.grey,),),),
                     Expanded(
                         flex: 2,
                         child: Text('BUDGETED',
                             textAlign: TextAlign.right,
                             style: TextStyle(
-                                fontSize: 11, color: Colors.grey))),
+                                fontSize: 11, color: Colors.grey,),),),
                     Expanded(
                         flex: 2,
                         child: Text('SPENT',
                             textAlign: TextAlign.right,
                             style: TextStyle(
-                                fontSize: 11, color: Colors.grey))),
+                                fontSize: 11, color: Colors.grey,),),),
                     Expanded(
                         flex: 2,
                         child: Text('VARIANCE',
                             textAlign: TextAlign.right,
                             style: TextStyle(
-                                fontSize: 11, color: Colors.grey))),
+                                fontSize: 11, color: Colors.grey,),),),
                   ],
                 ),
                 const Divider(height: 8),
@@ -228,7 +228,7 @@ class _MonthTile extends StatelessWidget {
                     child: Row(
                       children: [
                         Expanded(
-                            flex: 3, child: Text(cat.categoryName)),
+                            flex: 3, child: Text(cat.categoryName),),
                         Expanded(
                           flex: 2,
                           child: Text(

@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:moneyinsight/core/database/database.dart';
-import 'package:moneyinsight/core/database/tables.dart';
 import 'package:moneyinsight/core/services/month_boundary_service.dart';
 import 'package:drift/drift.dart' show Value;
 

@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:moneyinsight/core/database/database.dart';
-import 'package:moneyinsight/core/database/tables.dart';
 import 'package:drift/drift.dart' show Value;
 
 void main() {

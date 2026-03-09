@@ -26,7 +26,7 @@ class RecurringQueueDao extends DatabaseAccessor<AppDatabase>
   Future<bool> isEnqueued(int sourceTransactionId) async {
     final row = await (select(pendingRecurringQueue)
           ..where((t) =>
-              t.sourceTransactionId.equals(sourceTransactionId)))
+              t.sourceTransactionId.equals(sourceTransactionId),))
         .getSingleOrNull();
     return row != null;
   }

@@ -83,13 +83,13 @@ class _RebalanceSheetState extends ConsumerState<RebalanceSheet> {
                                             'From: ${s.fromCategoryName}',
                                             style: const TextStyle(
                                                 color: Colors.green,
-                                                fontWeight: FontWeight.bold),
+                                                fontWeight: FontWeight.bold,),
                                           ),
                                           Text(
                                             'To: ${s.toCategoryName}',
                                             style: const TextStyle(
                                                 color: Colors.red,
-                                                fontWeight: FontWeight.bold),
+                                                fontWeight: FontWeight.bold,),
                                           ),
                                         ],
                                       ),
@@ -106,13 +106,13 @@ class _RebalanceSheetState extends ConsumerState<RebalanceSheet> {
                                         ),
                                         keyboardType:
                                             const TextInputType.numberWithOptions(
-                                                decimal: true),
+                                                decimal: true,),
                                         onChanged: (v) {
                                           final cents =
                                               ((double.tryParse(v) ?? 0) * 100)
                                                   .round();
                                           setState(
-                                              () => s.amountCents = cents);
+                                              () => s.amountCents = cents,);
                                         },
                                       ),
                                     ),
@@ -121,7 +121,7 @@ class _RebalanceSheetState extends ConsumerState<RebalanceSheet> {
                               ],
                             ),
                           ),
-                        )),
+                        ),),
                     const SizedBox(height: 16),
                     FilledButton.icon(
                       onPressed: () => _applyAll(context),

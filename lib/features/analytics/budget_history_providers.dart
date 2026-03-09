@@ -52,7 +52,7 @@ final budgetHistoryProvider =
         categoryName: cat.name,
         assignedCents: snap.assignedCents,
         spentCents: snap.spentCents,
-      ));
+      ),);
     }
     catHistories.sort((a, b) => b.spentCents.compareTo(a.spentCents));
     result.add(MonthBudgetHistory(month: month, categories: catHistories));
