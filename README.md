@@ -1,5 +1,7 @@
 # Money in Sight
 
+[![CI](https://github.com/nayyarsan/MyBudgetApp/actions/workflows/ci.yml/badge.svg)](https://github.com/nayyarsan/MyBudgetApp/actions/workflows/ci.yml)
+
 A personal finance app that helps you visualize where your money goes and manage it with zero-based budgeting.
 
 ## Features
