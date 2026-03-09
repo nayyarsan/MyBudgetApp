@@ -7,6 +7,7 @@ import '../goals/goals_screen.dart';
 import 'budget_calculator.dart';
 import 'budget_providers.dart';
 import 'widgets/category_row.dart';
+import 'widgets/recurring_due_banner.dart';
 import 'widgets/tbb_banner.dart';
 
 class BudgetScreen extends ConsumerWidget {
@@ -70,6 +71,7 @@ class BudgetScreen extends ConsumerWidget {
       body: Column(
         children: [
           ToBeBudgetedBanner(tbbCents: tbbCents),
+          const RecurringDueBanner(),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(
