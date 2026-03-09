@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'analytics_providers.dart';
+import 'budget_history_screen.dart';
 import 'widgets/income_vs_expenses_chart.dart';
 import 'widgets/spending_by_category_chart.dart';
 
@@ -10,7 +11,7 @@ class AnalyticsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Analytics'),
@@ -18,13 +19,15 @@ class AnalyticsScreen extends ConsumerWidget {
             tabs: [
               Tab(text: 'Spending', icon: Icon(Icons.pie_chart)),
               Tab(text: 'Income vs Expenses', icon: Icon(Icons.bar_chart)),
+              Tab(text: 'Budget History', icon: Icon(Icons.history)),
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
             _SpendingTab(),
             _IncomeVsExpensesTab(),
+            BudgetHistoryScreen(),
           ],
         ),
       ),
@@ -33,6 +36,8 @@ class AnalyticsScreen extends ConsumerWidget {
 }
 
 class _SpendingTab extends ConsumerWidget {
+  const _SpendingTab();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dataAsync = ref.watch(spendingByCategoryProvider);
@@ -64,6 +69,8 @@ class _SpendingTab extends ConsumerWidget {
 }
 
 class _IncomeVsExpensesTab extends ConsumerWidget {
+  const _IncomeVsExpensesTab();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dataAsync = ref.watch(monthlyTotalsProvider);
