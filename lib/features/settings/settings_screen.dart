@@ -135,6 +135,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               value: enabled,
               onChanged: (val) async {
                 await setBiometricEnabled(val);
+                if (val) {
+                  // User is already in the app — mark this session as
+                  // authenticated so the lock screen doesn't immediately
+                  // appear. Biometric will be required on the next cold start.
+                  ref.read(isUnlockedProvider.notifier).state = true;
+                }
                 ref.invalidate(biometricEnabledProvider);
               },
             ),

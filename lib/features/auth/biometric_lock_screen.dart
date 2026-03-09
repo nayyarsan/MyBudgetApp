@@ -82,7 +82,8 @@ class _LockScreenState extends ConsumerState<_LockScreen> {
           });
         }
       }
-    } catch (_) {
+    } catch (e) {
+      debugPrint('BiometricAuth error: $e');
       if (mounted) {
         setState(() {
           _authenticating = false;
