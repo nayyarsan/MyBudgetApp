@@ -29,6 +29,10 @@ safe-outputs:
   create-pull-request:
     max: 1
     base-branch: main
+    allowed-files:
+      - "AGENTS.md"
+      - ".github/copilot-instructions.md"
+      - ".github/docs/**"
   noop:
 ---
 
