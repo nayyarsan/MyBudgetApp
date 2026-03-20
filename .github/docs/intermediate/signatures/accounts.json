@@ -71,8 +71,8 @@
         "name": "txStream",
         "type": "StreamProvider",
         "watches": [
-          "accountRunningBalancesProvider",
           "accountsProvider",
+          "accountRunningBalancesProvider",
           "txStream"
         ],
         "reads": []
@@ -122,9 +122,9 @@
         "name": "_allTransactionsStreamProvider",
         "type": "StreamProvider",
         "watches": [
+          "accountsProvider",
           "databaseProvider",
-          "_allTransactionsStreamProvider",
-          "accountsProvider"
+          "_allTransactionsStreamProvider"
         ],
         "reads": []
       },
@@ -132,8 +132,8 @@
         "name": "accountRunningBalancesProvider",
         "type": "Provider",
         "watches": [
-          "_allTransactionsStreamProvider",
-          "accountsProvider"
+          "accountsProvider",
+          "_allTransactionsStreamProvider"
         ],
         "reads": []
       },

@@ -155,8 +155,8 @@
     {
       "screen": "lib/features/accounts/account_detail_screen.dart",
       "watches": [
-        "accountRunningBalancesProvider",
         "accountsProvider",
+        "accountRunningBalancesProvider",
         "txStream"
       ]
     }

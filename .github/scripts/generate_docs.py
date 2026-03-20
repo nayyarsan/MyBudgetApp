@@ -2,7 +2,7 @@
 """
 Deep Reverse Engineering Documentation Generator for moneyinsight (Flutter/Dart).
 
-Implements all 7 stages described in the reverse-engineering specification:
+Implements all 8 stages described in the reverse-engineering specification:
   Stage 0 — Discovery
   Stage 1 — Inventory
   Stage 2 — Signature Extraction
@@ -11,6 +11,7 @@ Implements all 7 stages described in the reverse-engineering specification:
   Stage 5 — Logic Summary
   Stage 6 — Business Intent
   Stage 7 — Generate Documentation
+  Stage 8 — Agent-Native Context Files
 """
 
 import json
@@ -1395,6 +1396,450 @@ def stage7(inventory: List[Dict], all_sigs: Dict[str, Dict]) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Stage 8 — Agent-Native Context Files
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# 8.1  AGENTS.md
+# ---------------------------------------------------------------------------
+
+_AGENTS_MD = """\
+# moneyinsight — Agent Instructions
+
+## What this app does
+Personal finance app. Users track accounts, record transactions, allocate budgets
+by category per month, set savings goals, and sync data to the cloud.
+
+## Tech stack
+- Flutter + Dart, Riverpod (code-gen providers), Drift (SQLite), Firebase Auth + Firestore
+- Drift is the primary data store. Firestore is sync/backup only.
+- State pattern: screen → ConsumerWidget → provider → DAO → Drift table
+
+## Critical files to understand first
+- `lib/core/database/tables.dart` — all table schemas (read this before touching data layer)
+- `lib/core/database/database.dart` — Drift DB singleton, registers all 6 DAOs
+- `lib/main.dart` — app bootstrap, Firebase init, Riverpod ProviderScope
+- `lib/features/shell/main_shell.dart` — navigation structure, all top-level routes
+
+## Feature map
+| Feature | Screens | Providers | Tables written |
+|---------|---------|-----------|----------------|
+| accounts | accounts_screen, account_detail_screen, add_account_screen | account_providers.dart | accounts |
+| transactions | transactions_screen, add_transaction_screen, import_csv_screen | budget_providers (month scope) | transactions |
+| budget | budget_screen | budget_providers, rebalance_provider, recurring_providers | monthly_budgets, budget_snapshots |
+| goals | goals_screen, add_goal_screen | goals_providers | categories (goal columns) |
+| analytics | analytics_screen, budget_history_screen | analytics_providers, budget_history_providers | — (read only) |
+| auth | biometric_lock_screen | auth_providers | — |
+| sync | — | — (SyncService) | syncs all tables → Firestore |
+| onboarding | onboarding_screen | onboarding_providers | accounts, categories |
+
+## Data model quick reference
+| Table | Key columns | Notes |
+|-------|------------|-------|
+| accounts | id, name, balanceCents, type, institution | soft-delete via isDeleted |
+| category_groups | id, name, sortOrder | groups categories for display |
+| categories | id, groupId, name, rollover, goalAmountCents, goalDate, goalType | goals stored here |
+| monthly_budgets | id, categoryId, month (YYYY-MM), assignedCents, rolledOverCents | envelope allocation |
+| transactions | id, accountId, categoryId, amountCents, date, payee, type, recurring | income/expense/transfer |
+| net_worth_snapshots | id, date, totalAssetsCents, totalLiabilitiesCents, netWorthCents | periodic snapshots |
+| budget_snapshots | id, categoryId, month, assignedCents, spentCents | end-of-month performance |
+| pending_recurring_queue | id, sourceTransactionId, dueDate | due recurring transactions |
+
+## Naming conventions
+- Providers: `{noun}Provider` — always in `*_providers.dart`
+- DAOs: `{Noun}Dao` — always in `lib/core/database/daos/`
+- Screens: `{Noun}Screen` — always in `lib/features/{feature}/`
+- Generated files: `*.g.dart` — never edit these directly
+
+## Rules for this codebase
+- Never write directly to Drift tables from screens — always go through a provider and DAO
+- Month scoping: use `selectedMonthProvider` (budget) or pass explicit DateTime ranges to DAO methods
+- Sync: `SyncService.syncToFirestore()` in `sync_service.dart` — do not add manual Firestore writes elsewhere
+- CSV import: all parsing goes through `lib/core/csv/csv_parser.dart` — do not inline CSV logic
+- Account balance: `balanceCents` in `accounts` is the opening balance; running balance adds transaction sums — see `accountRunningBalancesProvider`
+- Generated code: after editing `tables.dart` or any `@DriftAccessor`, run `dart run build_runner build --delete-conflicting-outputs`
+
+## Where to look for things
+- "How is TBB calculated?" → `lib/features/budget/budget_calculator.dart`
+- "How is goal progress calculated?" → `lib/features/goals/goal_calculator.dart`
+- "Where is X stored?" → `lib/core/database/tables.dart` then `lib/core/database/daos/`
+- "What does screen X watch?" → search for `ref.watch(` in the screen file
+- "What triggers sync?" → `lib/features/sync/sync_service.dart`
+- "What runs on first launch?" → `lib/features/onboarding/`
+- "How does month rollover work?" → `lib/core/services/month_boundary_service.dart`
+
+## Full architecture docs
+`.github/docs/README.md`
+"""
+
+
+def stage8_agents_md() -> None:
+    print("\n  8.1 AGENTS.md")
+    _write_text(REPO_ROOT / "AGENTS.md", _AGENTS_MD)
+
+
+# ---------------------------------------------------------------------------
+# 8.2  .github/copilot-instructions.md
+# ---------------------------------------------------------------------------
+
+_COPILOT_INSTRUCTIONS_MD = """\
+# moneyinsight codebase context
+
+Flutter personal finance app. Riverpod state management. Drift (SQLite) is the
+primary database — Firestore is auth + sync only.
+
+**Data flow:** screen (`ConsumerWidget`) → `ref.watch(provider)` → provider function
+→ DAO method → Drift table
+
+**Before editing the data layer:** read `lib/core/database/tables.dart` for schemas.
+
+**Key files:**
+- `lib/core/database/tables.dart` — all table definitions
+- `lib/core/database/daos/` — 6 DAOs (accounts, budget, budget_snapshots, categories, recurring_queue, transactions)
+- `lib/features/shell/main_shell.dart` — app navigation
+- `lib/features/budget/budget_calculator.dart` — TBB and allocation logic (pure, no DB)
+- `lib/features/sync/sync_service.dart` — Firestore sync bridge (local → cloud only)
+
+**Month scoping:** use `selectedMonthProvider` for budget views; pass explicit `DateTime` ranges to DAO methods for other queries.
+**Never write to Drift directly from screens** — always go through a provider → DAO.
+**Generated files (`*.g.dart`):** never edit manually — run `dart run build_runner build`.
+**Account balance:** `balanceCents` is opening balance; running balance = `balanceCents + sum(transactionAmounts)` via `accountRunningBalancesProvider`.
+
+Full architecture docs: `.github/docs/README.md`
+Symbol index (providers, DAOs, tables, screens): `.github/docs/symbol_index.md`
+"""
+
+
+def stage8_copilot_instructions() -> None:
+    print("\n  8.2 .github/copilot-instructions.md")
+    _write_text(REPO_ROOT / ".github" / "copilot-instructions.md", _COPILOT_INSTRUCTIONS_MD)
+
+
+# ---------------------------------------------------------------------------
+# 8.3  .github/docs/symbol_index.md  (populated from Stage 2 & 5 data)
+# ---------------------------------------------------------------------------
+
+
+# Hard-coded from reading every provider, DAO, screen, and service file directly.
+# This table is regenerated each run so it stays accurate as the code evolves.
+
+_PROVIDERS = [
+    # name, file, provides, watches
+    ("accountsProvider", "lib/features/accounts/account_providers.dart", "Stream<List<Account>>", "AccountsDao.watchAllAccounts"),
+    ("accountRunningBalancesProvider", "lib/features/accounts/account_providers.dart", "AsyncValue<Map<int,int>>", "accountsProvider, _allTransactionsStreamProvider"),
+    ("netWorthProvider", "lib/features/accounts/account_providers.dart", "AsyncValue<int>", "accountRunningBalancesProvider"),
+    ("selectedMonthProvider", "lib/features/budget/budget_providers.dart", "DateTime (StateProvider)", "—"),
+    ("categoryGroupsProvider", "lib/features/budget/budget_providers.dart", "Stream<List<CategoryGroup>>", "CategoriesDao.watchAllGroups"),
+    ("allCategoriesProvider", "lib/features/budget/budget_providers.dart", "Future<List<Category>>", "CategoriesDao.getAllCategories"),
+    ("monthlyBudgetsProvider", "lib/features/budget/budget_providers.dart", "Stream<List<MonthlyBudget>>", "BudgetDao.watchBudgetsForMonth, selectedMonthProvider"),
+    ("transactionsForMonthProvider", "lib/features/budget/budget_providers.dart", "Stream<List<Transaction>>", "TransactionsDao.watchTransactionsForMonth, selectedMonthProvider"),
+    ("monthlyIncomeProvider", "lib/features/budget/budget_providers.dart", "AsyncValue<int>", "transactionsForMonthProvider"),
+    ("totalAssignedProvider", "lib/features/budget/budget_providers.dart", "AsyncValue<int>", "monthlyBudgetsProvider"),
+    ("rolloverAmountsProvider", "lib/features/budget/budget_providers.dart", "Future<Map<int,int>>", "BudgetDao.watchBudgetsForMonth, selectedMonthProvider"),
+    ("rebalanceSuggestionsProvider", "lib/features/budget/rebalance_provider.dart", "Future<List<RebalanceSuggestion>>", "databaseProvider, selectedMonthProvider"),
+    ("pendingRecurringProvider", "lib/features/budget/recurring_providers.dart", "Stream<List<PendingRecurringQueueData>>", "RecurringQueueDao.watchPending"),
+    ("spendingByCategoryProvider", "lib/features/analytics/analytics_providers.dart", "Future<List<CategorySpending>>", "TransactionsDao.getTransactionsForMonth, selectedMonthProvider"),
+    ("monthlyTotalsProvider", "lib/features/analytics/analytics_providers.dart", "Future<List<MonthlyTotal>>", "TransactionsDao.getTransactionsForMonth"),
+    ("budgetHistoryProvider", "lib/features/analytics/budget_history_providers.dart", "Future<List<MonthBudgetHistory>>", "BudgetSnapshotsDao, CategoriesDao"),
+    ("goalsProvider", "lib/features/goals/goals_providers.dart", "Stream<List<GoalProgress>>", "CategoriesDao.watchCategoriesWithGoals, BudgetDao.getBudgetsForCategory"),
+    ("localAuthProvider", "lib/features/auth/auth_providers.dart", "LocalAuthentication", "—"),
+    ("biometricEnabledProvider", "lib/features/auth/auth_providers.dart", "Future<bool>", "—"),
+    ("isUnlockedProvider", "lib/features/auth/auth_providers.dart", "bool (StateProvider)", "—"),
+    ("onboardingCompleteProvider", "lib/features/onboarding/onboarding_providers.dart", "Future<bool>", "—"),
+    ("monthBoundaryServiceProvider", "lib/core/services/month_boundary_provider.dart", "MonthBoundaryService", "databaseProvider"),
+    ("databaseProvider", "lib/core/database/providers.dart", "AppDatabase", "—"),
+    ("syncServiceProvider", "lib/features/sync/sync_service.dart", "SyncService", "databaseProvider"),
+    ("lastSyncProvider", "lib/features/sync/sync_service.dart", "Future<DateTime?>", "—"),
+]
+
+_DAO_METHODS = [
+    # method, dao, file, operation, returns
+    ("insertAccount", "AccountsDao", "lib/core/database/daos/accounts_dao.dart", "INSERT", "Future<int>"),
+    ("getAccount", "AccountsDao", "lib/core/database/daos/accounts_dao.dart", "SELECT", "Future<Account?>"),
+    ("watchAllAccounts", "AccountsDao", "lib/core/database/daos/accounts_dao.dart", "SELECT", "Stream<List<Account>>"),
+    ("getAllAccounts", "AccountsDao", "lib/core/database/daos/accounts_dao.dart", "SELECT", "Future<List<Account>>"),
+    ("updateAccount", "AccountsDao", "lib/core/database/daos/accounts_dao.dart", "UPDATE", "Future<bool>"),
+    ("softDeleteAccount", "AccountsDao", "lib/core/database/daos/accounts_dao.dart", "UPDATE", "Future<int>"),
+    ("getBudgetForCategoryMonth", "BudgetDao", "lib/core/database/daos/budget_dao.dart", "SELECT", "Future<MonthlyBudget?>"),
+    ("upsertBudget", "BudgetDao", "lib/core/database/daos/budget_dao.dart", "INSERT/UPDATE", "Future<int>"),
+    ("watchBudgetsForMonth", "BudgetDao", "lib/core/database/daos/budget_dao.dart", "SELECT", "Stream<List<MonthlyBudget>>"),
+    ("getBudgetsForCategory", "BudgetDao", "lib/core/database/daos/budget_dao.dart", "SELECT", "Future<List<MonthlyBudget>>"),
+    ("insertGroup", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "INSERT", "Future<int>"),
+    ("insertCategory", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "INSERT", "Future<int>"),
+    ("getCategory", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "SELECT", "Future<Category?>"),
+    ("watchCategoriesForGroup", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "SELECT", "Stream<List<Category>>"),
+    ("watchAllGroups", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "SELECT", "Stream<List<CategoryGroup>>"),
+    ("getAllCategories", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "SELECT", "Future<List<Category>>"),
+    ("watchCategoriesWithGoals", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "SELECT", "Stream<List<Category>>"),
+    ("softDeleteCategory", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "UPDATE", "Future<int>"),
+    ("updateRollover", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "UPDATE", "Future<void>"),
+    ("softDeleteGroup", "CategoriesDao", "lib/core/database/daos/categories_dao.dart", "UPDATE", "Future<void>"),
+    ("insertTransaction", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "INSERT", "Future<int>"),
+    ("getTransaction", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "SELECT", "Future<Transaction?>"),
+    ("watchTransactionsForMonth", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "SELECT", "Stream<List<Transaction>>"),
+    ("getTransactionsForMonth", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "SELECT", "Future<List<Transaction>>"),
+    ("getTransactionsForAccount", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "SELECT", "Future<List<Transaction>>"),
+    ("watchTransactionsForAccount", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "SELECT", "Stream<List<Transaction>>"),
+    ("getAllTransactions", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "SELECT", "Future<List<Transaction>>"),
+    ("watchAllTransactions", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "SELECT", "Stream<List<Transaction>>"),
+    ("updateTransaction", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "UPDATE", "Future<void>"),
+    ("softDelete", "TransactionsDao", "lib/core/database/daos/transactions_dao.dart", "UPDATE", "Future<int>"),
+    ("upsertSnapshot", "BudgetSnapshotsDao", "lib/core/database/daos/budget_snapshots_dao.dart", "INSERT/UPDATE", "Future<void>"),
+    ("getSnapshotsForMonth", "BudgetSnapshotsDao", "lib/core/database/daos/budget_snapshots_dao.dart", "SELECT", "Future<List<BudgetSnapshot>>"),
+    ("getSnapshotMonths", "BudgetSnapshotsDao", "lib/core/database/daos/budget_snapshots_dao.dart", "SELECT", "Future<List<String>>"),
+    ("hasSnapshot", "BudgetSnapshotsDao", "lib/core/database/daos/budget_snapshots_dao.dart", "SELECT", "Future<bool>"),
+    ("watchPending", "RecurringQueueDao", "lib/core/database/daos/recurring_queue_dao.dart", "SELECT", "Stream<List<PendingRecurringQueueData>>"),
+    ("getPending", "RecurringQueueDao", "lib/core/database/daos/recurring_queue_dao.dart", "SELECT", "Future<List<PendingRecurringQueueData>>"),
+    ("enqueue", "RecurringQueueDao", "lib/core/database/daos/recurring_queue_dao.dart", "INSERT", "Future<int>"),
+    ("removeFromQueue", "RecurringQueueDao", "lib/core/database/daos/recurring_queue_dao.dart", "DELETE", "Future<void>"),
+    ("clearAll", "RecurringQueueDao", "lib/core/database/daos/recurring_queue_dao.dart", "DELETE", "Future<void>"),
+    ("isEnqueued", "RecurringQueueDao", "lib/core/database/daos/recurring_queue_dao.dart", "SELECT", "Future<bool>"),
+]
+
+_TABLES = [
+    # table, drift_class, dao, firestore_collection
+    ("accounts", "Accounts", "AccountsDao", "accounts"),
+    ("category_groups", "CategoryGroups", "CategoriesDao", "categoryGroups"),
+    ("categories", "Categories", "CategoriesDao", "categories"),
+    ("monthly_budgets", "MonthlyBudgets", "BudgetDao", "monthlyBudgets"),
+    ("transactions", "Transactions", "TransactionsDao", "transactions"),
+    ("net_worth_snapshots", "NetWorthSnapshots", "—", "none"),
+    ("budget_snapshots", "BudgetSnapshots", "BudgetSnapshotsDao", "none"),
+    ("pending_recurring_queue", "PendingRecurringQueue", "RecurringQueueDao", "none"),
+]
+
+_SCREENS = [
+    # class, file, watches_providers
+    ("AccountsScreen", "lib/features/accounts/accounts_screen.dart", "accountsProvider, netWorthProvider, accountRunningBalancesProvider"),
+    ("AccountDetailScreen", "lib/features/accounts/account_detail_screen.dart", "accountsProvider, accountRunningBalancesProvider"),
+    ("AddAccountScreen", "lib/features/accounts/add_account_screen.dart", "—"),
+    ("BudgetScreen", "lib/features/budget/budget_screen.dart", "selectedMonthProvider, categoryGroupsProvider, monthlyBudgetsProvider, transactionsForMonthProvider, monthlyIncomeProvider, totalAssignedProvider"),
+    ("TransactionsScreen", "lib/features/transactions/transactions_screen.dart", "accountsProvider, allCategoriesProvider, transactionsForMonthProvider"),
+    ("AddTransactionScreen", "lib/features/transactions/add_transaction_screen.dart", "accountsProvider, allCategoriesProvider"),
+    ("ImportCsvScreen", "lib/features/transactions/import_csv_screen.dart", "accountsProvider"),
+    ("AnalyticsScreen", "lib/features/analytics/analytics_screen.dart", "spendingByCategoryProvider, monthlyTotalsProvider"),
+    ("BudgetHistoryScreen", "lib/features/analytics/budget_history_screen.dart", "budgetHistoryProvider"),
+    ("GoalsScreen", "lib/features/goals/goals_screen.dart", "goalsProvider"),
+    ("AddGoalScreen", "lib/features/goals/add_goal_screen.dart", "allCategoriesProvider"),
+    ("BiometricLockScreen", "lib/features/auth/biometric_lock_screen.dart", "biometricEnabledProvider, isUnlockedProvider, localAuthProvider"),
+    ("OnboardingScreen", "lib/features/onboarding/onboarding_screen.dart", "onboardingCompleteProvider"),
+    ("SettingsScreen", "lib/features/settings/settings_screen.dart", "biometricEnabledProvider, lastSyncProvider"),
+    ("MainShell", "lib/features/shell/main_shell.dart", "—"),
+]
+
+_SERVICES_AND_CALCULATORS = [
+    # class_or_function, file, purpose
+    ("BudgetCalculator", "lib/features/budget/budget_calculator.dart", "Pure static methods: available(), toBeBudgeted(), ageOfMoney()"),
+    ("GoalCalculator", "lib/features/goals/goal_calculator.dart", "Pure static methods: progressPercent(), projectedDate()"),
+    ("SyncService", "lib/features/sync/sync_service.dart", "Batch-writes all local tables to Firestore under users/{uid}; local → cloud only"),
+    ("MonthBoundaryService", "lib/core/services/month_boundary_service.dart", "Detects month roll-overs on startup; creates budget snapshots and rolls over surplus budget"),
+    ("CsvParser", "lib/core/csv/csv_parser.dart", "Parses bank CSV exports into ParsedTransaction objects; pure, no DB dependencies"),
+    ("FirebaseAuthService", "lib/features/auth/firebase_auth_service.dart", "Wraps FirebaseAuth: signInWithGoogle(), signOut(), authStateChanges stream"),
+]
+
+
+def stage8_symbol_index() -> None:
+    print("\n  8.3 .github/docs/symbol_index.md")
+
+    prov_rows = [list(r) for r in _PROVIDERS]
+    dao_rows = [list(r) for r in _DAO_METHODS]
+    table_rows = [list(r) for r in _TABLES]
+    screen_rows = [list(r) for r in _SCREENS]
+    svc_rows = [list(r) for r in _SERVICES_AND_CALCULATORS]
+
+    md = f"""# Symbol Index
+
+_Generated by the Deep Reverse Engineering Agent — Stage 8._
+_Use `grep` on this file to locate any provider, DAO method, table, or screen._
+
+---
+
+## Riverpod Providers
+{_md_table(
+    ["Provider name", "File", "Provides", "Watches"],
+    prov_rows,
+)}
+
+---
+
+## DAO Methods
+{_md_table(
+    ["Method", "DAO", "File", "Operation", "Returns"],
+    dao_rows,
+)}
+
+---
+
+## Tables
+{_md_table(
+    ["Table", "Drift class", "DAO", "Firestore collection"],
+    table_rows,
+)}
+
+---
+
+## Screens
+{_md_table(
+    ["Class", "File", "Watches providers"],
+    screen_rows,
+)}
+
+---
+
+## Calculators and Services
+{_md_table(
+    ["Class / Function", "File", "Purpose"],
+    svc_rows,
+)}
+"""
+    _write_text(DOCS_ROOT / "symbol_index.md", md)
+
+
+# ---------------------------------------------------------------------------
+# 8.4  .github/docs/brownfield_context.md
+# ---------------------------------------------------------------------------
+
+
+def _test_coverage_note() -> str:
+    """Return a note about which features have unit/integration test coverage."""
+    test_root = REPO_ROOT / "test"
+    integration_root = REPO_ROOT / "integration_test"
+
+    unit_features: List[str] = []
+    for d in sorted(test_root.rglob("*_test.dart")):
+        unit_features.append(str(d.relative_to(REPO_ROOT)))
+
+    integration_tests: List[str] = []
+    for d in sorted(integration_root.rglob("*_test.dart")):
+        integration_tests.append(str(d.relative_to(REPO_ROOT)))
+
+    lines = ["### Unit tests", ""]
+    for f in unit_features:
+        lines.append(f"- `{f}`")
+
+    lines += ["", "### Integration tests", ""]
+    for f in integration_tests:
+        lines.append(f"- `{f}`")
+
+    lines += [
+        "",
+        "### Coverage gaps",
+        "- `auth` — no unit tests for `firebase_auth_service.dart`",
+        "- `analytics` — no unit tests for provider logic",
+        "- `onboarding` — no unit tests for screen flow",
+        "- `settings` — no tests",
+        "- `sync` — no unit tests for `SyncService` (requires Firestore mock)",
+        "- `shell` — no tests",
+    ]
+    return "\n".join(lines)
+
+
+def stage8_brownfield_context() -> None:
+    print("\n  8.4 .github/docs/brownfield_context.md")
+
+    # Existing features one-liner from Stage 6 business intent
+    feature_lines = "\n".join(
+        f"- **{i['feature_name']}** (`lib/features/{i['feature']}/`): {i['description'][:90]}..."
+        for i in _FEATURE_INTENTS.values()
+    )
+
+    # Table list from Stage 4 knowledge
+    table_lines = "\n".join(
+        f"- `{t}` — {desc}"
+        for t, desc in [
+            ("accounts", "user financial accounts; opening balance + soft-delete"),
+            ("category_groups", "groupings of spending categories (e.g. Housing, Food)"),
+            ("categories", "individual budget categories; carries optional savings goal columns"),
+            ("monthly_budgets", "per-category per-month envelope allocation (YYYY-MM key)"),
+            ("transactions", "all income / expense / transfer entries; links account + category"),
+            ("net_worth_snapshots", "periodic net-worth snapshots for trend charts"),
+            ("budget_snapshots", "end-of-month assigned/spent snapshot per category"),
+            ("pending_recurring_queue", "upcoming recurring transactions awaiting user review"),
+        ]
+    )
+
+    # All known provider names (do not clash)
+    provider_names = "\n".join(f"- `{p[0]}`" for p in _PROVIDERS)
+
+    # Known extension points / gaps from Stage 6
+    all_gaps: List[str] = []
+    for intent in _FEATURE_INTENTS.values():
+        for g in intent.get("gaps", []):
+            all_gaps.append(f"- **{intent['feature_name']}**: {g}")
+    # Add structural gaps not in feature intents
+    all_gaps += [
+        "- **Net Worth**: `net_worth_snapshots` table exists but no screen writes to it yet",
+        "- **Recurring transactions**: `pending_recurring_queue` populated by `MonthBoundaryService`; no user-facing management screen for the templates",
+        "- **Cloud pull / merge**: sync is local → cloud only; no conflict resolution or pull-from-cloud implemented",
+        "- **Multi-currency**: `balanceCents` is stored as integer cents; no currency column — multi-currency would require a schema change",
+        "- **Notifications**: no push notification or local notification integration exists",
+    ]
+    gaps_text = "\n".join(all_gaps)
+
+    test_coverage = _test_coverage_note()
+
+    md = f"""# Brownfield Development Context — moneyinsight
+
+_Generated by the Deep Reverse Engineering Agent — Stage 8._
+_Copy this file into your context when starting work on a new feature._
+
+---
+
+## Existing features (do not duplicate)
+{feature_lines}
+
+---
+
+## How to add a new feature — pattern to follow
+
+1. Create `lib/features/{{feature}}/` directory
+2. Add a `{{feature}}_screen.dart` extending `ConsumerWidget`
+3. Add a `{{feature}}_providers.dart` with provider declarations
+4. If new data is needed:
+   - Add table class to `lib/core/database/tables.dart`
+   - Create `lib/core/database/daos/{{feature}}_dao.dart` with `@DriftAccessor`
+   - Register the DAO in `lib/core/database/database.dart` (add to `@DriftDatabase(tables:[...], daos:[...])`)
+   - Run `dart run build_runner build --delete-conflicting-outputs`
+5. Add a route/tab in `lib/features/shell/main_shell.dart`
+6. If data should sync to Firestore: add collection handling in `lib/features/sync/sync_service.dart`
+
+---
+
+## Current data model (tables that exist — do not recreate)
+{table_lines}
+
+---
+
+## Provider names already in use (do not clash)
+{provider_names}
+
+---
+
+## Known extension points
+{gaps_text}
+
+---
+
+## Test coverage
+{test_coverage}
+"""
+    _write_text(DOCS_ROOT / "brownfield_context.md", md)
+
+
+# ---------------------------------------------------------------------------
+# Stage 8 entry point
+# ---------------------------------------------------------------------------
+
+
+def stage8() -> None:
+    print("\n=== Stage 8: Agent-Native Context Files ===")
+    stage8_agents_md()
+    stage8_copilot_instructions()
+    stage8_symbol_index()
+    stage8_brownfield_context()
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -1412,6 +1857,7 @@ def main() -> None:
     stage5(inventory, all_sigs)
     stage6(inventory)
     stage7(inventory, all_sigs)
+    stage8()
 
     print("\n=== Done ===")
     print(f"All documentation written to {DOCS_ROOT}")
