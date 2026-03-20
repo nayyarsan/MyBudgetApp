@@ -30,6 +30,7 @@ safe-outputs:
     max: 1
     base-branch: main
     fallback-as-issue: true
+    protected-files: allowed
     allowed-files:
       - "AGENTS.md"
       - ".github/**"
