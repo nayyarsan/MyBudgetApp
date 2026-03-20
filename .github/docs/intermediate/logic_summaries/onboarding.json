@@ -1,0 +1,41 @@
+[
+  {
+    "file": "lib/features/onboarding/onboarding_providers.dart",
+    "summary": "Riverpod state management unit. Exposes reactive data or async results to the UI layer. Typically reads from a DAO or another provider and transforms the data. Providers: onboardingCompleteProvider.",
+    "responsibilities": [
+      "Exposes methods: setOnboardingComplete, saveMonthlyIncome"
+    ],
+    "inputs": [
+      "ref"
+    ],
+    "outputs": [
+      "onboardingCompleteProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:flutter_secure_storage/flutter_secure_storage.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/onboarding/onboarding_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: OnboardingScreen, _OnboardingScreenState, _WelcomePage.",
+    "responsibilities": [
+      "Defines class(es): OnboardingScreen, _OnboardingScreenState, _WelcomePage",
+      "Exposes methods: dispose, build, setState, setState, setState"
+    ],
+    "inputs": [],
+    "outputs": [
+      "void",
+      "void",
+      "void"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "medium",
+    "confidence": "medium"
+  }
+]

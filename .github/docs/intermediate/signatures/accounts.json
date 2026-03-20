@@ -1,0 +1,337 @@
+[
+  {
+    "path": "lib/features/accounts/account_detail_screen.dart",
+    "cluster": "accounts",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../transactions/add_transaction_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../transactions/widgets/transaction_tile.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "account_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "add_account_screen.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "AccountDetailScreen",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [
+      {
+        "name": "txStream",
+        "type": "StreamProvider",
+        "watches": [
+          "accountsProvider",
+          "accountRunningBalancesProvider",
+          "txStream"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "Account",
+        "name": "account"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/accounts/account_providers.dart",
+    "cluster": "accounts",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [],
+    "providers": [
+      {
+        "name": "accountsProvider",
+        "type": "StreamProvider",
+        "watches": [
+          "databaseProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "_allTransactionsStreamProvider",
+        "type": "StreamProvider",
+        "watches": [
+          "accountsProvider",
+          "databaseProvider",
+          "_allTransactionsStreamProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "accountRunningBalancesProvider",
+        "type": "Provider",
+        "watches": [
+          "accountsProvider",
+          "_allTransactionsStreamProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "netWorthProvider",
+        "type": "Provider",
+        "watches": [
+          "accountRunningBalancesProvider"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/accounts/accounts_screen.dart",
+    "cluster": "accounts",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "account_detail_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "account_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "add_account_screen.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "AccountsScreen",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "Expanded",
+        "return_type": ",",
+        "params": [
+          "child: accountsAsync.when(\n              data: (accounts"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_accountIcon",
+        "return_type": "IconData",
+        "params": [
+          "String type"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/accounts/add_account_screen.dart",
+    "cluster": "accounts",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "AddAccountScreen",
+        "extends": "ConsumerStatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerStatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_AddAccountScreenState",
+        "extends": "ConsumerState<AddAccountScreen>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerState",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "initState",
+        "return_type": "void",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "dispose",
+        "return_type": "void",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_save",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_confirmDelete",
+        "return_type": "Future<void>",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "Account?",
+        "name": "initial"
+      }
+    ]
+  }
+]

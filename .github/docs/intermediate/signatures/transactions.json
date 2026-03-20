@@ -1,0 +1,474 @@
+[
+  {
+    "path": "lib/features/transactions/add_transaction_screen.dart",
+    "cluster": "transactions",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/services/month_boundary_service.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../budget/budget_providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "AddTransactionScreen",
+        "extends": "ConsumerStatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerStatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_AddTransactionScreenState",
+        "extends": "ConsumerState<AddTransactionScreen>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerState",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "initState",
+        "return_type": "void",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "dispose",
+        "return_type": "void",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_save",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "Transaction?",
+        "name": "initial"
+      },
+      {
+        "modifier": "final",
+        "type": "int?",
+        "name": "initialAccountId"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/transactions/import_csv_screen.dart",
+    "cluster": "transactions",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "dart:io",
+        "kind": "sdk"
+      },
+      {
+        "uri": "package:file_picker/file_picker.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/csv/csv_parser.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "ImportCsvScreen",
+        "extends": "ConsumerStatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerStatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_ImportCsvScreenState",
+        "extends": "ConsumerState<ImportCsvScreen>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerState",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "_pickFile",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "setState",
+        "return_type": "",
+        "params": [
+          "("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_findHeader",
+        "return_type": "String?",
+        "params": [
+          "List<String> candidates"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_import",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "setState",
+        "return_type": "",
+        "params": [
+          "("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_columnDropdown",
+        "return_type": "Widget",
+        "params": [
+          "String label",
+          "String? value",
+          "ValueChanged<String?> onChanged"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/transactions/transactions_screen.dart",
+    "cluster": "transactions",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../accounts/account_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../budget/budget_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "add_transaction_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "import_csv_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "widgets/transaction_tile.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "TransactionsScreen",
+        "extends": "ConsumerStatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerStatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_TransactionsScreenState",
+        "extends": "ConsumerState<TransactionsScreen>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerState",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_filterChip",
+        "return_type": "Widget",
+        "params": [
+          "String label",
+          "VoidCallback onRemove"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_showFilterSheet",
+        "return_type": "void",
+        "params": [
+          "BuildContext context",
+          "AsyncValue<List<Account>> accountsAsync",
+          "AsyncValue<List<Category>> categoriesAsync"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "Row",
+        "return_type": ",",
+        "params": [
+          "children: [\n                  Expanded(\n                    child: OutlinedButton(\n                      onPressed: ("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "setState",
+        "return_type": "",
+        "params": [
+          "("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "Expanded",
+        "return_type": ",",
+        "params": [
+          "child: FilledButton(\n                      onPressed: ("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "setState",
+        "return_type": "",
+        "params": [
+          "("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_monthName",
+        "return_type": "String",
+        "params": [
+          "int m"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/transactions/widgets/transaction_tile.dart",
+    "cluster": "transactions",
+    "role": [
+      "widget"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "../../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "TransactionTile",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_subtitleText",
+        "return_type": "String",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_dateLabel",
+        "return_type": "String",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "Transaction",
+        "name": "transaction"
+      },
+      {
+        "modifier": "final",
+        "type": "VoidCallback",
+        "name": "onDelete"
+      },
+      {
+        "modifier": "final",
+        "type": "VoidCallback?",
+        "name": "onTap"
+      },
+      {
+        "modifier": "final",
+        "type": "String?",
+        "name": "accountName"
+      },
+      {
+        "modifier": "final",
+        "type": "String?",
+        "name": "toAccountName"
+      }
+    ]
+  }
+]

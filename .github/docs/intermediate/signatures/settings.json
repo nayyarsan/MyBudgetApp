@@ -1,0 +1,120 @@
+[
+  {
+    "path": "lib/features/settings/settings_screen.dart",
+    "cluster": "settings",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "package:intl/intl.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "../../core/services/rollover_provider.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../auth/auth_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../auth/firebase_auth_service.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../sync/sync_service.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "SettingsScreen",
+        "extends": "ConsumerStatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerStatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_SettingsScreenState",
+        "extends": "ConsumerState<SettingsScreen>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerState",
+        "notifier_type": null
+      },
+      {
+        "name": "_SectionHeader",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "_handleSync",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_handleSignIn",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_handleSignOut",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "title"
+      }
+    ]
+  }
+]

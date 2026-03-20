@@ -1,0 +1,237 @@
+{
+  "repo": "moneyinsight",
+  "tier": "XS",
+  "primary_language": "dart",
+  "framework": "flutter",
+  "state_management": "riverpod",
+  "database": {
+    "primary": "drift_sqlite",
+    "sync": "cloud_firestore"
+  },
+  "firebase_role": "auth_and_sync_only",
+  "features": [
+    "accounts",
+    "analytics",
+    "auth",
+    "budget",
+    "goals",
+    "onboarding",
+    "settings",
+    "shell",
+    "sync",
+    "transactions"
+  ],
+  "entry_point": "lib/main.dart",
+  "dart_file_count": 52,
+  "dart_files": [
+    {
+      "path": "lib/core/csv/csv_parser.dart",
+      "lines": 124
+    },
+    {
+      "path": "lib/core/database/daos/accounts_dao.dart",
+      "lines": 35
+    },
+    {
+      "path": "lib/core/database/daos/budget_dao.dart",
+      "lines": 38
+    },
+    {
+      "path": "lib/core/database/daos/budget_snapshots_dao.dart",
+      "lines": 42
+    },
+    {
+      "path": "lib/core/database/daos/categories_dao.dart",
+      "lines": 69
+    },
+    {
+      "path": "lib/core/database/daos/recurring_queue_dao.dart",
+      "lines": 33
+    },
+    {
+      "path": "lib/core/database/daos/transactions_dao.dart",
+      "lines": 85
+    },
+    {
+      "path": "lib/core/database/database.dart",
+      "lines": 66
+    },
+    {
+      "path": "lib/core/database/providers.dart",
+      "lines": 8
+    },
+    {
+      "path": "lib/core/database/tables.dart",
+      "lines": 122
+    },
+    {
+      "path": "lib/core/services/month_boundary_provider.dart",
+      "lines": 10
+    },
+    {
+      "path": "lib/core/services/month_boundary_service.dart",
+      "lines": 150
+    },
+    {
+      "path": "lib/core/services/rollover_provider.dart",
+      "lines": 27
+    },
+    {
+      "path": "lib/core/theme/app_theme.dart",
+      "lines": 30
+    },
+    {
+      "path": "lib/core/utils/currency_formatter.dart",
+      "lines": 23
+    },
+    {
+      "path": "lib/features/accounts/account_detail_screen.dart",
+      "lines": 123
+    },
+    {
+      "path": "lib/features/accounts/account_providers.dart",
+      "lines": 42
+    },
+    {
+      "path": "lib/features/accounts/accounts_screen.dart",
+      "lines": 203
+    },
+    {
+      "path": "lib/features/accounts/add_account_screen.dart",
+      "lines": 210
+    },
+    {
+      "path": "lib/features/analytics/analytics_providers.dart",
+      "lines": 94
+    },
+    {
+      "path": "lib/features/analytics/analytics_screen.dart",
+      "lines": 99
+    },
+    {
+      "path": "lib/features/analytics/budget_history_providers.dart",
+      "lines": 62
+    },
+    {
+      "path": "lib/features/analytics/budget_history_screen.dart",
+      "lines": 272
+    },
+    {
+      "path": "lib/features/analytics/widgets/income_vs_expenses_chart.dart",
+      "lines": 142
+    },
+    {
+      "path": "lib/features/analytics/widgets/spending_by_category_chart.dart",
+      "lines": 119
+    },
+    {
+      "path": "lib/features/auth/auth_providers.dart",
+      "lines": 23
+    },
+    {
+      "path": "lib/features/auth/biometric_lock_screen.dart",
+      "lines": 149
+    },
+    {
+      "path": "lib/features/auth/firebase_auth_service.dart",
+      "lines": 80
+    },
+    {
+      "path": "lib/features/budget/budget_calculator.dart",
+      "lines": 38
+    },
+    {
+      "path": "lib/features/budget/budget_providers.dart",
+      "lines": 84
+    },
+    {
+      "path": "lib/features/budget/budget_screen.dart",
+      "lines": 525
+    },
+    {
+      "path": "lib/features/budget/rebalance_provider.dart",
+      "lines": 117
+    },
+    {
+      "path": "lib/features/budget/recurring_providers.dart",
+      "lines": 10
+    },
+    {
+      "path": "lib/features/budget/widgets/category_row.dart",
+      "lines": 77
+    },
+    {
+      "path": "lib/features/budget/widgets/rebalance_sheet.dart",
+      "lines": 183
+    },
+    {
+      "path": "lib/features/budget/widgets/recurring_due_banner.dart",
+      "lines": 44
+    },
+    {
+      "path": "lib/features/budget/widgets/recurring_review_sheet.dart",
+      "lines": 167
+    },
+    {
+      "path": "lib/features/budget/widgets/tbb_banner.dart",
+      "lines": 55
+    },
+    {
+      "path": "lib/features/goals/add_goal_screen.dart",
+      "lines": 178
+    },
+    {
+      "path": "lib/features/goals/goal_calculator.dart",
+      "lines": 26
+    },
+    {
+      "path": "lib/features/goals/goals_providers.dart",
+      "lines": 65
+    },
+    {
+      "path": "lib/features/goals/goals_screen.dart",
+      "lines": 199
+    },
+    {
+      "path": "lib/features/onboarding/onboarding_providers.dart",
+      "lines": 24
+    },
+    {
+      "path": "lib/features/onboarding/onboarding_screen.dart",
+      "lines": 691
+    },
+    {
+      "path": "lib/features/settings/settings_screen.dart",
+      "lines": 244
+    },
+    {
+      "path": "lib/features/shell/main_shell.dart",
+      "lines": 66
+    },
+    {
+      "path": "lib/features/sync/sync_service.dart",
+      "lines": 117
+    },
+    {
+      "path": "lib/features/transactions/add_transaction_screen.dart",
+      "lines": 420
+    },
+    {
+      "path": "lib/features/transactions/import_csv_screen.dart",
+      "lines": 276
+    },
+    {
+      "path": "lib/features/transactions/transactions_screen.dart",
+      "lines": 413
+    },
+    {
+      "path": "lib/features/transactions/widgets/transaction_tile.dart",
+      "lines": 124
+    },
+    {
+      "path": "lib/main.dart",
+      "lines": 58
+    }
+  ],
+  "run_timestamp": "2026-03-20T17:53:43.231245+00:00"
+}

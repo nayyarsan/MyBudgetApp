@@ -1,0 +1,397 @@
+[
+  {
+    "path": "lib/features/onboarding/onboarding_providers.dart",
+    "cluster": "onboarding",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "package:flutter_secure_storage/flutter_secure_storage.dart",
+        "kind": "third_party"
+      }
+    ],
+    "classes": [],
+    "methods": [
+      {
+        "name": "setOnboardingComplete",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "saveMonthlyIncome",
+        "return_type": "Future<void>",
+        "params": [
+          "int cents"
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [
+      {
+        "name": "onboardingCompleteProvider",
+        "type": "FutureProvider",
+        "watches": [],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/onboarding/onboarding_screen.dart",
+    "cluster": "onboarding",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../shell/main_shell.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "onboarding_providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "OnboardingScreen",
+        "extends": "ConsumerStatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerStatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_OnboardingScreenState",
+        "extends": "ConsumerState<OnboardingScreen>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerState",
+        "notifier_type": null
+      },
+      {
+        "name": "_WelcomePage",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_AccountDraft",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "_AccountsPage",
+        "extends": "StatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_AccountsPageState",
+        "extends": "State<_AccountsPage>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "State",
+        "notifier_type": null
+      },
+      {
+        "name": "_IncomePage",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_CategoriesPage",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_GoalDraft",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "_GoalsPage",
+        "extends": "StatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_GoalsPageState",
+        "extends": "State<_GoalsPage>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "State",
+        "notifier_type": null
+      },
+      {
+        "name": "_DonePage",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "dispose",
+        "return_type": "void",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_nextPage",
+        "return_type": "void",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_prevPage",
+        "return_type": "void",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_finish",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "setState",
+        "return_type": ">",
+        "params": [
+          "("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "setState",
+        "return_type": ">",
+        "params": [
+          "("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "setState",
+        "return_type": ">",
+        "params": [
+          "("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_addAccount",
+        "return_type": "void",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "List<_AccountDraft>",
+        "name": "_accounts"
+      },
+      {
+        "modifier": "final",
+        "type": "Set<String>",
+        "name": "_selectedCategories"
+      },
+      {
+        "modifier": "final",
+        "type": "List<_GoalDraft>",
+        "name": "_goals"
+      },
+      {
+        "modifier": "final",
+        "type": "VoidCallback",
+        "name": "onNext"
+      },
+      {
+        "modifier": "final",
+        "type": "List<_AccountDraft>",
+        "name": "accounts"
+      },
+      {
+        "modifier": "final",
+        "type": "VoidCallback",
+        "name": "onChanged"
+      },
+      {
+        "modifier": "final",
+        "type": "TextEditingController",
+        "name": "controller"
+      },
+      {
+        "modifier": "final",
+        "type": "List<String>",
+        "name": "defaults"
+      },
+      {
+        "modifier": "final",
+        "type": "Set<String>",
+        "name": "selected"
+      },
+      {
+        "modifier": "final",
+        "type": "TextEditingController",
+        "name": "customController"
+      },
+      {
+        "modifier": "final",
+        "type": "VoidCallback",
+        "name": "onChanged"
+      },
+      {
+        "modifier": "final",
+        "type": "List<_GoalDraft>",
+        "name": "goals"
+      },
+      {
+        "modifier": "final",
+        "type": "VoidCallback",
+        "name": "onChanged"
+      },
+      {
+        "modifier": "final",
+        "type": "VoidCallback?",
+        "name": "onFinish"
+      }
+    ]
+  }
+]

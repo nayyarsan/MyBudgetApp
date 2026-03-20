@@ -1,0 +1,16 @@
+[
+  {
+    "file": "lib/core/theme/app_theme.dart",
+    "summary": "Application-level configuration. Provides theme definitions, database instance, or Firebase options. Referenced globally throughout the app. Defines: AppTheme.",
+    "responsibilities": [
+      "Defines class(es): AppTheme"
+    ],
+    "inputs": [],
+    "outputs": [],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

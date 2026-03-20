@@ -1,0 +1,27 @@
+[
+  {
+    "file": "lib/features/sync/sync_service.dart",
+    "summary": "Domain service that encapsulates business logic or integration with an external system. Invoked by providers or other services. Defines: SyncService. Providers: lastSyncProvider, syncServiceProvider.",
+    "responsibilities": [
+      "Defines class(es): SyncService",
+      "Exposes methods: syncToFirestore"
+    ],
+    "inputs": [
+      "ref",
+      "ref"
+    ],
+    "outputs": [
+      "lastSyncProviderProvider",
+      "syncServiceProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:flutter_secure_storage/flutter_secure_storage.dart",
+      "package:firebase_auth/firebase_auth.dart",
+      "package:cloud_firestore/cloud_firestore.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

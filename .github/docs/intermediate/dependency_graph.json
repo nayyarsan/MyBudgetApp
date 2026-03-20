@@ -1,0 +1,184 @@
+{
+  "critical_path_files": [
+    "lib/core/database/database.dart",
+    "lib/core/database/providers.dart",
+    "lib/core/utils/currency_formatter.dart",
+    "lib/features/budget/budget_providers.dart",
+    "lib/core/database/tables.dart",
+    "lib/features/accounts/account_providers.dart",
+    "lib/features/analytics/analytics_providers.dart",
+    "lib/core/services/month_boundary_service.dart"
+  ],
+  "cross_feature_imports": [
+    {
+      "from": "lib/features/accounts/account_detail_screen.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/accounts/account_detail_screen.dart",
+      "to": "lib/features/transactions/add_transaction_screen.dart"
+    },
+    {
+      "from": "lib/features/accounts/account_detail_screen.dart",
+      "to": "lib/features/transactions/widgets/transaction_tile.dart"
+    },
+    {
+      "from": "lib/features/accounts/accounts_screen.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/accounts/add_account_screen.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/analytics/analytics_providers.dart",
+      "to": "lib/features/budget/budget_providers.dart"
+    },
+    {
+      "from": "lib/features/analytics/budget_history_screen.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/analytics/widgets/income_vs_expenses_chart.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/analytics/widgets/spending_by_category_chart.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/budget/budget_screen.dart",
+      "to": "lib/features/goals/goals_screen.dart"
+    },
+    {
+      "from": "lib/features/budget/budget_screen.dart",
+      "to": "lib/core/services/rollover_provider.dart"
+    },
+    {
+      "from": "lib/features/budget/widgets/category_row.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/budget/widgets/recurring_review_sheet.dart",
+      "to": "lib/core/services/month_boundary_service.dart"
+    },
+    {
+      "from": "lib/features/budget/widgets/recurring_review_sheet.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/budget/widgets/tbb_banner.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/core/csv/csv_parser.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/goals/add_goal_screen.dart",
+      "to": "lib/features/budget/budget_providers.dart"
+    },
+    {
+      "from": "lib/features/goals/goals_screen.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/onboarding/onboarding_screen.dart",
+      "to": "lib/features/shell/main_shell.dart"
+    },
+    {
+      "from": "lib/features/settings/settings_screen.dart",
+      "to": "lib/core/services/rollover_provider.dart"
+    },
+    {
+      "from": "lib/features/settings/settings_screen.dart",
+      "to": "lib/features/auth/auth_providers.dart"
+    },
+    {
+      "from": "lib/features/settings/settings_screen.dart",
+      "to": "lib/features/auth/firebase_auth_service.dart"
+    },
+    {
+      "from": "lib/features/settings/settings_screen.dart",
+      "to": "lib/features/sync/sync_service.dart"
+    },
+    {
+      "from": "lib/features/shell/main_shell.dart",
+      "to": "lib/features/budget/budget_screen.dart"
+    },
+    {
+      "from": "lib/features/shell/main_shell.dart",
+      "to": "lib/features/transactions/transactions_screen.dart"
+    },
+    {
+      "from": "lib/features/shell/main_shell.dart",
+      "to": "lib/features/accounts/accounts_screen.dart"
+    },
+    {
+      "from": "lib/features/shell/main_shell.dart",
+      "to": "lib/features/analytics/analytics_screen.dart"
+    },
+    {
+      "from": "lib/features/shell/main_shell.dart",
+      "to": "lib/features/settings/settings_screen.dart"
+    },
+    {
+      "from": "lib/features/transactions/add_transaction_screen.dart",
+      "to": "lib/core/services/month_boundary_service.dart"
+    },
+    {
+      "from": "lib/features/transactions/add_transaction_screen.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    },
+    {
+      "from": "lib/features/transactions/add_transaction_screen.dart",
+      "to": "lib/features/budget/budget_providers.dart"
+    },
+    {
+      "from": "lib/features/transactions/import_csv_screen.dart",
+      "to": "lib/core/csv/csv_parser.dart"
+    },
+    {
+      "from": "lib/features/transactions/transactions_screen.dart",
+      "to": "lib/features/accounts/account_providers.dart"
+    },
+    {
+      "from": "lib/features/transactions/transactions_screen.dart",
+      "to": "lib/features/budget/budget_providers.dart"
+    },
+    {
+      "from": "lib/features/transactions/widgets/transaction_tile.dart",
+      "to": "lib/core/utils/currency_formatter.dart"
+    }
+  ],
+  "provider_chains": [
+    {
+      "screen": "lib/features/accounts/account_detail_screen.dart",
+      "watches": [
+        "accountsProvider",
+        "accountRunningBalancesProvider",
+        "txStream"
+      ]
+    }
+  ],
+  "sync_boundary": {
+    "file": "lib/features/sync/sync_service.dart",
+    "synced_collections": [
+      "accounts",
+      "categoryGroups",
+      "categories",
+      "transactions"
+    ],
+    "synced_tables": [
+      "accounts",
+      "category_groups",
+      "categories",
+      "monthly_budgets",
+      "transactions"
+    ],
+    "synced_providers": [
+      "syncServiceProvider",
+      "lastSyncProvider"
+    ]
+  }
+}

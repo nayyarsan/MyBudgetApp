@@ -1,0 +1,121 @@
+[
+  {
+    "file": "lib/features/analytics/analytics_providers.dart",
+    "summary": "Riverpod state management unit. Exposes reactive data or async results to the UI layer. Typically reads from a DAO or another provider and transforms the data. Defines: CategorySpending, MonthlyTotal. Providers: spendingByCategoryProvider, monthlyTotalsProvider.",
+    "responsibilities": [
+      "Defines class(es): CategorySpending, MonthlyTotal"
+    ],
+    "inputs": [
+      "ref",
+      "ref"
+    ],
+    "outputs": [
+      "spendingByCategoryProviderProvider",
+      "monthlyTotalsProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/analytics/analytics_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: AnalyticsScreen, _SpendingTab, _IncomeVsExpensesTab.",
+    "responsibilities": [
+      "Defines class(es): AnalyticsScreen, _SpendingTab, _IncomeVsExpensesTab",
+      "Exposes methods: build, build, build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget",
+      "Widget",
+      "Widget"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/analytics/budget_history_providers.dart",
+    "summary": "Riverpod state management unit. Exposes reactive data or async results to the UI layer. Typically reads from a DAO or another provider and transforms the data. Defines: CategoryMonthHistory, MonthBudgetHistory. Providers: budgetHistoryProvider.",
+    "responsibilities": [
+      "Defines class(es): CategoryMonthHistory, MonthBudgetHistory"
+    ],
+    "inputs": [
+      "ref"
+    ],
+    "outputs": [
+      "budgetHistoryProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/analytics/budget_history_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: BudgetHistoryScreen, _BudgetTrendChart, _MonthTile.",
+    "responsibilities": [
+      "Defines class(es): BudgetHistoryScreen, _BudgetTrendChart, _MonthTile",
+      "Exposes methods: build, build, build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget",
+      "Widget",
+      "Widget"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:fl_chart/fl_chart.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/analytics/widgets/income_vs_expenses_chart.dart",
+    "summary": "Reusable UI component. Accepts typed parameters and renders a portion of a screen. May watch providers directly or receive data from a parent screen. Defines: IncomeVsExpensesChart, _Legend.",
+    "responsibilities": [
+      "Defines class(es): IncomeVsExpensesChart, _Legend",
+      "Exposes methods: build, Column, build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget",
+      "return",
+      "Widget"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:fl_chart/fl_chart.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/analytics/widgets/spending_by_category_chart.dart",
+    "summary": "Reusable UI component. Accepts typed parameters and renders a portion of a screen. May watch providers directly or receive data from a parent screen. Defines: SpendingByCategoryChart, _SpendingByCategoryChartState.",
+    "responsibilities": [
+      "Defines class(es): SpendingByCategoryChart, _SpendingByCategoryChartState",
+      "Exposes methods: build, Column, setState"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget",
+      "return"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:fl_chart/fl_chart.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]
