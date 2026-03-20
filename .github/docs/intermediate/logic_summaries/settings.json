@@ -1,0 +1,23 @@
+[
+  {
+    "file": "lib/features/settings/settings_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: SettingsScreen, _SettingsScreenState, _SectionHeader.",
+    "responsibilities": [
+      "Defines class(es): SettingsScreen, _SettingsScreenState, _SectionHeader",
+      "Exposes methods: build, build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Future<void>",
+      "Future<void>",
+      "Future<void>"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:intl/intl.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

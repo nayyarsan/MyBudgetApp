@@ -1,0 +1,19 @@
+[
+  {
+    "file": "lib/features/shell/main_shell.dart",
+    "summary": "Navigation scaffold. Defines the top-level navigation structure (bottom nav, tab bar) and controls which feature screen is shown based on the selected destination. Defines: MainShell, _MainShellState.",
+    "responsibilities": [
+      "Defines class(es): MainShell, _MainShellState",
+      "Exposes methods: build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

@@ -1,0 +1,188 @@
+[
+  {
+    "file": "lib/features/budget/budget_calculator.dart",
+    "summary": "Pure computation class. Takes data as input parameters and returns computed values. Contains no side effects, database access, or UI concerns. Defines: BudgetCalculator.",
+    "responsibilities": [
+      "Defines class(es): BudgetCalculator",
+      "Exposes methods: available, toBeBudgeted, ageOfMoney"
+    ],
+    "inputs": [],
+    "outputs": [
+      "static int",
+      "static int",
+      "static int"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/budget/budget_providers.dart",
+    "summary": "Riverpod state management unit. Exposes reactive data or async results to the UI layer. Typically reads from a DAO or another provider and transforms the data. Providers: categoryGroupsProvider, allCategoriesProvider, monthlyBudgetsProvider.",
+    "responsibilities": [
+      "Provides functionality for the budget_providers.dart module"
+    ],
+    "inputs": [
+      "ref",
+      "ref",
+      "ref"
+    ],
+    "outputs": [
+      "categoryGroupsProviderProvider",
+      "allCategoriesProviderProvider",
+      "monthlyBudgetsProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/budget/budget_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: BudgetScreen, _GroupTile.",
+    "responsibilities": [
+      "Defines class(es): BudgetScreen, _GroupTile",
+      "Exposes methods: build, Consumer, Expanded, FilledButton, build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget",
+      "[",
+      ","
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "medium",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/budget/rebalance_provider.dart",
+    "summary": "Riverpod state management unit. Exposes reactive data or async results to the UI layer. Typically reads from a DAO or another provider and transforms the data. Defines: CategoryBudgetData, RebalanceSuggestion. Providers: rebalanceSuggestionsProvider.",
+    "responsibilities": [
+      "Defines class(es): CategoryBudgetData, RebalanceSuggestion",
+      "Exposes methods: computeRebalanceSuggestions"
+    ],
+    "inputs": [
+      "ref"
+    ],
+    "outputs": [
+      "rebalanceSuggestionsProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/budget/recurring_providers.dart",
+    "summary": "Riverpod state management unit. Exposes reactive data or async results to the UI layer. Typically reads from a DAO or another provider and transforms the data. Providers: pendingRecurringProvider.",
+    "responsibilities": [
+      "Provides functionality for the recurring_providers.dart module"
+    ],
+    "inputs": [
+      "ref"
+    ],
+    "outputs": [
+      "pendingRecurringProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/budget/widgets/category_row.dart",
+    "summary": "Reusable UI component. Accepts typed parameters and renders a portion of a screen. May watch providers directly or receive data from a parent screen. Defines: CategoryRow.",
+    "responsibilities": [
+      "Defines class(es): CategoryRow",
+      "Exposes methods: build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/budget/widgets/rebalance_sheet.dart",
+    "summary": "Reusable UI component. Accepts typed parameters and renders a portion of a screen. May watch providers directly or receive data from a parent screen. Defines: RebalanceSheet, _RebalanceSheetState.",
+    "responsibilities": [
+      "Defines class(es): RebalanceSheet, _RebalanceSheetState",
+      "Exposes methods: build, Expanded"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget",
+      ",",
+      "Future<void>"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/budget/widgets/recurring_due_banner.dart",
+    "summary": "Reusable UI component. Accepts typed parameters and renders a portion of a screen. May watch providers directly or receive data from a parent screen. Defines: RecurringDueBanner.",
+    "responsibilities": [
+      "Defines class(es): RecurringDueBanner",
+      "Exposes methods: build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/budget/widgets/recurring_review_sheet.dart",
+    "summary": "Reusable UI component. Accepts typed parameters and renders a portion of a screen. May watch providers directly or receive data from a parent screen. Defines: RecurringReviewSheet.",
+    "responsibilities": [
+      "Defines class(es): RecurringReviewSheet",
+      "Exposes methods: build, Expanded"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Future<void>",
+      "Future<void>",
+      "Widget"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/budget/widgets/tbb_banner.dart",
+    "summary": "Reusable UI component. Accepts typed parameters and renders a portion of a screen. May watch providers directly or receive data from a parent screen. Defines: ToBeBudgetedBanner.",
+    "responsibilities": [
+      "Defines class(es): ToBeBudgetedBanner",
+      "Exposes methods: build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

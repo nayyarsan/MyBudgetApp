@@ -1,0 +1,68 @@
+[
+  {
+    "path": "lib/features/shell/main_shell.dart",
+    "cluster": "shell",
+    "role": [
+      "router"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "../budget/budget_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../transactions/transactions_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../accounts/accounts_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../analytics/analytics_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../settings/settings_screen.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "MainShell",
+        "extends": "StatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_MainShellState",
+        "extends": "State<MainShell>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "State",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  }
+]

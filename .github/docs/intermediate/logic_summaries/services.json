@@ -1,0 +1,63 @@
+[
+  {
+    "file": "lib/core/services/month_boundary_provider.dart",
+    "summary": "Riverpod state management unit. Exposes reactive data or async results to the UI layer. Typically reads from a DAO or another provider and transforms the data. Providers: monthBoundaryServiceProvider.",
+    "responsibilities": [
+      "Provides functionality for the month_boundary_provider.dart module"
+    ],
+    "inputs": [
+      "ref"
+    ],
+    "outputs": [
+      "monthBoundaryServiceProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:flutter_secure_storage/flutter_secure_storage.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/services/month_boundary_service.dart",
+    "summary": "Domain service that encapsulates business logic or integration with an external system. Invoked by providers or other services. Defines: MonthBoundaryService.",
+    "responsibilities": [
+      "Defines class(es): MonthBoundaryService",
+      "Exposes methods: computeRolloverCents, computeNextDueDate, run"
+    ],
+    "inputs": [],
+    "outputs": [
+      "static int",
+      "static DateTime",
+      "Future<void>"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:flutter_secure_storage/flutter_secure_storage.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/services/rollover_provider.dart",
+    "summary": "Riverpod state management unit. Exposes reactive data or async results to the UI layer. Typically reads from a DAO or another provider and transforms the data. Defines: GlobalRolloverNotifier.",
+    "responsibilities": [
+      "Defines class(es): GlobalRolloverNotifier",
+      "Exposes methods: build, setEnabled"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Future<bool>",
+      "Future<void>"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:flutter_secure_storage/flutter_secure_storage.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

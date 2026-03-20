@@ -1,0 +1,81 @@
+[
+  {
+    "file": "lib/features/accounts/account_detail_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: AccountDetailScreen. Providers: txStream.",
+    "responsibilities": [
+      "Defines class(es): AccountDetailScreen",
+      "Exposes methods: build"
+    ],
+    "inputs": [
+      "ref"
+    ],
+    "outputs": [
+      "txStreamProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/accounts/account_providers.dart",
+    "summary": "Riverpod state management unit. Exposes reactive data or async results to the UI layer. Typically reads from a DAO or another provider and transforms the data. Providers: accountsProvider, _allTransactionsStreamProvider, accountRunningBalancesProvider.",
+    "responsibilities": [
+      "Provides functionality for the account_providers.dart module"
+    ],
+    "inputs": [
+      "ref",
+      "ref",
+      "ref"
+    ],
+    "outputs": [
+      "accountsProviderProvider",
+      "_allTransactionsStreamProviderProvider",
+      "accountRunningBalancesProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/accounts/accounts_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: AccountsScreen.",
+    "responsibilities": [
+      "Defines class(es): AccountsScreen",
+      "Exposes methods: build, Expanded"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget",
+      ",",
+      "IconData"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/accounts/add_account_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: AddAccountScreen, _AddAccountScreenState.",
+    "responsibilities": [
+      "Defines class(es): AddAccountScreen, _AddAccountScreenState",
+      "Exposes methods: initState, dispose, build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "void",
+      "void",
+      "Future<void>"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

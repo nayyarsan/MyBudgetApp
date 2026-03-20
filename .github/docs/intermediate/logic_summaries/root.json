@@ -1,0 +1,18 @@
+[
+  {
+    "summary": "Application entry point. Initialises Firebase, wraps the widget tree in ProviderScope (Riverpod), and delegates startup routing to _AppStartup which checks onboarding completion and triggers month-boundary logic.",
+    "responsibilities": [
+      "Bootstrap Firebase",
+      "Wrap app in ProviderScope",
+      "Route to onboarding or main shell",
+      "Trigger month boundary checks"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget tree"
+    ],
+    "complexity_flag": "low",
+    "confidence": "high",
+    "file": "lib/main.dart"
+  }
+]

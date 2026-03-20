@@ -1,0 +1,149 @@
+[
+  {
+    "path": "lib/core/csv/csv_parser.dart",
+    "cluster": "csv",
+    "role": [
+      "parser"
+    ],
+    "imports": [
+      {
+        "uri": "package:csv/csv.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "../utils/currency_formatter.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "ParsedTransaction",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "ValidationResult",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "CsvParser",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "parse",
+        "return_type": "static List<Map<String, String>>",
+        "params": [
+          "String csvContent"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "detectHeaders",
+        "return_type": "static List<String>",
+        "params": [
+          "String csvContent"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "toTransactionData",
+        "return_type": "static ParsedTransaction",
+        "params": [
+          "required Map<String",
+          "String> row",
+          "required String dateColumn",
+          "required String amountColumn",
+          "required String payeeColumn",
+          "String? memoColumn"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "validate",
+        "return_type": "static ValidationResult",
+        "params": [
+          "Map<String",
+          "String> row",
+          "required String dateColumn",
+          "required String amountColumn"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_parseDate",
+        "return_type": "static DateTime?",
+        "params": [
+          "String s"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_tryUsFormat",
+        "return_type": "static DateTime?",
+        "params": [
+          "String s"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "payee"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "amountCents"
+      },
+      {
+        "modifier": "final",
+        "type": "DateTime",
+        "name": "date"
+      },
+      {
+        "modifier": "final",
+        "type": "String?",
+        "name": "memo"
+      },
+      {
+        "modifier": "final",
+        "type": "bool",
+        "name": "isValid"
+      },
+      {
+        "modifier": "final",
+        "type": "String?",
+        "name": "error"
+      }
+    ]
+  }
+]

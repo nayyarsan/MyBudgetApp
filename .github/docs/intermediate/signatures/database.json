@@ -1,0 +1,443 @@
+[
+  {
+    "path": "lib/core/database/daos/accounts_dao.dart",
+    "cluster": "database",
+    "role": [
+      "dao"
+    ],
+    "imports": [
+      {
+        "uri": "package:drift/drift.dart",
+        "kind": "drift"
+      },
+      {
+        "uri": "../database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../tables.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [],
+    "providers": [],
+    "drift_dao": {
+      "tables": [
+        "Accounts"
+      ]
+    },
+    "fields": []
+  },
+  {
+    "path": "lib/core/database/daos/budget_dao.dart",
+    "cluster": "database",
+    "role": [
+      "dao"
+    ],
+    "imports": [
+      {
+        "uri": "package:drift/drift.dart",
+        "kind": "drift"
+      },
+      {
+        "uri": "../database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../tables.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [],
+    "providers": [],
+    "drift_dao": {
+      "tables": [
+        "MonthlyBudgets"
+      ]
+    },
+    "fields": []
+  },
+  {
+    "path": "lib/core/database/daos/budget_snapshots_dao.dart",
+    "cluster": "database",
+    "role": [
+      "dao"
+    ],
+    "imports": [
+      {
+        "uri": "package:drift/drift.dart",
+        "kind": "drift"
+      },
+      {
+        "uri": "../database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../tables.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [
+      {
+        "name": "getSnapshotMonths",
+        "return_type": "Future<List<String>>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "hasSnapshot",
+        "return_type": "Future<bool>",
+        "params": [
+          "int categoryId",
+          "String month"
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": {
+      "tables": [
+        "BudgetSnapshots"
+      ]
+    },
+    "fields": []
+  },
+  {
+    "path": "lib/core/database/daos/categories_dao.dart",
+    "cluster": "database",
+    "role": [
+      "dao"
+    ],
+    "imports": [
+      {
+        "uri": "package:drift/drift.dart",
+        "kind": "drift"
+      },
+      {
+        "uri": "../database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../tables.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [
+      {
+        "name": "softDeleteGroup",
+        "return_type": "Future<void>",
+        "params": [
+          "int id"
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": {
+      "tables": [
+        "CategoryGroups",
+        "Categories"
+      ]
+    },
+    "fields": []
+  },
+  {
+    "path": "lib/core/database/daos/recurring_queue_dao.dart",
+    "cluster": "database",
+    "role": [
+      "dao"
+    ],
+    "imports": [
+      {
+        "uri": "package:drift/drift.dart",
+        "kind": "drift"
+      },
+      {
+        "uri": "../database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../tables.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [
+      {
+        "name": "isEnqueued",
+        "return_type": "Future<bool>",
+        "params": [
+          "int sourceTransactionId"
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": {
+      "tables": [
+        "PendingRecurringQueue",
+        "Transactions"
+      ]
+    },
+    "fields": []
+  },
+  {
+    "path": "lib/core/database/daos/transactions_dao.dart",
+    "cluster": "database",
+    "role": [
+      "dao"
+    ],
+    "imports": [
+      {
+        "uri": "package:drift/drift.dart",
+        "kind": "drift"
+      },
+      {
+        "uri": "../database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../tables.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [
+      {
+        "name": "watchTransactionsForMonth",
+        "return_type": "Stream<List<Transaction>>",
+        "params": [
+          "int year",
+          "int month"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": {
+      "tables": [
+        "Transactions"
+      ]
+    },
+    "fields": []
+  },
+  {
+    "path": "lib/core/database/database.dart",
+    "cluster": "database",
+    "role": [
+      "config"
+    ],
+    "imports": [
+      {
+        "uri": "dart:io",
+        "kind": "sdk"
+      },
+      {
+        "uri": "package:drift/drift.dart",
+        "kind": "drift"
+      },
+      {
+        "uri": "package:drift/native.dart",
+        "kind": "drift"
+      },
+      {
+        "uri": "package:path_provider/path_provider.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "package:path/path.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "tables.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "daos/accounts_dao.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "daos/categories_dao.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "daos/transactions_dao.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "daos/budget_dao.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "daos/budget_snapshots_dao.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "daos/recurring_queue_dao.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [
+      {
+        "name": "MigrationStrategy",
+        "return_type": ">",
+        "params": [
+          "onUpgrade: (m",
+          "from",
+          "to"
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_openConnection",
+        "return_type": "LazyDatabase",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "LazyDatabase",
+        "return_type": "return",
+        "params": [
+          "("
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/core/database/providers.dart",
+    "cluster": "database",
+    "role": [
+      "other"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "database.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [],
+    "providers": [
+      {
+        "name": "databaseProvider",
+        "type": "Provider",
+        "watches": [],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/core/database/tables.dart",
+    "cluster": "database",
+    "role": [
+      "model"
+    ],
+    "imports": [
+      {
+        "uri": "package:drift/drift.dart",
+        "kind": "drift"
+      }
+    ],
+    "classes": [
+      {
+        "name": "Accounts",
+        "extends": "Table",
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "CategoryGroups",
+        "extends": "Table",
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "Categories",
+        "extends": "Table",
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "MonthlyBudgets",
+        "extends": "Table",
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "Transactions",
+        "extends": "Table",
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "NetWorthSnapshots",
+        "extends": "Table",
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "BudgetSnapshots",
+        "extends": "Table",
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "PendingRecurringQueue",
+        "extends": "Table",
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  }
+]

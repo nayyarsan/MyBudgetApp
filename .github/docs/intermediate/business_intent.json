@@ -1,0 +1,254 @@
+[
+  {
+    "feature": "accounts",
+    "feature_name": "Account Management",
+    "description": "Allows users to create and manage their financial accounts (checking, savings, credit cards, cash). Users can add accounts with opening balances, view account details and transaction history, and soft-delete accounts they no longer need.",
+    "user_roles": [
+      "app user"
+    ],
+    "user_actions": [
+      "Add a new account with name, type, and opening balance",
+      "View account details and running balance",
+      "View transactions for a specific account",
+      "Edit or delete an account"
+    ],
+    "tables_read": [
+      "accounts",
+      "transactions"
+    ],
+    "tables_written": [
+      "accounts"
+    ],
+    "depends_on_features": [],
+    "confidence": "high",
+    "gaps": []
+  },
+  {
+    "feature": "analytics",
+    "feature_name": "Analytics & Budget History",
+    "description": "Provides charts and historical views of spending by category and income vs expenses over time. Also shows monthly budget snapshots so users can track their budgeting performance across months.",
+    "user_roles": [
+      "app user"
+    ],
+    "user_actions": [
+      "View spending breakdown by category (pie/bar chart)",
+      "View income vs expense chart",
+      "Browse historical monthly budget snapshots"
+    ],
+    "tables_read": [
+      "transactions",
+      "categories",
+      "budget_snapshots",
+      "monthly_budgets"
+    ],
+    "tables_written": [],
+    "depends_on_features": [
+      "budget",
+      "transactions"
+    ],
+    "confidence": "high",
+    "gaps": []
+  },
+  {
+    "feature": "auth",
+    "feature_name": "Authentication & Biometric Lock",
+    "description": "Handles user identity via Firebase Auth (email/Google sign-in) and provides a local biometric lock screen that gates access to the app on app launch or resume. Auth state is exposed as a Riverpod provider.",
+    "user_roles": [
+      "app user"
+    ],
+    "user_actions": [
+      "Sign in with Google or email",
+      "Sign out",
+      "Unlock app with biometrics (fingerprint / face ID)"
+    ],
+    "tables_read": [],
+    "tables_written": [],
+    "depends_on_features": [],
+    "confidence": "high",
+    "gaps": []
+  },
+  {
+    "feature": "budget",
+    "feature_name": "Budget Management",
+    "description": "Allows users to allocate available funds across spending categories for a given month using an envelope-budgeting (YNAB-style) approach. Users assign amounts to categories, see their To Be Budgeted balance update in real time, rebalance overspent categories, and review recurring transactions due this month.",
+    "user_roles": [
+      "app user"
+    ],
+    "user_actions": [
+      "Assign funds to a spending category",
+      "Rebalance overspent categories",
+      "Review and approve recurring transactions",
+      "View remaining To Be Budgeted amount",
+      "Navigate between months"
+    ],
+    "tables_read": [
+      "monthly_budgets",
+      "categories",
+      "transactions",
+      "accounts"
+    ],
+    "tables_written": [
+      "monthly_budgets",
+      "budget_snapshots"
+    ],
+    "depends_on_features": [
+      "accounts",
+      "transactions"
+    ],
+    "confidence": "high",
+    "gaps": []
+  },
+  {
+    "feature": "goals",
+    "feature_name": "Financial Goals",
+    "description": "Lets users set savings goals on categories (target amount + target date). A calculator computes progress and estimated monthly contribution required to reach each goal.",
+    "user_roles": [
+      "app user"
+    ],
+    "user_actions": [
+      "Create a savings goal on a category",
+      "View goal progress and projected completion date",
+      "Edit or remove a goal"
+    ],
+    "tables_read": [
+      "categories",
+      "monthly_budgets"
+    ],
+    "tables_written": [
+      "categories"
+    ],
+    "depends_on_features": [
+      "budget"
+    ],
+    "confidence": "high",
+    "gaps": []
+  },
+  {
+    "feature": "onboarding",
+    "feature_name": "Onboarding",
+    "description": "First-run flow that walks new users through setting up their first account and initial budget categories so the app is ready to use. Completion state is persisted and controls whether the app shows the main shell or the onboarding screen.",
+    "user_roles": [
+      "new user"
+    ],
+    "user_actions": [
+      "Complete first-time setup wizard",
+      "Add first account",
+      "Accept default budget categories"
+    ],
+    "tables_read": [],
+    "tables_written": [
+      "accounts",
+      "categories"
+    ],
+    "depends_on_features": [
+      "accounts"
+    ],
+    "confidence": "medium",
+    "gaps": [
+      "Exact onboarding steps depend on screen implementation detail"
+    ]
+  },
+  {
+    "feature": "settings",
+    "feature_name": "Settings",
+    "description": "App settings screen. Allows users to configure preferences such as currency display, theme, and manage their account (sign out, delete data).",
+    "user_roles": [
+      "app user"
+    ],
+    "user_actions": [
+      "Change currency or number format",
+      "Toggle dark/light theme",
+      "Sign out",
+      "Trigger manual data sync"
+    ],
+    "tables_read": [],
+    "tables_written": [],
+    "depends_on_features": [
+      "auth",
+      "sync"
+    ],
+    "confidence": "medium",
+    "gaps": [
+      "Settings screen detail depends on runtime implementation"
+    ]
+  },
+  {
+    "feature": "shell",
+    "feature_name": "Navigation Shell",
+    "description": "The main navigation scaffold housing the bottom navigation bar. Routes between Accounts, Budget, Transactions, Analytics, and Goals features.",
+    "user_roles": [
+      "app user"
+    ],
+    "user_actions": [
+      "Switch between main app sections via bottom navigation"
+    ],
+    "tables_read": [],
+    "tables_written": [],
+    "depends_on_features": [
+      "accounts",
+      "budget",
+      "transactions",
+      "analytics",
+      "goals"
+    ],
+    "confidence": "high",
+    "gaps": []
+  },
+  {
+    "feature": "sync",
+    "feature_name": "Cloud Sync",
+    "description": "Bridges local Drift/SQLite data to Firestore for cloud backup. On sync trigger, reads all accounts, category groups, categories, monthly budgets, and transactions from the local DB and batch-writes them to a per-user Firestore document tree. One-directional (local → cloud).",
+    "user_roles": [
+      "app user"
+    ],
+    "user_actions": [
+      "Trigger manual sync from settings",
+      "View last sync timestamp"
+    ],
+    "tables_read": [
+      "accounts",
+      "category_groups",
+      "categories",
+      "monthly_budgets",
+      "transactions"
+    ],
+    "tables_written": [],
+    "depends_on_features": [
+      "accounts",
+      "budget",
+      "transactions"
+    ],
+    "confidence": "high",
+    "gaps": []
+  },
+  {
+    "feature": "transactions",
+    "feature_name": "Transaction Management",
+    "description": "Core feature for recording and reviewing financial transactions. Users can add income, expense, and transfer transactions, categorise them, mark them as cleared, and import bulk transactions from CSV files. Transaction list is filterable by account and month.",
+    "user_roles": [
+      "app user"
+    ],
+    "user_actions": [
+      "Add a new income, expense, or transfer transaction",
+      "Assign a category to a transaction",
+      "Mark a transaction as cleared",
+      "Import transactions from a CSV file",
+      "View transaction list filtered by account or month",
+      "Edit or delete an existing transaction"
+    ],
+    "tables_read": [
+      "transactions",
+      "accounts",
+      "categories"
+    ],
+    "tables_written": [
+      "transactions",
+      "accounts"
+    ],
+    "depends_on_features": [
+      "accounts"
+    ],
+    "confidence": "high",
+    "gaps": []
+  }
+]

@@ -1,0 +1,160 @@
+[
+  {
+    "file": "lib/core/database/daos/accounts_dao.dart",
+    "summary": "Drift Data Access Object. Provides typed query methods (SELECT, INSERT, UPDATE, DELETE) against one or more Drift tables. Methods return Stream (reactive) or Future (one-shot).",
+    "responsibilities": [
+      "Provides functionality for the accounts_dao.dart module"
+    ],
+    "inputs": [],
+    "outputs": [],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/database/daos/budget_dao.dart",
+    "summary": "Drift Data Access Object. Provides typed query methods (SELECT, INSERT, UPDATE, DELETE) against one or more Drift tables. Methods return Stream (reactive) or Future (one-shot).",
+    "responsibilities": [
+      "Provides functionality for the budget_dao.dart module"
+    ],
+    "inputs": [],
+    "outputs": [],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/database/daos/budget_snapshots_dao.dart",
+    "summary": "Drift Data Access Object. Provides typed query methods (SELECT, INSERT, UPDATE, DELETE) against one or more Drift tables. Methods return Stream (reactive) or Future (one-shot).",
+    "responsibilities": [
+      "Exposes methods: getSnapshotMonths, hasSnapshot"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Future<List<String>>",
+      "Future<bool>"
+    ],
+    "database_operations": [
+      "getSnapshotMonths",
+      "hasSnapshot"
+    ],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/database/daos/categories_dao.dart",
+    "summary": "Drift Data Access Object. Provides typed query methods (SELECT, INSERT, UPDATE, DELETE) against one or more Drift tables. Methods return Stream (reactive) or Future (one-shot).",
+    "responsibilities": [
+      "Exposes methods: softDeleteGroup"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Future<void>"
+    ],
+    "database_operations": [
+      "softDeleteGroup"
+    ],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/database/daos/recurring_queue_dao.dart",
+    "summary": "Drift Data Access Object. Provides typed query methods (SELECT, INSERT, UPDATE, DELETE) against one or more Drift tables. Methods return Stream (reactive) or Future (one-shot).",
+    "responsibilities": [
+      "Exposes methods: isEnqueued"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Future<bool>"
+    ],
+    "database_operations": [
+      "isEnqueued"
+    ],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/database/daos/transactions_dao.dart",
+    "summary": "Drift Data Access Object. Provides typed query methods (SELECT, INSERT, UPDATE, DELETE) against one or more Drift tables. Methods return Stream (reactive) or Future (one-shot).",
+    "responsibilities": [
+      "Exposes methods: watchTransactionsForMonth",
+      "Reactive streams: watchTransactionsForMonth"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Stream<List<Transaction>>"
+    ],
+    "database_operations": [
+      "watchTransactionsForMonth"
+    ],
+    "reactive_streams": [
+      "watchTransactionsForMonth"
+    ],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/database/database.dart",
+    "summary": "Application-level configuration. Provides theme definitions, database instance, or Firebase options. Referenced globally throughout the app.",
+    "responsibilities": [
+      "Exposes methods: MigrationStrategy, LazyDatabase"
+    ],
+    "inputs": [],
+    "outputs": [
+      ">",
+      "LazyDatabase",
+      "return"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:path/path.dart",
+      "package:path_provider/path_provider.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/database/providers.dart",
+    "summary": "Source file in the moneyinsight application. Providers: databaseProvider.",
+    "responsibilities": [
+      "Provides functionality for the providers.dart module"
+    ],
+    "inputs": [
+      "ref"
+    ],
+    "outputs": [
+      "databaseProviderProvider"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/core/database/tables.dart",
+    "summary": "Data model or Drift table definition. Describes the shape of a data entity including column types, constraints, foreign keys, and indexes. Defines: Accounts, CategoryGroups, Categories.",
+    "responsibilities": [
+      "Defines class(es): Accounts, CategoryGroups, Categories"
+    ],
+    "inputs": [],
+    "outputs": [],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

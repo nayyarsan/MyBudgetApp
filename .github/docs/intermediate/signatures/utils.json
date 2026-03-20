@@ -1,0 +1,40 @@
+[
+  {
+    "path": "lib/core/utils/currency_formatter.dart",
+    "cluster": "utils",
+    "role": [
+      "util"
+    ],
+    "imports": [
+      {
+        "uri": "package:intl/intl.dart",
+        "kind": "third_party"
+      }
+    ],
+    "classes": [
+      {
+        "name": "CurrencyFormatter",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "format",
+        "return_type": "static String",
+        "params": [
+          "int cents"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  }
+]

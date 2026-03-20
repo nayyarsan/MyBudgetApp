@@ -1,0 +1,79 @@
+[
+  {
+    "file": "lib/features/transactions/add_transaction_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: AddTransactionScreen, _AddTransactionScreenState.",
+    "responsibilities": [
+      "Defines class(es): AddTransactionScreen, _AddTransactionScreenState",
+      "Exposes methods: initState, dispose, build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "void",
+      "void",
+      "Future<void>"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/transactions/import_csv_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: ImportCsvScreen, _ImportCsvScreenState.",
+    "responsibilities": [
+      "Defines class(es): ImportCsvScreen, _ImportCsvScreenState",
+      "Exposes methods: setState, setState, build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Future<void>",
+      "String?"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:file_picker/file_picker.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/transactions/transactions_screen.dart",
+    "summary": "Displays UI to the user. Watches one or more Riverpod providers to read reactive data, dispatches user actions back to providers, and composes reusable widgets. Defines: TransactionsScreen, _TransactionsScreenState.",
+    "responsibilities": [
+      "Defines class(es): TransactionsScreen, _TransactionsScreenState",
+      "Exposes methods: build, Row, setState, Expanded, setState"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget",
+      "Widget",
+      "void"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "medium",
+    "confidence": "medium"
+  },
+  {
+    "file": "lib/features/transactions/widgets/transaction_tile.dart",
+    "summary": "Reusable UI component. Accepts typed parameters and renders a portion of a screen. May watch providers directly or receive data from a parent screen. Defines: TransactionTile.",
+    "responsibilities": [
+      "Defines class(es): TransactionTile",
+      "Exposes methods: build"
+    ],
+    "inputs": [],
+    "outputs": [
+      "Widget",
+      "String",
+      "String"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

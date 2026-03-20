@@ -1,0 +1,331 @@
+[
+  {
+    "path": "lib/features/goals/add_goal_screen.dart",
+    "cluster": "goals",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../budget/budget_providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "AddGoalScreen",
+        "extends": "ConsumerStatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerStatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_AddGoalScreenState",
+        "extends": "ConsumerState<AddGoalScreen>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerState",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "dispose",
+        "return_type": "void",
+        "params": [],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_pickDate",
+        "return_type": "Future<void>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_save",
+        "return_type": "Future<void>",
+        "params": [
+          "List<Category> categories"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_buildForm",
+        "return_type": "Widget",
+        "params": [
+          "List<Category> categories"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/goals/goal_calculator.dart",
+    "cluster": "goals",
+    "role": [
+      "calculator"
+    ],
+    "imports": [],
+    "classes": [
+      {
+        "name": "GoalCalculator",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "progressPercent",
+        "return_type": "static double",
+        "params": [
+          "required int currentCents",
+          "required int goalCents"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "projectedDate",
+        "return_type": "static DateTime",
+        "params": [
+          "required int currentCents",
+          "required int goalCents",
+          "required int monthlyContributionCents"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/goals/goals_providers.dart",
+    "cluster": "goals",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "goal_calculator.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "GoalProgress",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [],
+    "providers": [
+      {
+        "name": "goalsProvider",
+        "type": "StreamProvider",
+        "watches": [
+          "databaseProvider"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "Category",
+        "name": "category"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "totalAssignedCents"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "lastMonthAssignedCents"
+      },
+      {
+        "modifier": "final",
+        "type": "double",
+        "name": "progressPercent"
+      },
+      {
+        "modifier": "final",
+        "type": "DateTime",
+        "name": "projectedDate"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/goals/goals_screen.dart",
+    "cluster": "goals",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "package:intl/intl.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "goals_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "add_goal_screen.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "GoalsScreen",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_EmptyState",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_GoalCard",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_projectedLabel",
+        "return_type": "String",
+        "params": [
+          "GoalProgress goal"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "GoalProgress",
+        "name": "goal"
+      }
+    ]
+  }
+]

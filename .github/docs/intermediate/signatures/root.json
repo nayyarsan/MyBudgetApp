@@ -1,0 +1,99 @@
+[
+  {
+    "path": "lib/main.dart",
+    "cluster": "root",
+    "role": [
+      "entry"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "package:firebase_core/firebase_core.dart",
+        "kind": "firebase"
+      },
+      {
+        "uri": "core/theme/app_theme.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "core/services/month_boundary_provider.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "features/auth/biometric_lock_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "features/onboarding/onboarding_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "features/onboarding/onboarding_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "features/shell/main_shell.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "MoneyInSightApp",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_AppStartup",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "main",
+        "return_type": "void",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  }
+]

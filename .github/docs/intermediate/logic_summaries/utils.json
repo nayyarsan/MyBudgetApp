@@ -1,0 +1,21 @@
+[
+  {
+    "file": "lib/core/utils/currency_formatter.dart",
+    "summary": "Utility / formatting helper. Provides stateless functions for formatting, conversion, or string manipulation used across multiple features. Defines: CurrencyFormatter.",
+    "responsibilities": [
+      "Defines class(es): CurrencyFormatter",
+      "Exposes methods: format"
+    ],
+    "inputs": [],
+    "outputs": [
+      "static String"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:intl/intl.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

@@ -1,0 +1,887 @@
+[
+  {
+    "path": "lib/features/budget/budget_calculator.dart",
+    "cluster": "budget",
+    "role": [
+      "calculator"
+    ],
+    "imports": [],
+    "classes": [
+      {
+        "name": "BudgetCalculator",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "available",
+        "return_type": "static int",
+        "params": [
+          "required int assignedCents",
+          "required int spentCents",
+          "required int rolledOverCents",
+          "required bool rollover"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "toBeBudgeted",
+        "return_type": "static int",
+        "params": [
+          "required int totalIncomeCents",
+          "required int totalAssignedCents"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "ageOfMoney",
+        "return_type": "static int",
+        "params": [
+          "required DateTime incomeDate",
+          "required DateTime spendingDate"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/budget/budget_providers.dart",
+    "cluster": "budget",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [],
+    "providers": [
+      {
+        "name": "categoryGroupsProvider",
+        "type": "StreamProvider",
+        "watches": [
+          "databaseProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "allCategoriesProvider",
+        "type": "FutureProvider",
+        "watches": [
+          "databaseProvider",
+          "selectedMonthProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "monthlyBudgetsProvider",
+        "type": "StreamProvider",
+        "watches": [
+          "databaseProvider",
+          "selectedMonthProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "transactionsForMonthProvider",
+        "type": "StreamProvider",
+        "watches": [
+          "databaseProvider",
+          "selectedMonthProvider",
+          "transactionsForMonthProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "monthlyIncomeProvider",
+        "type": "Provider",
+        "watches": [
+          "monthlyBudgetsProvider",
+          "transactionsForMonthProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "totalAssignedProvider",
+        "type": "Provider",
+        "watches": [
+          "monthlyBudgetsProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "rolloverAmountsProvider",
+        "type": "FutureProvider",
+        "watches": [
+          "databaseProvider",
+          "selectedMonthProvider"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/budget/budget_screen.dart",
+    "cluster": "budget",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../goals/goals_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "budget_calculator.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "budget_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/services/rollover_provider.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "rebalance_provider.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "widgets/category_row.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "widgets/rebalance_sheet.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "widgets/recurring_due_banner.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "widgets/tbb_banner.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "BudgetScreen",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_GroupTile",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "Consumer",
+        "return_type": "[",
+        "params": [
+          "builder: (context",
+          "ref",
+          "_"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "Expanded",
+        "return_type": ",",
+        "params": [
+          "child: groupsAsync.when(\n              data: (groups"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_showAddCategoryDialog",
+        "return_type": "Future<void>",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "FilledButton",
+        "return_type": ",",
+        "params": [
+          "onPressed: ("
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_monthName",
+        "return_type": "String",
+        "params": [
+          "int m"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_confirmDeleteGroup",
+        "return_type": "Future<void>",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_spentForCategory",
+        "return_type": "int",
+        "params": [
+          "int categoryId"
+        ],
+        "async": false,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_showBudgetDialog",
+        "return_type": "Future<void>",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref",
+          "Category cat",
+          "int currentCents"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "FilledButton",
+        "return_type": ",",
+        "params": [
+          "onPressed: ("
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_confirmDeleteCategory",
+        "return_type": "Future<void>",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref",
+          "Category cat"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "CategoryGroup",
+        "name": "group"
+      },
+      {
+        "modifier": "final",
+        "type": "List<MonthlyBudget>",
+        "name": "budgets"
+      },
+      {
+        "modifier": "final",
+        "type": "List<Transaction>",
+        "name": "transactions"
+      },
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "month"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/budget/rebalance_provider.dart",
+    "cluster": "budget",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "budget_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "CategoryBudgetData",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "RebalanceSuggestion",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "computeRebalanceSuggestions",
+        "return_type": "List<RebalanceSuggestion>",
+        "params": [
+          "required List<CategoryBudgetData> categoryData"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [
+      {
+        "name": "rebalanceSuggestionsProvider",
+        "type": "FutureProvider",
+        "watches": [
+          "databaseProvider",
+          "selectedMonthProvider"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "id"
+      },
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "name"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "assigned"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "spent"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "fromCategoryId"
+      },
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "fromCategoryName"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "toCategoryId"
+      },
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "toCategoryName"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/budget/recurring_providers.dart",
+    "cluster": "budget",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [],
+    "providers": [
+      {
+        "name": "pendingRecurringProvider",
+        "type": "StreamProvider",
+        "watches": [
+          "databaseProvider"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/budget/widgets/category_row.dart",
+    "cluster": "budget",
+    "role": [
+      "widget"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "../../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "CategoryRow",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "name"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "assignedCents"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "spentCents"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "availableCents"
+      },
+      {
+        "modifier": "final",
+        "type": "VoidCallback?",
+        "name": "onTap"
+      },
+      {
+        "modifier": "final",
+        "type": "VoidCallback?",
+        "name": "onLongPress"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/budget/widgets/rebalance_sheet.dart",
+    "cluster": "budget",
+    "role": [
+      "widget"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../budget_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../rebalance_provider.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "RebalanceSheet",
+        "extends": "ConsumerStatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerStatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_RebalanceSheetState",
+        "extends": "ConsumerState<RebalanceSheet>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerState",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "Expanded",
+        "return_type": ",",
+        "params": [
+          "child: suggestionsAsync.when(\n              data: (suggestions"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_applyAll",
+        "return_type": "Future<void>",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/budget/widgets/recurring_due_banner.dart",
+    "cluster": "budget",
+    "role": [
+      "widget"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../recurring_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "recurring_review_sheet.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "RecurringDueBanner",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/budget/widgets/recurring_review_sheet.dart",
+    "cluster": "budget",
+    "role": [
+      "widget"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../../core/services/month_boundary_service.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../recurring_providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "RecurringReviewSheet",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "_confirm",
+        "return_type": "Future<void>",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref",
+          "PendingRecurringQueueData item",
+          "Transaction sourceTx"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_skip",
+        "return_type": "Future<void>",
+        "params": [
+          "WidgetRef ref",
+          "PendingRecurringQueueData item",
+          "Transaction sourceTx"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "Expanded",
+        "return_type": ",",
+        "params": [
+          "child: pendingAsync.when(\n              data: (pending"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "late",
+        "type": "final",
+        "name": "nextDue"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/budget/widgets/tbb_banner.dart",
+    "cluster": "budget",
+    "role": [
+      "widget"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "../../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "ToBeBudgetedBanner",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "tbbCents"
+      }
+    ]
+  }
+]

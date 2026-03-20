@@ -1,0 +1,93 @@
+[
+  {
+    "path": "lib/features/sync/sync_service.dart",
+    "cluster": "sync",
+    "role": [
+      "service"
+    ],
+    "imports": [
+      {
+        "uri": "package:cloud_firestore/cloud_firestore.dart",
+        "kind": "firebase"
+      },
+      {
+        "uri": "package:firebase_auth/firebase_auth.dart",
+        "kind": "firebase"
+      },
+      {
+        "uri": "package:flutter/foundation.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "package:flutter_secure_storage/flutter_secure_storage.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "../../core/database/database.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "SyncService",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "syncToFirestore",
+        "return_type": "Future<bool>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [
+      {
+        "name": "lastSyncProvider",
+        "type": "FutureProvider",
+        "watches": [],
+        "reads": []
+      },
+      {
+        "name": "syncServiceProvider",
+        "type": "Provider",
+        "watches": [
+          "databaseProvider"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "AppDatabase",
+        "name": "_db"
+      },
+      {
+        "modifier": "final",
+        "type": "FirebaseFirestore",
+        "name": "_firestore"
+      },
+      {
+        "modifier": "final",
+        "type": "FirebaseAuth",
+        "name": "_auth"
+      }
+    ]
+  }
+]

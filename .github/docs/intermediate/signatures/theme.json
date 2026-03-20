@@ -1,0 +1,29 @@
+[
+  {
+    "path": "lib/core/theme/app_theme.dart",
+    "cluster": "theme",
+    "role": [
+      "config"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      }
+    ],
+    "classes": [
+      {
+        "name": "AppTheme",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  }
+]

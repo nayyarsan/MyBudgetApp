@@ -1,0 +1,547 @@
+[
+  {
+    "path": "lib/features/analytics/analytics_providers.dart",
+    "cluster": "analytics",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../budget/budget_providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "CategorySpending",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "MonthlyTotal",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [],
+    "providers": [
+      {
+        "name": "spendingByCategoryProvider",
+        "type": "FutureProvider",
+        "watches": [
+          "databaseProvider",
+          "selectedMonthProvider"
+        ],
+        "reads": []
+      },
+      {
+        "name": "monthlyTotalsProvider",
+        "type": "FutureProvider",
+        "watches": [
+          "databaseProvider"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "categoryName"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "spentCents"
+      },
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "month"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "incomeCents"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "expenseCents"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/analytics/analytics_screen.dart",
+    "cluster": "analytics",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "analytics_providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "budget_history_screen.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "widgets/income_vs_expenses_chart.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "widgets/spending_by_category_chart.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "AnalyticsScreen",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_SpendingTab",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_IncomeVsExpensesTab",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/features/analytics/budget_history_providers.dart",
+    "cluster": "analytics",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/database/providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "CategoryMonthHistory",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      },
+      {
+        "name": "MonthBudgetHistory",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [],
+    "providers": [
+      {
+        "name": "budgetHistoryProvider",
+        "type": "FutureProvider",
+        "watches": [
+          "databaseProvider"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "categoryName"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "assignedCents"
+      },
+      {
+        "modifier": "final",
+        "type": "int",
+        "name": "spentCents"
+      },
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "month"
+      },
+      {
+        "modifier": "final",
+        "type": "List<CategoryMonthHistory>",
+        "name": "categories"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/analytics/budget_history_screen.dart",
+    "cluster": "analytics",
+    "role": [
+      "screen"
+    ],
+    "imports": [
+      {
+        "uri": "package:fl_chart/fl_chart.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "budget_history_providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "BudgetHistoryScreen",
+        "extends": "ConsumerWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "ConsumerWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_BudgetTrendChart",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_MonthTile",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context",
+          "WidgetRef ref"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "List<MonthBudgetHistory>",
+        "name": "months"
+      },
+      {
+        "modifier": "final",
+        "type": "MonthBudgetHistory",
+        "name": "month"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/analytics/widgets/income_vs_expenses_chart.dart",
+    "cluster": "analytics",
+    "role": [
+      "widget"
+    ],
+    "imports": [
+      {
+        "uri": "package:fl_chart/fl_chart.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "../../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../analytics_providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "IncomeVsExpensesChart",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_Legend",
+        "extends": "StatelessWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatelessWidget",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "Column",
+        "return_type": "return",
+        "params": [
+          "children: [\n        SizedBox(\n          height: 220",
+          "child: BarChart(\n            BarChartData(\n              maxY: maxValue * 1.15",
+          "barTouchData: BarTouchData(\n                touchTooltipData: BarTouchTooltipData(\n                  getTooltipItem: (group",
+          "groupIndex",
+          "rod",
+          "rodIndex"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "List<MonthlyTotal>",
+        "name": "data"
+      },
+      {
+        "modifier": "final",
+        "type": "Color",
+        "name": "color"
+      },
+      {
+        "modifier": "final",
+        "type": "String",
+        "name": "label"
+      }
+    ]
+  },
+  {
+    "path": "lib/features/analytics/widgets/spending_by_category_chart.dart",
+    "cluster": "analytics",
+    "role": [
+      "widget"
+    ],
+    "imports": [
+      {
+        "uri": "package:fl_chart/fl_chart.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "package:flutter/material.dart",
+        "kind": "flutter"
+      },
+      {
+        "uri": "../../../core/utils/currency_formatter.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "../analytics_providers.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "SpendingByCategoryChart",
+        "extends": "StatefulWidget",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "StatefulWidget",
+        "notifier_type": null
+      },
+      {
+        "name": "_SpendingByCategoryChartState",
+        "extends": "State<SpendingByCategoryChart>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": "State",
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Widget",
+        "params": [
+          "BuildContext context"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "Column",
+        "return_type": "return",
+        "params": [
+          "children: [\n        SizedBox(\n          height: 220",
+          "child: PieChart(\n            PieChartData(\n              pieTouchData: PieTouchData(\n                touchCallback: (event",
+          "response"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "setState",
+        "return_type": "",
+        "params": [
+          "("
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "List<CategorySpending>",
+        "name": "data"
+      }
+    ]
+  }
+]

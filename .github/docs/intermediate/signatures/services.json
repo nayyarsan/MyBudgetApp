@@ -1,0 +1,197 @@
+[
+  {
+    "path": "lib/core/services/month_boundary_provider.dart",
+    "cluster": "services",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "package:flutter_secure_storage/flutter_secure_storage.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "../database/providers.dart",
+        "kind": "internal"
+      },
+      {
+        "uri": "month_boundary_service.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [],
+    "methods": [],
+    "providers": [
+      {
+        "name": "monthBoundaryServiceProvider",
+        "type": "Provider",
+        "watches": [
+          "databaseProvider"
+        ],
+        "reads": []
+      }
+    ],
+    "drift_dao": null,
+    "fields": []
+  },
+  {
+    "path": "lib/core/services/month_boundary_service.dart",
+    "cluster": "services",
+    "role": [
+      "service"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_secure_storage/flutter_secure_storage.dart",
+        "kind": "third_party"
+      },
+      {
+        "uri": "../database/database.dart",
+        "kind": "internal"
+      }
+    ],
+    "classes": [
+      {
+        "name": "MonthBoundaryService",
+        "extends": null,
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": null
+      }
+    ],
+    "methods": [
+      {
+        "name": "computeRolloverCents",
+        "return_type": "static int",
+        "params": [
+          "required int assignedCents",
+          "required int spentCents"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "computeNextDueDate",
+        "return_type": "static DateTime",
+        "params": [
+          "DateTime from",
+          "String interval"
+        ],
+        "async": false,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "run",
+        "return_type": "Future<void>",
+        "params": [
+          "DateTime? now"
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "_snapshotMonth",
+        "return_type": "Future<void>",
+        "params": [
+          "String month"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_applyRollovers",
+        "return_type": "Future<void>",
+        "params": [
+          "String previousMonth",
+          "String currentMonth"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      },
+      {
+        "name": "_enqueueRecurring",
+        "return_type": "Future<void>",
+        "params": [
+          "DateTime today"
+        ],
+        "async": true,
+        "override": false,
+        "private": true
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": [
+      {
+        "modifier": "final",
+        "type": "AppDatabase",
+        "name": "db"
+      },
+      {
+        "modifier": "final",
+        "type": "FlutterSecureStorage",
+        "name": "storage"
+      }
+    ]
+  },
+  {
+    "path": "lib/core/services/rollover_provider.dart",
+    "cluster": "services",
+    "role": [
+      "provider"
+    ],
+    "imports": [
+      {
+        "uri": "package:flutter_riverpod/flutter_riverpod.dart",
+        "kind": "riverpod"
+      },
+      {
+        "uri": "package:flutter_secure_storage/flutter_secure_storage.dart",
+        "kind": "third_party"
+      }
+    ],
+    "classes": [
+      {
+        "name": "GlobalRolloverNotifier",
+        "extends": "AsyncNotifier<bool>",
+        "mixins": null,
+        "implements": null,
+        "widget_type": null,
+        "notifier_type": "AsyncNotifier"
+      }
+    ],
+    "methods": [
+      {
+        "name": "build",
+        "return_type": "Future<bool>",
+        "params": [],
+        "async": true,
+        "override": false,
+        "private": false
+      },
+      {
+        "name": "setEnabled",
+        "return_type": "Future<void>",
+        "params": [
+          "bool value"
+        ],
+        "async": true,
+        "override": false,
+        "private": false
+      }
+    ],
+    "providers": [],
+    "drift_dao": null,
+    "fields": []
+  }
+]

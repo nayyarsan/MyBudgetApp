@@ -1,0 +1,23 @@
+[
+  {
+    "file": "lib/core/csv/csv_parser.dart",
+    "summary": "File or data parser. Reads raw input (CSV, JSON) and transforms it into typed Dart objects suitable for database insertion. Defines: ParsedTransaction, ValidationResult, CsvParser.",
+    "responsibilities": [
+      "Defines class(es): ParsedTransaction, ValidationResult, CsvParser",
+      "Exposes methods: parse, detectHeaders, toTransactionData, validate"
+    ],
+    "inputs": [],
+    "outputs": [
+      "static List<Map<String, String>>",
+      "static List<String>",
+      "static ParsedTransaction"
+    ],
+    "database_operations": [],
+    "reactive_streams": [],
+    "external_calls": [
+      "package:csv/csv.dart"
+    ],
+    "complexity_flag": "low",
+    "confidence": "medium"
+  }
+]

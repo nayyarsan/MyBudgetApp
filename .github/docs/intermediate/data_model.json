@@ -1,0 +1,775 @@
+{
+  "local_database": "sqlite_via_drift",
+  "tables": [
+    {
+      "drift_class": "Accounts",
+      "table_name": "accounts",
+      "columns": [
+        {
+          "name": "id",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": true,
+          "references": null
+        },
+        {
+          "name": "name",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "type",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "balanceCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "institution",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": true,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "isDeleted",
+          "type": "BoolColumn",
+          "drift_type": "boolean",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        }
+      ],
+      "unique_keys": [],
+      "dao": "AccountsDao",
+      "dao_file": "lib/core/database/daos/accounts_dao.dart",
+      "queries": [
+        {
+          "method": "insertAccount",
+          "operation": "INSERT",
+          "returns": "Future<int>",
+          "reactive": false,
+          "params": "AccountsCompanion entry"
+        },
+        {
+          "method": "getAccount",
+          "operation": "SELECT",
+          "returns": "Future<Account?>",
+          "reactive": false,
+          "params": "int id"
+        },
+        {
+          "method": "updateAccount",
+          "operation": "UPDATE",
+          "returns": "Future<bool>",
+          "reactive": false,
+          "params": "AccountsCompanion entry"
+        },
+        {
+          "method": "softDeleteAccount",
+          "operation": "DELETE",
+          "returns": "Future<int>",
+          "reactive": false,
+          "params": "int id"
+        }
+      ],
+      "firestore_collection": "accounts",
+      "sync_direction": "local_to_cloud"
+    },
+    {
+      "drift_class": "CategoryGroups",
+      "table_name": "category_groups",
+      "columns": [
+        {
+          "name": "id",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": true,
+          "references": null
+        },
+        {
+          "name": "name",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "sortOrder",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "isDeleted",
+          "type": "BoolColumn",
+          "drift_type": "boolean",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        }
+      ],
+      "unique_keys": [],
+      "dao": null,
+      "dao_file": null,
+      "queries": [],
+      "firestore_collection": "categoryGroups",
+      "sync_direction": "local_to_cloud"
+    },
+    {
+      "drift_class": "Categories",
+      "table_name": "categories",
+      "columns": [
+        {
+          "name": "id",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": true,
+          "references": null
+        },
+        {
+          "name": "groupId",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": "CategoryGroups"
+        },
+        {
+          "name": "name",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "rollover",
+          "type": "BoolColumn",
+          "drift_type": "boolean",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "goalAmountCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": true,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "goalDate",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": true,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "goalType",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": true,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "sortOrder",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "isDeleted",
+          "type": "BoolColumn",
+          "drift_type": "boolean",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        }
+      ],
+      "unique_keys": [],
+      "dao": "CategoriesDao",
+      "dao_file": "lib/core/database/daos/categories_dao.dart",
+      "queries": [
+        {
+          "method": "insertGroup",
+          "operation": "INSERT",
+          "returns": "Future<int>",
+          "reactive": false,
+          "params": "String name"
+        },
+        {
+          "method": "insertCategory",
+          "operation": "INSERT",
+          "returns": "Future<int>",
+          "reactive": false,
+          "params": "CategoriesCompanion entry"
+        },
+        {
+          "method": "getCategory",
+          "operation": "SELECT",
+          "returns": "Future<Category?>",
+          "reactive": false,
+          "params": "int id"
+        },
+        {
+          "method": "softDeleteCategory",
+          "operation": "DELETE",
+          "returns": "Future<int>",
+          "reactive": false,
+          "params": "int id"
+        },
+        {
+          "method": "updateRollover",
+          "operation": "UPDATE",
+          "returns": "Future<void>",
+          "reactive": false,
+          "params": "int categoryId, bool rollover"
+        },
+        {
+          "method": "softDeleteGroup",
+          "operation": "DELETE",
+          "returns": "Future<void>",
+          "reactive": false,
+          "params": "int id"
+        }
+      ],
+      "firestore_collection": "categories",
+      "sync_direction": "local_to_cloud"
+    },
+    {
+      "drift_class": "MonthlyBudgets",
+      "table_name": "monthly_budgets",
+      "columns": [
+        {
+          "name": "id",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": true,
+          "references": null
+        },
+        {
+          "name": "categoryId",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": "Categories"
+        },
+        {
+          "name": "month",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "assignedCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "rolledOverCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        }
+      ],
+      "unique_keys": [
+        "categoryId, month"
+      ],
+      "dao": "BudgetDao",
+      "dao_file": "lib/core/database/daos/budget_dao.dart",
+      "queries": [
+        {
+          "method": "getBudgetForCategoryMonth",
+          "operation": "SELECT",
+          "returns": "Future<MonthlyBudget?>",
+          "reactive": false,
+          "params": "int categoryId,\n    String month,"
+        },
+        {
+          "method": "upsertBudget",
+          "operation": "SELECT",
+          "returns": "Future<int>",
+          "reactive": false,
+          "params": "MonthlyBudgetsCompanion entry"
+        }
+      ],
+      "firestore_collection": null,
+      "sync_direction": "none"
+    },
+    {
+      "drift_class": "Transactions",
+      "table_name": "transactions",
+      "columns": [
+        {
+          "name": "id",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": true,
+          "references": null
+        },
+        {
+          "name": "accountId",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": "Accounts"
+        },
+        {
+          "name": "categoryId",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": true,
+          "primary_key": false,
+          "references": "Categories"
+        },
+        {
+          "name": "amountCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "payee",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "date",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "memo",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": true,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "type",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "cleared",
+          "type": "BoolColumn",
+          "drift_type": "boolean",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "recurring",
+          "type": "BoolColumn",
+          "drift_type": "boolean",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "recurringInterval",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": true,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "nextDueDate",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": true,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "importedFrom",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": true,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "updatedAt",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "toAccountId",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": true,
+          "primary_key": false,
+          "references": "Accounts"
+        },
+        {
+          "name": "isDeleted",
+          "type": "BoolColumn",
+          "drift_type": "boolean",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        }
+      ],
+      "unique_keys": [],
+      "dao": "TransactionsDao",
+      "dao_file": "lib/core/database/daos/transactions_dao.dart",
+      "queries": [
+        {
+          "method": "insertTransaction",
+          "operation": "INSERT",
+          "returns": "Future<int>",
+          "reactive": false,
+          "params": "TransactionsCompanion entry"
+        },
+        {
+          "method": "getTransaction",
+          "operation": "SELECT",
+          "returns": "Future<Transaction?>",
+          "reactive": false,
+          "params": "int id"
+        },
+        {
+          "method": "updateTransaction",
+          "operation": "UPDATE",
+          "returns": "Future<void>",
+          "reactive": false,
+          "params": "int id, TransactionsCompanion data"
+        },
+        {
+          "method": "softDelete",
+          "operation": "DELETE",
+          "returns": "Future<int>",
+          "reactive": false,
+          "params": "int id"
+        }
+      ],
+      "firestore_collection": "transactions",
+      "sync_direction": "local_to_cloud"
+    },
+    {
+      "drift_class": "NetWorthSnapshots",
+      "table_name": "net_worth_snapshots",
+      "columns": [
+        {
+          "name": "id",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": true,
+          "references": null
+        },
+        {
+          "name": "date",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "totalAssetsCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "totalLiabilitiesCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "netWorthCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        }
+      ],
+      "unique_keys": [],
+      "dao": null,
+      "dao_file": null,
+      "queries": [],
+      "firestore_collection": null,
+      "sync_direction": "none"
+    },
+    {
+      "drift_class": "BudgetSnapshots",
+      "table_name": "budget_snapshots",
+      "columns": [
+        {
+          "name": "id",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": true,
+          "references": null
+        },
+        {
+          "name": "categoryId",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": "Categories"
+        },
+        {
+          "name": "month",
+          "type": "TextColumn",
+          "drift_type": "text",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "assignedCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "spentCents",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        }
+      ],
+      "unique_keys": [
+        "categoryId, month"
+      ],
+      "dao": "BudgetSnapshotsDao",
+      "dao_file": "lib/core/database/daos/budget_snapshots_dao.dart",
+      "queries": [
+        {
+          "method": "upsertSnapshot",
+          "operation": "SELECT",
+          "returns": "Future<void>",
+          "reactive": false,
+          "params": "BudgetSnapshotsCompanion entry"
+        },
+        {
+          "method": "hasSnapshot",
+          "operation": "SELECT",
+          "returns": "Future<bool>",
+          "reactive": false,
+          "params": "int categoryId, String month"
+        }
+      ],
+      "firestore_collection": null,
+      "sync_direction": "none"
+    },
+    {
+      "drift_class": "PendingRecurringQueue",
+      "table_name": "pending_recurring_queue",
+      "columns": [
+        {
+          "name": "id",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": true,
+          "references": null
+        },
+        {
+          "name": "sourceTransactionId",
+          "type": "IntColumn",
+          "drift_type": "integer",
+          "nullable": false,
+          "primary_key": false,
+          "references": "Transactions"
+        },
+        {
+          "name": "dueDate",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        },
+        {
+          "name": "createdAt",
+          "type": "DateTimeColumn",
+          "drift_type": "datetime",
+          "nullable": false,
+          "primary_key": false,
+          "references": null
+        }
+      ],
+      "unique_keys": [],
+      "dao": "RecurringQueueDao",
+      "dao_file": "lib/core/database/daos/recurring_queue_dao.dart",
+      "queries": [
+        {
+          "method": "enqueue",
+          "operation": "SELECT",
+          "returns": "Future<int>",
+          "reactive": false,
+          "params": "PendingRecurringQueueCompanion entry"
+        },
+        {
+          "method": "removeFromQueue",
+          "operation": "DELETE",
+          "returns": "Future<void>",
+          "reactive": false,
+          "params": "int id"
+        },
+        {
+          "method": "clearAll",
+          "operation": "SELECT",
+          "returns": "Future<void>",
+          "reactive": false,
+          "params": null
+        },
+        {
+          "method": "isEnqueued",
+          "operation": "SELECT",
+          "returns": "Future<bool>",
+          "reactive": false,
+          "params": "int sourceTransactionId"
+        }
+      ],
+      "firestore_collection": null,
+      "sync_direction": "none"
+    }
+  ],
+  "firestore_collections": [
+    {
+      "collection": "accounts",
+      "maps_to_table": "accounts",
+      "sync_direction": "local_to_cloud"
+    },
+    {
+      "collection": "categoryGroups",
+      "maps_to_table": "category_groups",
+      "sync_direction": "local_to_cloud"
+    },
+    {
+      "collection": "categories",
+      "maps_to_table": "categories",
+      "sync_direction": "local_to_cloud"
+    },
+    {
+      "collection": "transactions",
+      "maps_to_table": "transactions",
+      "sync_direction": "local_to_cloud"
+    }
+  ]
+}

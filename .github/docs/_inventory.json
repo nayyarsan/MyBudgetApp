@@ -1,0 +1,678 @@
+[
+  {
+    "path": "lib/core/csv/csv_parser.dart",
+    "role": [
+      "parser"
+    ],
+    "cluster": "csv",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/database/daos/accounts_dao.dart",
+    "role": [
+      "dao"
+    ],
+    "cluster": "database",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/database/daos/budget_dao.dart",
+    "role": [
+      "dao"
+    ],
+    "cluster": "database",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/database/daos/budget_snapshots_dao.dart",
+    "role": [
+      "dao"
+    ],
+    "cluster": "database",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/database/daos/categories_dao.dart",
+    "role": [
+      "dao"
+    ],
+    "cluster": "database",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/database/daos/recurring_queue_dao.dart",
+    "role": [
+      "dao"
+    ],
+    "cluster": "database",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/database/daos/transactions_dao.dart",
+    "role": [
+      "dao"
+    ],
+    "cluster": "database",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/database/database.dart",
+    "role": [
+      "config"
+    ],
+    "cluster": "database",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/database/providers.dart",
+    "role": [
+      "other"
+    ],
+    "cluster": "database",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/database/tables.dart",
+    "role": [
+      "model"
+    ],
+    "cluster": "database",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/services/month_boundary_provider.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "services",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/services/month_boundary_service.dart",
+    "role": [
+      "service"
+    ],
+    "cluster": "services",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/services/rollover_provider.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "services",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/theme/app_theme.dart",
+    "role": [
+      "config"
+    ],
+    "cluster": "theme",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/core/utils/currency_formatter.dart",
+    "role": [
+      "util"
+    ],
+    "cluster": "utils",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/accounts/account_detail_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "accounts",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/accounts/account_providers.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "accounts",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/accounts/accounts_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "accounts",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/accounts/add_account_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "accounts",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/analytics/analytics_providers.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "analytics",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/analytics/analytics_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "analytics",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/analytics/budget_history_providers.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "analytics",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/analytics/budget_history_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "analytics",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/analytics/widgets/income_vs_expenses_chart.dart",
+    "role": [
+      "widget"
+    ],
+    "cluster": "analytics",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/analytics/widgets/spending_by_category_chart.dart",
+    "role": [
+      "widget"
+    ],
+    "cluster": "analytics",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/auth/auth_providers.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "auth",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/auth/biometric_lock_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "auth",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/auth/firebase_auth_service.dart",
+    "role": [
+      "service"
+    ],
+    "cluster": "auth",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/budget_calculator.dart",
+    "role": [
+      "calculator"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/budget_providers.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/budget_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/rebalance_provider.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/recurring_providers.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/widgets/category_row.dart",
+    "role": [
+      "widget"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/widgets/rebalance_sheet.dart",
+    "role": [
+      "widget"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/widgets/recurring_due_banner.dart",
+    "role": [
+      "widget"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/widgets/recurring_review_sheet.dart",
+    "role": [
+      "widget"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/budget/widgets/tbb_banner.dart",
+    "role": [
+      "widget"
+    ],
+    "cluster": "budget",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/goals/add_goal_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "goals",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/goals/goal_calculator.dart",
+    "role": [
+      "calculator"
+    ],
+    "cluster": "goals",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/goals/goals_providers.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "goals",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/goals/goals_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "goals",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/onboarding/onboarding_providers.dart",
+    "role": [
+      "provider"
+    ],
+    "cluster": "onboarding",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/onboarding/onboarding_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "onboarding",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/settings/settings_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "settings",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/shell/main_shell.dart",
+    "role": [
+      "router"
+    ],
+    "cluster": "shell",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/sync/sync_service.dart",
+    "role": [
+      "service"
+    ],
+    "cluster": "sync",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": true,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/transactions/add_transaction_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "transactions",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/transactions/import_csv_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "transactions",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/transactions/transactions_screen.dart",
+    "role": [
+      "screen"
+    ],
+    "cluster": "transactions",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/features/transactions/widgets/transaction_tile.dart",
+    "role": [
+      "widget"
+    ],
+    "cluster": "transactions",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  },
+  {
+    "path": "lib/main.dart",
+    "role": [
+      "entry"
+    ],
+    "cluster": "root",
+    "p1_inventory": true,
+    "p2_signatures": true,
+    "p3_dependencies": true,
+    "p4_data_models": false,
+    "p5_logic_summary": true,
+    "p6_business_intent": true
+  }
+]
