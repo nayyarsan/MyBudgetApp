@@ -19,4 +19,9 @@ Makefile text eol=lf
 *.ico  binary
 *.jar  binary
 *.keystore binary
+
+# Agentic workflow lock files — auto-generated, merge ours
+.github/workflows/*.lock.yml linguist-generated=true merge=ours
 *.apk  binary
+
+.github/workflows/*.lock.yml linguist-generated=true merge=ours
