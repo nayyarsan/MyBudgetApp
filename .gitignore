@@ -57,3 +57,6 @@ google-services.json
 
 # Web platform — disabled (Drift sqlite3 FFI is not web-compatible)
 /web/
+
+# Git worktrees
+.worktrees/
