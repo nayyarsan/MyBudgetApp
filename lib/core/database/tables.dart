@@ -120,3 +120,29 @@ class PendingRecurringQueue extends Table {
   DateTimeColumn get createdAt =>
       dateTime().withDefault(currentDateAndTime)();
 }
+
+/// Maps a Plaid account_id to an internal account row.
+/// Created when user connects a bank account via Plaid Link.
+class PlaidAccounts extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get plaidAccountId => text()();
+  IntColumn get internalAccountId => integer().references(Accounts, #id)();
+  TextColumn get institutionName => text()();
+  TextColumn get mask => text().withLength(min: 0, max: 4)();
+  DateTimeColumn get syncedAt => dateTime().nullable()();
+}
+
+/// Holds transactions flagged during Plaid sync for user review.
+/// Reason: 'duplicate_suspected' or 'ambiguous_transfer'.
+class PendingReviewTransactions extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  TextColumn get plaidTransactionId => text()();
+  IntColumn get accountId => integer().references(Accounts, #id)();
+  IntColumn get amountCents => integer()();
+  DateTimeColumn get date => dateTime()();
+  TextColumn get payee => text()();
+  TextColumn get reason => text()();
+  TextColumn get pairedPlaidTransactionId => text().nullable()();
+  DateTimeColumn get createdAt =>
+      dateTime().withDefault(currentDateAndTime)();
+}

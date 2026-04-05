@@ -23,6 +23,8 @@ part 'database.g.dart';
     NetWorthSnapshots,
     BudgetSnapshots,
     PendingRecurringQueue,
+    PlaidAccounts,
+    PendingReviewTransactions,
   ],
   daos: [
     AccountsDao,
@@ -31,6 +33,7 @@ part 'database.g.dart';
     BudgetDao,
     BudgetSnapshotsDao,
     RecurringQueueDao,
+    // PlaidDao will be added in Task 7
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -39,7 +42,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase.forTesting() : super(NativeDatabase.memory());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -52,6 +55,10 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(monthlyBudgets, monthlyBudgets.rolledOverCents);
         await m.createTable(budgetSnapshots);
         await m.createTable(pendingRecurringQueue);
+      }
+      if (from < 4) {
+        await m.createTable(plaidAccounts);
+        await m.createTable(pendingReviewTransactions);
       }
     },
   );

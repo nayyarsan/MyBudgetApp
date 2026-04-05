@@ -3341,6 +3341,846 @@ class PendingRecurringQueueCompanion
   }
 }
 
+class $PlaidAccountsTable extends PlaidAccounts
+    with TableInfo<$PlaidAccountsTable, PlaidAccount> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PlaidAccountsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _plaidAccountIdMeta =
+      const VerificationMeta('plaidAccountId');
+  @override
+  late final GeneratedColumn<String> plaidAccountId = GeneratedColumn<String>(
+      'plaid_account_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _internalAccountIdMeta =
+      const VerificationMeta('internalAccountId');
+  @override
+  late final GeneratedColumn<int> internalAccountId = GeneratedColumn<int>(
+      'internal_account_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES accounts (id)'));
+  static const VerificationMeta _institutionNameMeta =
+      const VerificationMeta('institutionName');
+  @override
+  late final GeneratedColumn<String> institutionName = GeneratedColumn<String>(
+      'institution_name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _maskMeta = const VerificationMeta('mask');
+  @override
+  late final GeneratedColumn<String> mask = GeneratedColumn<String>(
+      'mask', aliasedName, false,
+      additionalChecks:
+          GeneratedColumn.checkTextLength(minTextLength: 0, maxTextLength: 4),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _syncedAtMeta =
+      const VerificationMeta('syncedAt');
+  @override
+  late final GeneratedColumn<DateTime> syncedAt = GeneratedColumn<DateTime>(
+      'synced_at', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, plaidAccountId, internalAccountId, institutionName, mask, syncedAt];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'plaid_accounts';
+  @override
+  VerificationContext validateIntegrity(Insertable<PlaidAccount> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('plaid_account_id')) {
+      context.handle(
+          _plaidAccountIdMeta,
+          plaidAccountId.isAcceptableOrUnknown(
+              data['plaid_account_id']!, _plaidAccountIdMeta));
+    } else if (isInserting) {
+      context.missing(_plaidAccountIdMeta);
+    }
+    if (data.containsKey('internal_account_id')) {
+      context.handle(
+          _internalAccountIdMeta,
+          internalAccountId.isAcceptableOrUnknown(
+              data['internal_account_id']!, _internalAccountIdMeta));
+    } else if (isInserting) {
+      context.missing(_internalAccountIdMeta);
+    }
+    if (data.containsKey('institution_name')) {
+      context.handle(
+          _institutionNameMeta,
+          institutionName.isAcceptableOrUnknown(
+              data['institution_name']!, _institutionNameMeta));
+    } else if (isInserting) {
+      context.missing(_institutionNameMeta);
+    }
+    if (data.containsKey('mask')) {
+      context.handle(
+          _maskMeta, mask.isAcceptableOrUnknown(data['mask']!, _maskMeta));
+    } else if (isInserting) {
+      context.missing(_maskMeta);
+    }
+    if (data.containsKey('synced_at')) {
+      context.handle(_syncedAtMeta,
+          syncedAt.isAcceptableOrUnknown(data['synced_at']!, _syncedAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PlaidAccount map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PlaidAccount(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      plaidAccountId: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}plaid_account_id'])!,
+      internalAccountId: attachedDatabase.typeMapping.read(
+          DriftSqlType.int, data['${effectivePrefix}internal_account_id'])!,
+      institutionName: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}institution_name'])!,
+      mask: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}mask'])!,
+      syncedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}synced_at']),
+    );
+  }
+
+  @override
+  $PlaidAccountsTable createAlias(String alias) {
+    return $PlaidAccountsTable(attachedDatabase, alias);
+  }
+}
+
+class PlaidAccount extends DataClass implements Insertable<PlaidAccount> {
+  final int id;
+  final String plaidAccountId;
+  final int internalAccountId;
+  final String institutionName;
+  final String mask;
+  final DateTime? syncedAt;
+  const PlaidAccount(
+      {required this.id,
+      required this.plaidAccountId,
+      required this.internalAccountId,
+      required this.institutionName,
+      required this.mask,
+      this.syncedAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['plaid_account_id'] = Variable<String>(plaidAccountId);
+    map['internal_account_id'] = Variable<int>(internalAccountId);
+    map['institution_name'] = Variable<String>(institutionName);
+    map['mask'] = Variable<String>(mask);
+    if (!nullToAbsent || syncedAt != null) {
+      map['synced_at'] = Variable<DateTime>(syncedAt);
+    }
+    return map;
+  }
+
+  PlaidAccountsCompanion toCompanion(bool nullToAbsent) {
+    return PlaidAccountsCompanion(
+      id: Value(id),
+      plaidAccountId: Value(plaidAccountId),
+      internalAccountId: Value(internalAccountId),
+      institutionName: Value(institutionName),
+      mask: Value(mask),
+      syncedAt: syncedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncedAt),
+    );
+  }
+
+  factory PlaidAccount.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PlaidAccount(
+      id: serializer.fromJson<int>(json['id']),
+      plaidAccountId: serializer.fromJson<String>(json['plaidAccountId']),
+      internalAccountId: serializer.fromJson<int>(json['internalAccountId']),
+      institutionName: serializer.fromJson<String>(json['institutionName']),
+      mask: serializer.fromJson<String>(json['mask']),
+      syncedAt: serializer.fromJson<DateTime?>(json['syncedAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'plaidAccountId': serializer.toJson<String>(plaidAccountId),
+      'internalAccountId': serializer.toJson<int>(internalAccountId),
+      'institutionName': serializer.toJson<String>(institutionName),
+      'mask': serializer.toJson<String>(mask),
+      'syncedAt': serializer.toJson<DateTime?>(syncedAt),
+    };
+  }
+
+  PlaidAccount copyWith(
+          {int? id,
+          String? plaidAccountId,
+          int? internalAccountId,
+          String? institutionName,
+          String? mask,
+          Value<DateTime?> syncedAt = const Value.absent()}) =>
+      PlaidAccount(
+        id: id ?? this.id,
+        plaidAccountId: plaidAccountId ?? this.plaidAccountId,
+        internalAccountId: internalAccountId ?? this.internalAccountId,
+        institutionName: institutionName ?? this.institutionName,
+        mask: mask ?? this.mask,
+        syncedAt: syncedAt.present ? syncedAt.value : this.syncedAt,
+      );
+  PlaidAccount copyWithCompanion(PlaidAccountsCompanion data) {
+    return PlaidAccount(
+      id: data.id.present ? data.id.value : this.id,
+      plaidAccountId: data.plaidAccountId.present
+          ? data.plaidAccountId.value
+          : this.plaidAccountId,
+      internalAccountId: data.internalAccountId.present
+          ? data.internalAccountId.value
+          : this.internalAccountId,
+      institutionName: data.institutionName.present
+          ? data.institutionName.value
+          : this.institutionName,
+      mask: data.mask.present ? data.mask.value : this.mask,
+      syncedAt: data.syncedAt.present ? data.syncedAt.value : this.syncedAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlaidAccount(')
+          ..write('id: $id, ')
+          ..write('plaidAccountId: $plaidAccountId, ')
+          ..write('internalAccountId: $internalAccountId, ')
+          ..write('institutionName: $institutionName, ')
+          ..write('mask: $mask, ')
+          ..write('syncedAt: $syncedAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, plaidAccountId, internalAccountId, institutionName, mask, syncedAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PlaidAccount &&
+          other.id == this.id &&
+          other.plaidAccountId == this.plaidAccountId &&
+          other.internalAccountId == this.internalAccountId &&
+          other.institutionName == this.institutionName &&
+          other.mask == this.mask &&
+          other.syncedAt == this.syncedAt);
+}
+
+class PlaidAccountsCompanion extends UpdateCompanion<PlaidAccount> {
+  final Value<int> id;
+  final Value<String> plaidAccountId;
+  final Value<int> internalAccountId;
+  final Value<String> institutionName;
+  final Value<String> mask;
+  final Value<DateTime?> syncedAt;
+  const PlaidAccountsCompanion({
+    this.id = const Value.absent(),
+    this.plaidAccountId = const Value.absent(),
+    this.internalAccountId = const Value.absent(),
+    this.institutionName = const Value.absent(),
+    this.mask = const Value.absent(),
+    this.syncedAt = const Value.absent(),
+  });
+  PlaidAccountsCompanion.insert({
+    this.id = const Value.absent(),
+    required String plaidAccountId,
+    required int internalAccountId,
+    required String institutionName,
+    required String mask,
+    this.syncedAt = const Value.absent(),
+  })  : plaidAccountId = Value(plaidAccountId),
+        internalAccountId = Value(internalAccountId),
+        institutionName = Value(institutionName),
+        mask = Value(mask);
+  static Insertable<PlaidAccount> custom({
+    Expression<int>? id,
+    Expression<String>? plaidAccountId,
+    Expression<int>? internalAccountId,
+    Expression<String>? institutionName,
+    Expression<String>? mask,
+    Expression<DateTime>? syncedAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (plaidAccountId != null) 'plaid_account_id': plaidAccountId,
+      if (internalAccountId != null) 'internal_account_id': internalAccountId,
+      if (institutionName != null) 'institution_name': institutionName,
+      if (mask != null) 'mask': mask,
+      if (syncedAt != null) 'synced_at': syncedAt,
+    });
+  }
+
+  PlaidAccountsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? plaidAccountId,
+      Value<int>? internalAccountId,
+      Value<String>? institutionName,
+      Value<String>? mask,
+      Value<DateTime?>? syncedAt}) {
+    return PlaidAccountsCompanion(
+      id: id ?? this.id,
+      plaidAccountId: plaidAccountId ?? this.plaidAccountId,
+      internalAccountId: internalAccountId ?? this.internalAccountId,
+      institutionName: institutionName ?? this.institutionName,
+      mask: mask ?? this.mask,
+      syncedAt: syncedAt ?? this.syncedAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (plaidAccountId.present) {
+      map['plaid_account_id'] = Variable<String>(plaidAccountId.value);
+    }
+    if (internalAccountId.present) {
+      map['internal_account_id'] = Variable<int>(internalAccountId.value);
+    }
+    if (institutionName.present) {
+      map['institution_name'] = Variable<String>(institutionName.value);
+    }
+    if (mask.present) {
+      map['mask'] = Variable<String>(mask.value);
+    }
+    if (syncedAt.present) {
+      map['synced_at'] = Variable<DateTime>(syncedAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PlaidAccountsCompanion(')
+          ..write('id: $id, ')
+          ..write('plaidAccountId: $plaidAccountId, ')
+          ..write('internalAccountId: $internalAccountId, ')
+          ..write('institutionName: $institutionName, ')
+          ..write('mask: $mask, ')
+          ..write('syncedAt: $syncedAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PendingReviewTransactionsTable extends PendingReviewTransactions
+    with TableInfo<$PendingReviewTransactionsTable, PendingReviewTransaction> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $PendingReviewTransactionsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _plaidTransactionIdMeta =
+      const VerificationMeta('plaidTransactionId');
+  @override
+  late final GeneratedColumn<String> plaidTransactionId =
+      GeneratedColumn<String>('plaid_transaction_id', aliasedName, false,
+          type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _accountIdMeta =
+      const VerificationMeta('accountId');
+  @override
+  late final GeneratedColumn<int> accountId = GeneratedColumn<int>(
+      'account_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES accounts (id)'));
+  static const VerificationMeta _amountCentsMeta =
+      const VerificationMeta('amountCents');
+  @override
+  late final GeneratedColumn<int> amountCents = GeneratedColumn<int>(
+      'amount_cents', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
+      'date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _payeeMeta = const VerificationMeta('payee');
+  @override
+  late final GeneratedColumn<String> payee = GeneratedColumn<String>(
+      'payee', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  @override
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+      'reason', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _pairedPlaidTransactionIdMeta =
+      const VerificationMeta('pairedPlaidTransactionId');
+  @override
+  late final GeneratedColumn<String> pairedPlaidTransactionId =
+      GeneratedColumn<String>('paired_plaid_transaction_id', aliasedName, true,
+          type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        plaidTransactionId,
+        accountId,
+        amountCents,
+        date,
+        payee,
+        reason,
+        pairedPlaidTransactionId,
+        createdAt
+      ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'pending_review_transactions';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<PendingReviewTransaction> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('plaid_transaction_id')) {
+      context.handle(
+          _plaidTransactionIdMeta,
+          plaidTransactionId.isAcceptableOrUnknown(
+              data['plaid_transaction_id']!, _plaidTransactionIdMeta));
+    } else if (isInserting) {
+      context.missing(_plaidTransactionIdMeta);
+    }
+    if (data.containsKey('account_id')) {
+      context.handle(_accountIdMeta,
+          accountId.isAcceptableOrUnknown(data['account_id']!, _accountIdMeta));
+    } else if (isInserting) {
+      context.missing(_accountIdMeta);
+    }
+    if (data.containsKey('amount_cents')) {
+      context.handle(
+          _amountCentsMeta,
+          amountCents.isAcceptableOrUnknown(
+              data['amount_cents']!, _amountCentsMeta));
+    } else if (isInserting) {
+      context.missing(_amountCentsMeta);
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    if (data.containsKey('payee')) {
+      context.handle(
+          _payeeMeta, payee.isAcceptableOrUnknown(data['payee']!, _payeeMeta));
+    } else if (isInserting) {
+      context.missing(_payeeMeta);
+    }
+    if (data.containsKey('reason')) {
+      context.handle(_reasonMeta,
+          reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta));
+    } else if (isInserting) {
+      context.missing(_reasonMeta);
+    }
+    if (data.containsKey('paired_plaid_transaction_id')) {
+      context.handle(
+          _pairedPlaidTransactionIdMeta,
+          pairedPlaidTransactionId.isAcceptableOrUnknown(
+              data['paired_plaid_transaction_id']!,
+              _pairedPlaidTransactionIdMeta));
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  PendingReviewTransaction map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return PendingReviewTransaction(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      plaidTransactionId: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}plaid_transaction_id'])!,
+      accountId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}account_id'])!,
+      amountCents: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}amount_cents'])!,
+      date: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
+      payee: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}payee'])!,
+      reason: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}reason'])!,
+      pairedPlaidTransactionId: attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}paired_plaid_transaction_id']),
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $PendingReviewTransactionsTable createAlias(String alias) {
+    return $PendingReviewTransactionsTable(attachedDatabase, alias);
+  }
+}
+
+class PendingReviewTransaction extends DataClass
+    implements Insertable<PendingReviewTransaction> {
+  final int id;
+  final String plaidTransactionId;
+  final int accountId;
+  final int amountCents;
+  final DateTime date;
+  final String payee;
+  final String reason;
+  final String? pairedPlaidTransactionId;
+  final DateTime createdAt;
+  const PendingReviewTransaction(
+      {required this.id,
+      required this.plaidTransactionId,
+      required this.accountId,
+      required this.amountCents,
+      required this.date,
+      required this.payee,
+      required this.reason,
+      this.pairedPlaidTransactionId,
+      required this.createdAt});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['plaid_transaction_id'] = Variable<String>(plaidTransactionId);
+    map['account_id'] = Variable<int>(accountId);
+    map['amount_cents'] = Variable<int>(amountCents);
+    map['date'] = Variable<DateTime>(date);
+    map['payee'] = Variable<String>(payee);
+    map['reason'] = Variable<String>(reason);
+    if (!nullToAbsent || pairedPlaidTransactionId != null) {
+      map['paired_plaid_transaction_id'] =
+          Variable<String>(pairedPlaidTransactionId);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  PendingReviewTransactionsCompanion toCompanion(bool nullToAbsent) {
+    return PendingReviewTransactionsCompanion(
+      id: Value(id),
+      plaidTransactionId: Value(plaidTransactionId),
+      accountId: Value(accountId),
+      amountCents: Value(amountCents),
+      date: Value(date),
+      payee: Value(payee),
+      reason: Value(reason),
+      pairedPlaidTransactionId: pairedPlaidTransactionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pairedPlaidTransactionId),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory PendingReviewTransaction.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return PendingReviewTransaction(
+      id: serializer.fromJson<int>(json['id']),
+      plaidTransactionId:
+          serializer.fromJson<String>(json['plaidTransactionId']),
+      accountId: serializer.fromJson<int>(json['accountId']),
+      amountCents: serializer.fromJson<int>(json['amountCents']),
+      date: serializer.fromJson<DateTime>(json['date']),
+      payee: serializer.fromJson<String>(json['payee']),
+      reason: serializer.fromJson<String>(json['reason']),
+      pairedPlaidTransactionId:
+          serializer.fromJson<String?>(json['pairedPlaidTransactionId']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'plaidTransactionId': serializer.toJson<String>(plaidTransactionId),
+      'accountId': serializer.toJson<int>(accountId),
+      'amountCents': serializer.toJson<int>(amountCents),
+      'date': serializer.toJson<DateTime>(date),
+      'payee': serializer.toJson<String>(payee),
+      'reason': serializer.toJson<String>(reason),
+      'pairedPlaidTransactionId':
+          serializer.toJson<String?>(pairedPlaidTransactionId),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  PendingReviewTransaction copyWith(
+          {int? id,
+          String? plaidTransactionId,
+          int? accountId,
+          int? amountCents,
+          DateTime? date,
+          String? payee,
+          String? reason,
+          Value<String?> pairedPlaidTransactionId = const Value.absent(),
+          DateTime? createdAt}) =>
+      PendingReviewTransaction(
+        id: id ?? this.id,
+        plaidTransactionId: plaidTransactionId ?? this.plaidTransactionId,
+        accountId: accountId ?? this.accountId,
+        amountCents: amountCents ?? this.amountCents,
+        date: date ?? this.date,
+        payee: payee ?? this.payee,
+        reason: reason ?? this.reason,
+        pairedPlaidTransactionId: pairedPlaidTransactionId.present
+            ? pairedPlaidTransactionId.value
+            : this.pairedPlaidTransactionId,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  PendingReviewTransaction copyWithCompanion(
+      PendingReviewTransactionsCompanion data) {
+    return PendingReviewTransaction(
+      id: data.id.present ? data.id.value : this.id,
+      plaidTransactionId: data.plaidTransactionId.present
+          ? data.plaidTransactionId.value
+          : this.plaidTransactionId,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      amountCents:
+          data.amountCents.present ? data.amountCents.value : this.amountCents,
+      date: data.date.present ? data.date.value : this.date,
+      payee: data.payee.present ? data.payee.value : this.payee,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      pairedPlaidTransactionId: data.pairedPlaidTransactionId.present
+          ? data.pairedPlaidTransactionId.value
+          : this.pairedPlaidTransactionId,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PendingReviewTransaction(')
+          ..write('id: $id, ')
+          ..write('plaidTransactionId: $plaidTransactionId, ')
+          ..write('accountId: $accountId, ')
+          ..write('amountCents: $amountCents, ')
+          ..write('date: $date, ')
+          ..write('payee: $payee, ')
+          ..write('reason: $reason, ')
+          ..write('pairedPlaidTransactionId: $pairedPlaidTransactionId, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, plaidTransactionId, accountId,
+      amountCents, date, payee, reason, pairedPlaidTransactionId, createdAt);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is PendingReviewTransaction &&
+          other.id == this.id &&
+          other.plaidTransactionId == this.plaidTransactionId &&
+          other.accountId == this.accountId &&
+          other.amountCents == this.amountCents &&
+          other.date == this.date &&
+          other.payee == this.payee &&
+          other.reason == this.reason &&
+          other.pairedPlaidTransactionId == this.pairedPlaidTransactionId &&
+          other.createdAt == this.createdAt);
+}
+
+class PendingReviewTransactionsCompanion
+    extends UpdateCompanion<PendingReviewTransaction> {
+  final Value<int> id;
+  final Value<String> plaidTransactionId;
+  final Value<int> accountId;
+  final Value<int> amountCents;
+  final Value<DateTime> date;
+  final Value<String> payee;
+  final Value<String> reason;
+  final Value<String?> pairedPlaidTransactionId;
+  final Value<DateTime> createdAt;
+  const PendingReviewTransactionsCompanion({
+    this.id = const Value.absent(),
+    this.plaidTransactionId = const Value.absent(),
+    this.accountId = const Value.absent(),
+    this.amountCents = const Value.absent(),
+    this.date = const Value.absent(),
+    this.payee = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.pairedPlaidTransactionId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  PendingReviewTransactionsCompanion.insert({
+    this.id = const Value.absent(),
+    required String plaidTransactionId,
+    required int accountId,
+    required int amountCents,
+    required DateTime date,
+    required String payee,
+    required String reason,
+    this.pairedPlaidTransactionId = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  })  : plaidTransactionId = Value(plaidTransactionId),
+        accountId = Value(accountId),
+        amountCents = Value(amountCents),
+        date = Value(date),
+        payee = Value(payee),
+        reason = Value(reason);
+  static Insertable<PendingReviewTransaction> custom({
+    Expression<int>? id,
+    Expression<String>? plaidTransactionId,
+    Expression<int>? accountId,
+    Expression<int>? amountCents,
+    Expression<DateTime>? date,
+    Expression<String>? payee,
+    Expression<String>? reason,
+    Expression<String>? pairedPlaidTransactionId,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (plaidTransactionId != null)
+        'plaid_transaction_id': plaidTransactionId,
+      if (accountId != null) 'account_id': accountId,
+      if (amountCents != null) 'amount_cents': amountCents,
+      if (date != null) 'date': date,
+      if (payee != null) 'payee': payee,
+      if (reason != null) 'reason': reason,
+      if (pairedPlaidTransactionId != null)
+        'paired_plaid_transaction_id': pairedPlaidTransactionId,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  PendingReviewTransactionsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? plaidTransactionId,
+      Value<int>? accountId,
+      Value<int>? amountCents,
+      Value<DateTime>? date,
+      Value<String>? payee,
+      Value<String>? reason,
+      Value<String?>? pairedPlaidTransactionId,
+      Value<DateTime>? createdAt}) {
+    return PendingReviewTransactionsCompanion(
+      id: id ?? this.id,
+      plaidTransactionId: plaidTransactionId ?? this.plaidTransactionId,
+      accountId: accountId ?? this.accountId,
+      amountCents: amountCents ?? this.amountCents,
+      date: date ?? this.date,
+      payee: payee ?? this.payee,
+      reason: reason ?? this.reason,
+      pairedPlaidTransactionId:
+          pairedPlaidTransactionId ?? this.pairedPlaidTransactionId,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (plaidTransactionId.present) {
+      map['plaid_transaction_id'] = Variable<String>(plaidTransactionId.value);
+    }
+    if (accountId.present) {
+      map['account_id'] = Variable<int>(accountId.value);
+    }
+    if (amountCents.present) {
+      map['amount_cents'] = Variable<int>(amountCents.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
+    if (payee.present) {
+      map['payee'] = Variable<String>(payee.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (pairedPlaidTransactionId.present) {
+      map['paired_plaid_transaction_id'] =
+          Variable<String>(pairedPlaidTransactionId.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PendingReviewTransactionsCompanion(')
+          ..write('id: $id, ')
+          ..write('plaidTransactionId: $plaidTransactionId, ')
+          ..write('accountId: $accountId, ')
+          ..write('amountCents: $amountCents, ')
+          ..write('date: $date, ')
+          ..write('payee: $payee, ')
+          ..write('reason: $reason, ')
+          ..write('pairedPlaidTransactionId: $pairedPlaidTransactionId, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
@@ -3355,6 +4195,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $BudgetSnapshotsTable(this);
   late final $PendingRecurringQueueTable pendingRecurringQueue =
       $PendingRecurringQueueTable(this);
+  late final $PlaidAccountsTable plaidAccounts = $PlaidAccountsTable(this);
+  late final $PendingReviewTransactionsTable pendingReviewTransactions =
+      $PendingReviewTransactionsTable(this);
   late final AccountsDao accountsDao = AccountsDao(this as AppDatabase);
   late final CategoriesDao categoriesDao = CategoriesDao(this as AppDatabase);
   late final TransactionsDao transactionsDao =
@@ -3376,7 +4219,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         transactions,
         netWorthSnapshots,
         budgetSnapshots,
-        pendingRecurringQueue
+        pendingRecurringQueue,
+        plaidAccounts,
+        pendingReviewTransactions
       ];
 }
 
@@ -3400,6 +4245,46 @@ typedef $$AccountsTableUpdateCompanionBuilder = AccountsCompanion Function({
   Value<DateTime> updatedAt,
   Value<bool> isDeleted,
 });
+
+final class $$AccountsTableReferences
+    extends BaseReferences<_$AppDatabase, $AccountsTable, Account> {
+  $$AccountsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$PlaidAccountsTable, List<PlaidAccount>>
+      _plaidAccountsRefsTable(_$AppDatabase db) =>
+          MultiTypedResultKey.fromTable(db.plaidAccounts,
+              aliasName: $_aliasNameGenerator(
+                  db.accounts.id, db.plaidAccounts.internalAccountId));
+
+  $$PlaidAccountsTableProcessedTableManager get plaidAccountsRefs {
+    final manager = $$PlaidAccountsTableTableManager($_db, $_db.plaidAccounts)
+        .filter(
+            (f) => f.internalAccountId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_plaidAccountsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+
+  static MultiTypedResultKey<$PendingReviewTransactionsTable,
+      List<PendingReviewTransaction>> _pendingReviewTransactionsRefsTable(
+          _$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(db.pendingReviewTransactions,
+          aliasName: $_aliasNameGenerator(
+              db.accounts.id, db.pendingReviewTransactions.accountId));
+
+  $$PendingReviewTransactionsTableProcessedTableManager
+      get pendingReviewTransactionsRefs {
+    final manager = $$PendingReviewTransactionsTableTableManager(
+            $_db, $_db.pendingReviewTransactions)
+        .filter((f) => f.accountId.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult
+        .readTableOrNull(_pendingReviewTransactionsRefsTable($_db));
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: cache));
+  }
+}
 
 class $$AccountsTableFilterComposer
     extends Composer<_$AppDatabase, $AccountsTable> {
@@ -3433,6 +4318,51 @@ class $$AccountsTableFilterComposer
 
   ColumnFilters<bool> get isDeleted => $composableBuilder(
       column: $table.isDeleted, builder: (column) => ColumnFilters(column));
+
+  Expression<bool> plaidAccountsRefs(
+      Expression<bool> Function($$PlaidAccountsTableFilterComposer f) f) {
+    final $$PlaidAccountsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.plaidAccounts,
+        getReferencedColumn: (t) => t.internalAccountId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PlaidAccountsTableFilterComposer(
+              $db: $db,
+              $table: $db.plaidAccounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<bool> pendingReviewTransactionsRefs(
+      Expression<bool> Function(
+              $$PendingReviewTransactionsTableFilterComposer f)
+          f) {
+    final $$PendingReviewTransactionsTableFilterComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.id,
+            referencedTable: $db.pendingReviewTransactions,
+            getReferencedColumn: (t) => t.accountId,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$PendingReviewTransactionsTableFilterComposer(
+                  $db: $db,
+                  $table: $db.pendingReviewTransactions,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
 }
 
 class $$AccountsTableOrderingComposer
@@ -3502,6 +4432,51 @@ class $$AccountsTableAnnotationComposer
 
   GeneratedColumn<bool> get isDeleted =>
       $composableBuilder(column: $table.isDeleted, builder: (column) => column);
+
+  Expression<T> plaidAccountsRefs<T extends Object>(
+      Expression<T> Function($$PlaidAccountsTableAnnotationComposer a) f) {
+    final $$PlaidAccountsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.id,
+        referencedTable: $db.plaidAccounts,
+        getReferencedColumn: (t) => t.internalAccountId,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$PlaidAccountsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.plaidAccounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return f(composer);
+  }
+
+  Expression<T> pendingReviewTransactionsRefs<T extends Object>(
+      Expression<T> Function(
+              $$PendingReviewTransactionsTableAnnotationComposer a)
+          f) {
+    final $$PendingReviewTransactionsTableAnnotationComposer composer =
+        $composerBuilder(
+            composer: this,
+            getCurrentColumn: (t) => t.id,
+            referencedTable: $db.pendingReviewTransactions,
+            getReferencedColumn: (t) => t.accountId,
+            builder: (joinBuilder,
+                    {$addJoinBuilderToRootComposer,
+                    $removeJoinBuilderFromRootComposer}) =>
+                $$PendingReviewTransactionsTableAnnotationComposer(
+                  $db: $db,
+                  $table: $db.pendingReviewTransactions,
+                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                  joinBuilder: joinBuilder,
+                  $removeJoinBuilderFromRootComposer:
+                      $removeJoinBuilderFromRootComposer,
+                ));
+    return f(composer);
+  }
 }
 
 class $$AccountsTableTableManager extends RootTableManager<
@@ -3513,9 +4488,10 @@ class $$AccountsTableTableManager extends RootTableManager<
     $$AccountsTableAnnotationComposer,
     $$AccountsTableCreateCompanionBuilder,
     $$AccountsTableUpdateCompanionBuilder,
-    (Account, BaseReferences<_$AppDatabase, $AccountsTable, Account>),
+    (Account, $$AccountsTableReferences),
     Account,
-    PrefetchHooks Function()> {
+    PrefetchHooks Function(
+        {bool plaidAccountsRefs, bool pendingReviewTransactionsRefs})> {
   $$AccountsTableTableManager(_$AppDatabase db, $AccountsTable table)
       : super(TableManagerState(
           db: db,
@@ -3567,9 +4543,50 @@ class $$AccountsTableTableManager extends RootTableManager<
             isDeleted: isDeleted,
           ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map((e) =>
+                  (e.readTable(table), $$AccountsTableReferences(db, table, e)))
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: (
+              {plaidAccountsRefs = false,
+              pendingReviewTransactionsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (plaidAccountsRefs) db.plaidAccounts,
+                if (pendingReviewTransactionsRefs) db.pendingReviewTransactions
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (plaidAccountsRefs)
+                    await $_getPrefetchedData<Account, $AccountsTable,
+                            PlaidAccount>(
+                        currentTable: table,
+                        referencedTable: $$AccountsTableReferences
+                            ._plaidAccountsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$AccountsTableReferences(db, table, p0)
+                                .plaidAccountsRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.internalAccountId == item.id),
+                        typedResults: items),
+                  if (pendingReviewTransactionsRefs)
+                    await $_getPrefetchedData<Account, $AccountsTable, PendingReviewTransaction>(
+                        currentTable: table,
+                        referencedTable: $$AccountsTableReferences
+                            ._pendingReviewTransactionsRefsTable(db),
+                        managerFromTypedResult: (p0) =>
+                            $$AccountsTableReferences(db, table, p0)
+                                .pendingReviewTransactionsRefs,
+                        referencedItemsForCurrentItem:
+                            (item, referencedItems) => referencedItems
+                                .where((e) => e.accountId == item.id),
+                        typedResults: items)
+                ];
+              },
+            );
+          },
         ));
 }
 
@@ -3582,9 +4599,10 @@ typedef $$AccountsTableProcessedTableManager = ProcessedTableManager<
     $$AccountsTableAnnotationComposer,
     $$AccountsTableCreateCompanionBuilder,
     $$AccountsTableUpdateCompanionBuilder,
-    (Account, BaseReferences<_$AppDatabase, $AccountsTable, Account>),
+    (Account, $$AccountsTableReferences),
     Account,
-    PrefetchHooks Function()>;
+    PrefetchHooks Function(
+        {bool plaidAccountsRefs, bool pendingReviewTransactionsRefs})>;
 typedef $$CategoryGroupsTableCreateCompanionBuilder = CategoryGroupsCompanion
     Function({
   Value<int> id,
@@ -6119,6 +7137,636 @@ typedef $$PendingRecurringQueueTableProcessedTableManager
         (PendingRecurringQueueData, $$PendingRecurringQueueTableReferences),
         PendingRecurringQueueData,
         PrefetchHooks Function({bool sourceTransactionId})>;
+typedef $$PlaidAccountsTableCreateCompanionBuilder = PlaidAccountsCompanion
+    Function({
+  Value<int> id,
+  required String plaidAccountId,
+  required int internalAccountId,
+  required String institutionName,
+  required String mask,
+  Value<DateTime?> syncedAt,
+});
+typedef $$PlaidAccountsTableUpdateCompanionBuilder = PlaidAccountsCompanion
+    Function({
+  Value<int> id,
+  Value<String> plaidAccountId,
+  Value<int> internalAccountId,
+  Value<String> institutionName,
+  Value<String> mask,
+  Value<DateTime?> syncedAt,
+});
+
+final class $$PlaidAccountsTableReferences
+    extends BaseReferences<_$AppDatabase, $PlaidAccountsTable, PlaidAccount> {
+  $$PlaidAccountsTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $AccountsTable _internalAccountIdTable(_$AppDatabase db) =>
+      db.accounts.createAlias($_aliasNameGenerator(
+          db.plaidAccounts.internalAccountId, db.accounts.id));
+
+  $$AccountsTableProcessedTableManager get internalAccountId {
+    final $_column = $_itemColumn<int>('internal_account_id')!;
+
+    final manager = $$AccountsTableTableManager($_db, $_db.accounts)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_internalAccountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$PlaidAccountsTableFilterComposer
+    extends Composer<_$AppDatabase, $PlaidAccountsTable> {
+  $$PlaidAccountsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get plaidAccountId => $composableBuilder(
+      column: $table.plaidAccountId,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get institutionName => $composableBuilder(
+      column: $table.institutionName,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get mask => $composableBuilder(
+      column: $table.mask, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get syncedAt => $composableBuilder(
+      column: $table.syncedAt, builder: (column) => ColumnFilters(column));
+
+  $$AccountsTableFilterComposer get internalAccountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.internalAccountId,
+        referencedTable: $db.accounts,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AccountsTableFilterComposer(
+              $db: $db,
+              $table: $db.accounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PlaidAccountsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PlaidAccountsTable> {
+  $$PlaidAccountsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get plaidAccountId => $composableBuilder(
+      column: $table.plaidAccountId,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get institutionName => $composableBuilder(
+      column: $table.institutionName,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get mask => $composableBuilder(
+      column: $table.mask, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get syncedAt => $composableBuilder(
+      column: $table.syncedAt, builder: (column) => ColumnOrderings(column));
+
+  $$AccountsTableOrderingComposer get internalAccountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.internalAccountId,
+        referencedTable: $db.accounts,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AccountsTableOrderingComposer(
+              $db: $db,
+              $table: $db.accounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PlaidAccountsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PlaidAccountsTable> {
+  $$PlaidAccountsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get plaidAccountId => $composableBuilder(
+      column: $table.plaidAccountId, builder: (column) => column);
+
+  GeneratedColumn<String> get institutionName => $composableBuilder(
+      column: $table.institutionName, builder: (column) => column);
+
+  GeneratedColumn<String> get mask =>
+      $composableBuilder(column: $table.mask, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get syncedAt =>
+      $composableBuilder(column: $table.syncedAt, builder: (column) => column);
+
+  $$AccountsTableAnnotationComposer get internalAccountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.internalAccountId,
+        referencedTable: $db.accounts,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AccountsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.accounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PlaidAccountsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $PlaidAccountsTable,
+    PlaidAccount,
+    $$PlaidAccountsTableFilterComposer,
+    $$PlaidAccountsTableOrderingComposer,
+    $$PlaidAccountsTableAnnotationComposer,
+    $$PlaidAccountsTableCreateCompanionBuilder,
+    $$PlaidAccountsTableUpdateCompanionBuilder,
+    (PlaidAccount, $$PlaidAccountsTableReferences),
+    PlaidAccount,
+    PrefetchHooks Function({bool internalAccountId})> {
+  $$PlaidAccountsTableTableManager(_$AppDatabase db, $PlaidAccountsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PlaidAccountsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PlaidAccountsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PlaidAccountsTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> plaidAccountId = const Value.absent(),
+            Value<int> internalAccountId = const Value.absent(),
+            Value<String> institutionName = const Value.absent(),
+            Value<String> mask = const Value.absent(),
+            Value<DateTime?> syncedAt = const Value.absent(),
+          }) =>
+              PlaidAccountsCompanion(
+            id: id,
+            plaidAccountId: plaidAccountId,
+            internalAccountId: internalAccountId,
+            institutionName: institutionName,
+            mask: mask,
+            syncedAt: syncedAt,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String plaidAccountId,
+            required int internalAccountId,
+            required String institutionName,
+            required String mask,
+            Value<DateTime?> syncedAt = const Value.absent(),
+          }) =>
+              PlaidAccountsCompanion.insert(
+            id: id,
+            plaidAccountId: plaidAccountId,
+            internalAccountId: internalAccountId,
+            institutionName: institutionName,
+            mask: mask,
+            syncedAt: syncedAt,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$PlaidAccountsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({internalAccountId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (internalAccountId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.internalAccountId,
+                    referencedTable: $$PlaidAccountsTableReferences
+                        ._internalAccountIdTable(db),
+                    referencedColumn: $$PlaidAccountsTableReferences
+                        ._internalAccountIdTable(db)
+                        .id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$PlaidAccountsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $PlaidAccountsTable,
+    PlaidAccount,
+    $$PlaidAccountsTableFilterComposer,
+    $$PlaidAccountsTableOrderingComposer,
+    $$PlaidAccountsTableAnnotationComposer,
+    $$PlaidAccountsTableCreateCompanionBuilder,
+    $$PlaidAccountsTableUpdateCompanionBuilder,
+    (PlaidAccount, $$PlaidAccountsTableReferences),
+    PlaidAccount,
+    PrefetchHooks Function({bool internalAccountId})>;
+typedef $$PendingReviewTransactionsTableCreateCompanionBuilder
+    = PendingReviewTransactionsCompanion Function({
+  Value<int> id,
+  required String plaidTransactionId,
+  required int accountId,
+  required int amountCents,
+  required DateTime date,
+  required String payee,
+  required String reason,
+  Value<String?> pairedPlaidTransactionId,
+  Value<DateTime> createdAt,
+});
+typedef $$PendingReviewTransactionsTableUpdateCompanionBuilder
+    = PendingReviewTransactionsCompanion Function({
+  Value<int> id,
+  Value<String> plaidTransactionId,
+  Value<int> accountId,
+  Value<int> amountCents,
+  Value<DateTime> date,
+  Value<String> payee,
+  Value<String> reason,
+  Value<String?> pairedPlaidTransactionId,
+  Value<DateTime> createdAt,
+});
+
+final class $$PendingReviewTransactionsTableReferences extends BaseReferences<
+    _$AppDatabase, $PendingReviewTransactionsTable, PendingReviewTransaction> {
+  $$PendingReviewTransactionsTableReferences(
+      super.$_db, super.$_table, super.$_typedResult);
+
+  static $AccountsTable _accountIdTable(_$AppDatabase db) =>
+      db.accounts.createAlias($_aliasNameGenerator(
+          db.pendingReviewTransactions.accountId, db.accounts.id));
+
+  $$AccountsTableProcessedTableManager get accountId {
+    final $_column = $_itemColumn<int>('account_id')!;
+
+    final manager = $$AccountsTableTableManager($_db, $_db.accounts)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_accountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+}
+
+class $$PendingReviewTransactionsTableFilterComposer
+    extends Composer<_$AppDatabase, $PendingReviewTransactionsTable> {
+  $$PendingReviewTransactionsTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get plaidTransactionId => $composableBuilder(
+      column: $table.plaidTransactionId,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get amountCents => $composableBuilder(
+      column: $table.amountCents, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get date => $composableBuilder(
+      column: $table.date, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get payee => $composableBuilder(
+      column: $table.payee, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get reason => $composableBuilder(
+      column: $table.reason, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get pairedPlaidTransactionId => $composableBuilder(
+      column: $table.pairedPlaidTransactionId,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+
+  $$AccountsTableFilterComposer get accountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.accountId,
+        referencedTable: $db.accounts,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AccountsTableFilterComposer(
+              $db: $db,
+              $table: $db.accounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PendingReviewTransactionsTableOrderingComposer
+    extends Composer<_$AppDatabase, $PendingReviewTransactionsTable> {
+  $$PendingReviewTransactionsTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get plaidTransactionId => $composableBuilder(
+      column: $table.plaidTransactionId,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get amountCents => $composableBuilder(
+      column: $table.amountCents, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get date => $composableBuilder(
+      column: $table.date, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get payee => $composableBuilder(
+      column: $table.payee, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get reason => $composableBuilder(
+      column: $table.reason, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get pairedPlaidTransactionId => $composableBuilder(
+      column: $table.pairedPlaidTransactionId,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+
+  $$AccountsTableOrderingComposer get accountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.accountId,
+        referencedTable: $db.accounts,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AccountsTableOrderingComposer(
+              $db: $db,
+              $table: $db.accounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PendingReviewTransactionsTableAnnotationComposer
+    extends Composer<_$AppDatabase, $PendingReviewTransactionsTable> {
+  $$PendingReviewTransactionsTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get plaidTransactionId => $composableBuilder(
+      column: $table.plaidTransactionId, builder: (column) => column);
+
+  GeneratedColumn<int> get amountCents => $composableBuilder(
+      column: $table.amountCents, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
+
+  GeneratedColumn<String> get payee =>
+      $composableBuilder(column: $table.payee, builder: (column) => column);
+
+  GeneratedColumn<String> get reason =>
+      $composableBuilder(column: $table.reason, builder: (column) => column);
+
+  GeneratedColumn<String> get pairedPlaidTransactionId => $composableBuilder(
+      column: $table.pairedPlaidTransactionId, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$AccountsTableAnnotationComposer get accountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.accountId,
+        referencedTable: $db.accounts,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AccountsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.accounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+}
+
+class $$PendingReviewTransactionsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $PendingReviewTransactionsTable,
+    PendingReviewTransaction,
+    $$PendingReviewTransactionsTableFilterComposer,
+    $$PendingReviewTransactionsTableOrderingComposer,
+    $$PendingReviewTransactionsTableAnnotationComposer,
+    $$PendingReviewTransactionsTableCreateCompanionBuilder,
+    $$PendingReviewTransactionsTableUpdateCompanionBuilder,
+    (PendingReviewTransaction, $$PendingReviewTransactionsTableReferences),
+    PendingReviewTransaction,
+    PrefetchHooks Function({bool accountId})> {
+  $$PendingReviewTransactionsTableTableManager(
+      _$AppDatabase db, $PendingReviewTransactionsTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$PendingReviewTransactionsTableFilterComposer(
+                  $db: db, $table: table),
+          createOrderingComposer: () =>
+              $$PendingReviewTransactionsTableOrderingComposer(
+                  $db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$PendingReviewTransactionsTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> plaidTransactionId = const Value.absent(),
+            Value<int> accountId = const Value.absent(),
+            Value<int> amountCents = const Value.absent(),
+            Value<DateTime> date = const Value.absent(),
+            Value<String> payee = const Value.absent(),
+            Value<String> reason = const Value.absent(),
+            Value<String?> pairedPlaidTransactionId = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+          }) =>
+              PendingReviewTransactionsCompanion(
+            id: id,
+            plaidTransactionId: plaidTransactionId,
+            accountId: accountId,
+            amountCents: amountCents,
+            date: date,
+            payee: payee,
+            reason: reason,
+            pairedPlaidTransactionId: pairedPlaidTransactionId,
+            createdAt: createdAt,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String plaidTransactionId,
+            required int accountId,
+            required int amountCents,
+            required DateTime date,
+            required String payee,
+            required String reason,
+            Value<String?> pairedPlaidTransactionId = const Value.absent(),
+            Value<DateTime> createdAt = const Value.absent(),
+          }) =>
+              PendingReviewTransactionsCompanion.insert(
+            id: id,
+            plaidTransactionId: plaidTransactionId,
+            accountId: accountId,
+            amountCents: amountCents,
+            date: date,
+            payee: payee,
+            reason: reason,
+            pairedPlaidTransactionId: pairedPlaidTransactionId,
+            createdAt: createdAt,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (
+                    e.readTable(table),
+                    $$PendingReviewTransactionsTableReferences(db, table, e)
+                  ))
+              .toList(),
+          prefetchHooksCallback: ({accountId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins: <
+                  T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic>>(state) {
+                if (accountId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.accountId,
+                    referencedTable: $$PendingReviewTransactionsTableReferences
+                        ._accountIdTable(db),
+                    referencedColumn: $$PendingReviewTransactionsTableReferences
+                        ._accountIdTable(db)
+                        .id,
+                  ) as T;
+                }
+
+                return state;
+              },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ));
+}
+
+typedef $$PendingReviewTransactionsTableProcessedTableManager
+    = ProcessedTableManager<
+        _$AppDatabase,
+        $PendingReviewTransactionsTable,
+        PendingReviewTransaction,
+        $$PendingReviewTransactionsTableFilterComposer,
+        $$PendingReviewTransactionsTableOrderingComposer,
+        $$PendingReviewTransactionsTableAnnotationComposer,
+        $$PendingReviewTransactionsTableCreateCompanionBuilder,
+        $$PendingReviewTransactionsTableUpdateCompanionBuilder,
+        (PendingReviewTransaction, $$PendingReviewTransactionsTableReferences),
+        PendingReviewTransaction,
+        PrefetchHooks Function({bool accountId})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
@@ -6139,4 +7787,9 @@ class $AppDatabaseManager {
       $$BudgetSnapshotsTableTableManager(_db, _db.budgetSnapshots);
   $$PendingRecurringQueueTableTableManager get pendingRecurringQueue =>
       $$PendingRecurringQueueTableTableManager(_db, _db.pendingRecurringQueue);
+  $$PlaidAccountsTableTableManager get plaidAccounts =>
+      $$PlaidAccountsTableTableManager(_db, _db.plaidAccounts);
+  $$PendingReviewTransactionsTableTableManager get pendingReviewTransactions =>
+      $$PendingReviewTransactionsTableTableManager(
+          _db, _db.pendingReviewTransactions);
 }
