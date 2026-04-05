@@ -1,8 +1,6 @@
-import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/database/providers.dart';
-import '../../core/plaid/plaid_models.dart';
 import 'bank_sync_providers.dart';
 
 class BankSyncScreen extends ConsumerStatefulWidget {

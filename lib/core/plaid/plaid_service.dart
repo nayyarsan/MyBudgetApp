@@ -77,7 +77,7 @@ class PlaidService {
         .httpsCallable('fetchTransactions')
         .call<Map>({'since': sinceDate});
 
-    final data = result.data as Map;
+    final data = result.data;
     final connected = data['connected'] as bool? ?? false;
 
     if (!connected) {

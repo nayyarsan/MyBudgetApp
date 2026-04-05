@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import '../../core/database/database.dart';
 import '../../core/database/providers.dart';
 import '../../core/utils/currency_formatter.dart';
-import 'bank_sync_providers.dart';
 
 class ReviewScreen extends ConsumerWidget {
   const ReviewScreen({super.key});
