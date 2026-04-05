@@ -10,6 +10,7 @@ import 'daos/transactions_dao.dart';
 import 'daos/budget_dao.dart';
 import 'daos/budget_snapshots_dao.dart';
 import 'daos/recurring_queue_dao.dart';
+import 'daos/plaid_dao.dart';
 
 part 'database.g.dart';
 
@@ -33,13 +34,15 @@ part 'database.g.dart';
     BudgetDao,
     BudgetSnapshotsDao,
     RecurringQueueDao,
-    // PlaidDao will be added in Task 7
+    PlaidDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   AppDatabase.forTesting() : super(NativeDatabase.memory());
+
+  PlaidDao get plaidDao => PlaidDao(this);
 
   @override
   int get schemaVersion => 4;
