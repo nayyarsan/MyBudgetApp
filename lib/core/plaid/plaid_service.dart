@@ -51,7 +51,8 @@ class PlaidService {
       onExit(event.error?.displayMessage ?? 'cancelled');
     });
 
-    await PlaidLink.open(configuration: config);
+    await PlaidLink.create(configuration: config);
+    await PlaidLink.open();
   }
 
   /// Fetches transactions from Plaid since the last sync date.
