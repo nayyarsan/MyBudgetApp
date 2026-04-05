@@ -143,6 +143,10 @@ class PendingReviewTransactions extends Table {
   TextColumn get payee => text()();
   TextColumn get reason => text()();
   TextColumn get pairedPlaidTransactionId => text().nullable()();
+  // For ambiguous_transfer: the internal account ID of the paired leg,
+  // so ReviewScreen can insert both legs correctly.
+  IntColumn get pairedAccountId =>
+      integer().nullable().references(Accounts, #id)();
   DateTimeColumn get createdAt =>
       dateTime().withDefault(currentDateAndTime)();
 }

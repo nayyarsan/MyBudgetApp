@@ -3753,6 +3753,15 @@ class $PendingReviewTransactionsTable extends PendingReviewTransactions
   late final GeneratedColumn<String> pairedPlaidTransactionId =
       GeneratedColumn<String>('paired_plaid_transaction_id', aliasedName, true,
           type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _pairedAccountIdMeta =
+      const VerificationMeta('pairedAccountId');
+  @override
+  late final GeneratedColumn<int> pairedAccountId = GeneratedColumn<int>(
+      'paired_account_id', aliasedName, true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES accounts (id)'));
   static const VerificationMeta _createdAtMeta =
       const VerificationMeta('createdAt');
   @override
@@ -3771,6 +3780,7 @@ class $PendingReviewTransactionsTable extends PendingReviewTransactions
         payee,
         reason,
         pairedPlaidTransactionId,
+        pairedAccountId,
         createdAt
       ];
   @override
@@ -3834,6 +3844,12 @@ class $PendingReviewTransactionsTable extends PendingReviewTransactions
               data['paired_plaid_transaction_id']!,
               _pairedPlaidTransactionIdMeta));
     }
+    if (data.containsKey('paired_account_id')) {
+      context.handle(
+          _pairedAccountIdMeta,
+          pairedAccountId.isAcceptableOrUnknown(
+              data['paired_account_id']!, _pairedAccountIdMeta));
+    }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
@@ -3865,6 +3881,8 @@ class $PendingReviewTransactionsTable extends PendingReviewTransactions
       pairedPlaidTransactionId: attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}paired_plaid_transaction_id']),
+      pairedAccountId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}paired_account_id']),
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
     );
@@ -3886,6 +3904,7 @@ class PendingReviewTransaction extends DataClass
   final String payee;
   final String reason;
   final String? pairedPlaidTransactionId;
+  final int? pairedAccountId;
   final DateTime createdAt;
   const PendingReviewTransaction(
       {required this.id,
@@ -3896,6 +3915,7 @@ class PendingReviewTransaction extends DataClass
       required this.payee,
       required this.reason,
       this.pairedPlaidTransactionId,
+      this.pairedAccountId,
       required this.createdAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -3910,6 +3930,9 @@ class PendingReviewTransaction extends DataClass
     if (!nullToAbsent || pairedPlaidTransactionId != null) {
       map['paired_plaid_transaction_id'] =
           Variable<String>(pairedPlaidTransactionId);
+    }
+    if (!nullToAbsent || pairedAccountId != null) {
+      map['paired_account_id'] = Variable<int>(pairedAccountId);
     }
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
@@ -3927,6 +3950,9 @@ class PendingReviewTransaction extends DataClass
       pairedPlaidTransactionId: pairedPlaidTransactionId == null && nullToAbsent
           ? const Value.absent()
           : Value(pairedPlaidTransactionId),
+      pairedAccountId: pairedAccountId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pairedAccountId),
       createdAt: Value(createdAt),
     );
   }
@@ -3945,6 +3971,7 @@ class PendingReviewTransaction extends DataClass
       reason: serializer.fromJson<String>(json['reason']),
       pairedPlaidTransactionId:
           serializer.fromJson<String?>(json['pairedPlaidTransactionId']),
+      pairedAccountId: serializer.fromJson<int?>(json['pairedAccountId']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -3961,6 +3988,7 @@ class PendingReviewTransaction extends DataClass
       'reason': serializer.toJson<String>(reason),
       'pairedPlaidTransactionId':
           serializer.toJson<String?>(pairedPlaidTransactionId),
+      'pairedAccountId': serializer.toJson<int?>(pairedAccountId),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
@@ -3974,6 +4002,7 @@ class PendingReviewTransaction extends DataClass
           String? payee,
           String? reason,
           Value<String?> pairedPlaidTransactionId = const Value.absent(),
+          Value<int?> pairedAccountId = const Value.absent(),
           DateTime? createdAt}) =>
       PendingReviewTransaction(
         id: id ?? this.id,
@@ -3986,6 +4015,9 @@ class PendingReviewTransaction extends DataClass
         pairedPlaidTransactionId: pairedPlaidTransactionId.present
             ? pairedPlaidTransactionId.value
             : this.pairedPlaidTransactionId,
+        pairedAccountId: pairedAccountId.present
+            ? pairedAccountId.value
+            : this.pairedAccountId,
         createdAt: createdAt ?? this.createdAt,
       );
   PendingReviewTransaction copyWithCompanion(
@@ -4004,6 +4036,9 @@ class PendingReviewTransaction extends DataClass
       pairedPlaidTransactionId: data.pairedPlaidTransactionId.present
           ? data.pairedPlaidTransactionId.value
           : this.pairedPlaidTransactionId,
+      pairedAccountId: data.pairedAccountId.present
+          ? data.pairedAccountId.value
+          : this.pairedAccountId,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
     );
   }
@@ -4019,14 +4054,24 @@ class PendingReviewTransaction extends DataClass
           ..write('payee: $payee, ')
           ..write('reason: $reason, ')
           ..write('pairedPlaidTransactionId: $pairedPlaidTransactionId, ')
+          ..write('pairedAccountId: $pairedAccountId, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, plaidTransactionId, accountId,
-      amountCents, date, payee, reason, pairedPlaidTransactionId, createdAt);
+  int get hashCode => Object.hash(
+      id,
+      plaidTransactionId,
+      accountId,
+      amountCents,
+      date,
+      payee,
+      reason,
+      pairedPlaidTransactionId,
+      pairedAccountId,
+      createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -4039,6 +4084,7 @@ class PendingReviewTransaction extends DataClass
           other.payee == this.payee &&
           other.reason == this.reason &&
           other.pairedPlaidTransactionId == this.pairedPlaidTransactionId &&
+          other.pairedAccountId == this.pairedAccountId &&
           other.createdAt == this.createdAt);
 }
 
@@ -4052,6 +4098,7 @@ class PendingReviewTransactionsCompanion
   final Value<String> payee;
   final Value<String> reason;
   final Value<String?> pairedPlaidTransactionId;
+  final Value<int?> pairedAccountId;
   final Value<DateTime> createdAt;
   const PendingReviewTransactionsCompanion({
     this.id = const Value.absent(),
@@ -4062,6 +4109,7 @@ class PendingReviewTransactionsCompanion
     this.payee = const Value.absent(),
     this.reason = const Value.absent(),
     this.pairedPlaidTransactionId = const Value.absent(),
+    this.pairedAccountId = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
   PendingReviewTransactionsCompanion.insert({
@@ -4073,6 +4121,7 @@ class PendingReviewTransactionsCompanion
     required String payee,
     required String reason,
     this.pairedPlaidTransactionId = const Value.absent(),
+    this.pairedAccountId = const Value.absent(),
     this.createdAt = const Value.absent(),
   })  : plaidTransactionId = Value(plaidTransactionId),
         accountId = Value(accountId),
@@ -4089,6 +4138,7 @@ class PendingReviewTransactionsCompanion
     Expression<String>? payee,
     Expression<String>? reason,
     Expression<String>? pairedPlaidTransactionId,
+    Expression<int>? pairedAccountId,
     Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
@@ -4102,6 +4152,7 @@ class PendingReviewTransactionsCompanion
       if (reason != null) 'reason': reason,
       if (pairedPlaidTransactionId != null)
         'paired_plaid_transaction_id': pairedPlaidTransactionId,
+      if (pairedAccountId != null) 'paired_account_id': pairedAccountId,
       if (createdAt != null) 'created_at': createdAt,
     });
   }
@@ -4115,6 +4166,7 @@ class PendingReviewTransactionsCompanion
       Value<String>? payee,
       Value<String>? reason,
       Value<String?>? pairedPlaidTransactionId,
+      Value<int?>? pairedAccountId,
       Value<DateTime>? createdAt}) {
     return PendingReviewTransactionsCompanion(
       id: id ?? this.id,
@@ -4126,6 +4178,7 @@ class PendingReviewTransactionsCompanion
       reason: reason ?? this.reason,
       pairedPlaidTransactionId:
           pairedPlaidTransactionId ?? this.pairedPlaidTransactionId,
+      pairedAccountId: pairedAccountId ?? this.pairedAccountId,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -4158,6 +4211,9 @@ class PendingReviewTransactionsCompanion
       map['paired_plaid_transaction_id'] =
           Variable<String>(pairedPlaidTransactionId.value);
     }
+    if (pairedAccountId.present) {
+      map['paired_account_id'] = Variable<int>(pairedAccountId.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -4175,6 +4231,7 @@ class PendingReviewTransactionsCompanion
           ..write('payee: $payee, ')
           ..write('reason: $reason, ')
           ..write('pairedPlaidTransactionId: $pairedPlaidTransactionId, ')
+          ..write('pairedAccountId: $pairedAccountId, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
@@ -4266,25 +4323,6 @@ final class $$AccountsTableReferences
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: cache));
   }
-
-  static MultiTypedResultKey<$PendingReviewTransactionsTable,
-      List<PendingReviewTransaction>> _pendingReviewTransactionsRefsTable(
-          _$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(db.pendingReviewTransactions,
-          aliasName: $_aliasNameGenerator(
-              db.accounts.id, db.pendingReviewTransactions.accountId));
-
-  $$PendingReviewTransactionsTableProcessedTableManager
-      get pendingReviewTransactionsRefs {
-    final manager = $$PendingReviewTransactionsTableTableManager(
-            $_db, $_db.pendingReviewTransactions)
-        .filter((f) => f.accountId.id.sqlEquals($_itemColumn<int>('id')!));
-
-    final cache = $_typedResult
-        .readTableOrNull(_pendingReviewTransactionsRefsTable($_db));
-    return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: cache));
-  }
 }
 
 class $$AccountsTableFilterComposer
@@ -4338,30 +4376,6 @@ class $$AccountsTableFilterComposer
               $removeJoinBuilderFromRootComposer:
                   $removeJoinBuilderFromRootComposer,
             ));
-    return f(composer);
-  }
-
-  Expression<bool> pendingReviewTransactionsRefs(
-      Expression<bool> Function(
-              $$PendingReviewTransactionsTableFilterComposer f)
-          f) {
-    final $$PendingReviewTransactionsTableFilterComposer composer =
-        $composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.id,
-            referencedTable: $db.pendingReviewTransactions,
-            getReferencedColumn: (t) => t.accountId,
-            builder: (joinBuilder,
-                    {$addJoinBuilderToRootComposer,
-                    $removeJoinBuilderFromRootComposer}) =>
-                $$PendingReviewTransactionsTableFilterComposer(
-                  $db: $db,
-                  $table: $db.pendingReviewTransactions,
-                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                  joinBuilder: joinBuilder,
-                  $removeJoinBuilderFromRootComposer:
-                      $removeJoinBuilderFromRootComposer,
-                ));
     return f(composer);
   }
 }
@@ -4454,30 +4468,6 @@ class $$AccountsTableAnnotationComposer
             ));
     return f(composer);
   }
-
-  Expression<T> pendingReviewTransactionsRefs<T extends Object>(
-      Expression<T> Function(
-              $$PendingReviewTransactionsTableAnnotationComposer a)
-          f) {
-    final $$PendingReviewTransactionsTableAnnotationComposer composer =
-        $composerBuilder(
-            composer: this,
-            getCurrentColumn: (t) => t.id,
-            referencedTable: $db.pendingReviewTransactions,
-            getReferencedColumn: (t) => t.accountId,
-            builder: (joinBuilder,
-                    {$addJoinBuilderToRootComposer,
-                    $removeJoinBuilderFromRootComposer}) =>
-                $$PendingReviewTransactionsTableAnnotationComposer(
-                  $db: $db,
-                  $table: $db.pendingReviewTransactions,
-                  $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                  joinBuilder: joinBuilder,
-                  $removeJoinBuilderFromRootComposer:
-                      $removeJoinBuilderFromRootComposer,
-                ));
-    return f(composer);
-  }
 }
 
 class $$AccountsTableTableManager extends RootTableManager<
@@ -4491,8 +4481,7 @@ class $$AccountsTableTableManager extends RootTableManager<
     $$AccountsTableUpdateCompanionBuilder,
     (Account, $$AccountsTableReferences),
     Account,
-    PrefetchHooks Function(
-        {bool plaidAccountsRefs, bool pendingReviewTransactionsRefs})> {
+    PrefetchHooks Function({bool plaidAccountsRefs})> {
   $$AccountsTableTableManager(_$AppDatabase db, $AccountsTable table)
       : super(TableManagerState(
           db: db,
@@ -4547,14 +4536,11 @@ class $$AccountsTableTableManager extends RootTableManager<
               .map((e) =>
                   (e.readTable(table), $$AccountsTableReferences(db, table, e)))
               .toList(),
-          prefetchHooksCallback: (
-              {plaidAccountsRefs = false,
-              pendingReviewTransactionsRefs = false}) {
+          prefetchHooksCallback: ({plaidAccountsRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
-                if (plaidAccountsRefs) db.plaidAccounts,
-                if (pendingReviewTransactionsRefs) db.pendingReviewTransactions
+                if (plaidAccountsRefs) db.plaidAccounts
               ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
@@ -4571,18 +4557,6 @@ class $$AccountsTableTableManager extends RootTableManager<
                         referencedItemsForCurrentItem:
                             (item, referencedItems) => referencedItems
                                 .where((e) => e.internalAccountId == item.id),
-                        typedResults: items),
-                  if (pendingReviewTransactionsRefs)
-                    await $_getPrefetchedData<Account, $AccountsTable, PendingReviewTransaction>(
-                        currentTable: table,
-                        referencedTable: $$AccountsTableReferences
-                            ._pendingReviewTransactionsRefsTable(db),
-                        managerFromTypedResult: (p0) =>
-                            $$AccountsTableReferences(db, table, p0)
-                                .pendingReviewTransactionsRefs,
-                        referencedItemsForCurrentItem:
-                            (item, referencedItems) => referencedItems
-                                .where((e) => e.accountId == item.id),
                         typedResults: items)
                 ];
               },
@@ -4602,8 +4576,7 @@ typedef $$AccountsTableProcessedTableManager = ProcessedTableManager<
     $$AccountsTableUpdateCompanionBuilder,
     (Account, $$AccountsTableReferences),
     Account,
-    PrefetchHooks Function(
-        {bool plaidAccountsRefs, bool pendingReviewTransactionsRefs})>;
+    PrefetchHooks Function({bool plaidAccountsRefs})>;
 typedef $$CategoryGroupsTableCreateCompanionBuilder = CategoryGroupsCompanion
     Function({
   Value<int> id,
@@ -7438,6 +7411,7 @@ typedef $$PendingReviewTransactionsTableCreateCompanionBuilder
   required String payee,
   required String reason,
   Value<String?> pairedPlaidTransactionId,
+  Value<int?> pairedAccountId,
   Value<DateTime> createdAt,
 });
 typedef $$PendingReviewTransactionsTableUpdateCompanionBuilder
@@ -7450,6 +7424,7 @@ typedef $$PendingReviewTransactionsTableUpdateCompanionBuilder
   Value<String> payee,
   Value<String> reason,
   Value<String?> pairedPlaidTransactionId,
+  Value<int?> pairedAccountId,
   Value<DateTime> createdAt,
 });
 
@@ -7468,6 +7443,21 @@ final class $$PendingReviewTransactionsTableReferences extends BaseReferences<
     final manager = $$AccountsTableTableManager($_db, $_db.accounts)
         .filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_accountIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+        manager.$state.copyWith(prefetchedData: [item]));
+  }
+
+  static $AccountsTable _pairedAccountIdTable(_$AppDatabase db) =>
+      db.accounts.createAlias($_aliasNameGenerator(
+          db.pendingReviewTransactions.pairedAccountId, db.accounts.id));
+
+  $$AccountsTableProcessedTableManager? get pairedAccountId {
+    final $_column = $_itemColumn<int>('paired_account_id');
+    if ($_column == null) return null;
+    final manager = $$AccountsTableTableManager($_db, $_db.accounts)
+        .filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_pairedAccountIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
         manager.$state.copyWith(prefetchedData: [item]));
@@ -7513,6 +7503,26 @@ class $$PendingReviewTransactionsTableFilterComposer
     final $$AccountsTableFilterComposer composer = $composerBuilder(
         composer: this,
         getCurrentColumn: (t) => t.accountId,
+        referencedTable: $db.accounts,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AccountsTableFilterComposer(
+              $db: $db,
+              $table: $db.accounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
+
+  $$AccountsTableFilterComposer get pairedAccountId {
+    final $$AccountsTableFilterComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.pairedAccountId,
         referencedTable: $db.accounts,
         getReferencedColumn: (t) => t.id,
         builder: (joinBuilder,
@@ -7584,6 +7594,26 @@ class $$PendingReviewTransactionsTableOrderingComposer
             ));
     return composer;
   }
+
+  $$AccountsTableOrderingComposer get pairedAccountId {
+    final $$AccountsTableOrderingComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.pairedAccountId,
+        referencedTable: $db.accounts,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AccountsTableOrderingComposer(
+              $db: $db,
+              $table: $db.accounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$PendingReviewTransactionsTableAnnotationComposer
@@ -7638,6 +7668,26 @@ class $$PendingReviewTransactionsTableAnnotationComposer
             ));
     return composer;
   }
+
+  $$AccountsTableAnnotationComposer get pairedAccountId {
+    final $$AccountsTableAnnotationComposer composer = $composerBuilder(
+        composer: this,
+        getCurrentColumn: (t) => t.pairedAccountId,
+        referencedTable: $db.accounts,
+        getReferencedColumn: (t) => t.id,
+        builder: (joinBuilder,
+                {$addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer}) =>
+            $$AccountsTableAnnotationComposer(
+              $db: $db,
+              $table: $db.accounts,
+              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+              joinBuilder: joinBuilder,
+              $removeJoinBuilderFromRootComposer:
+                  $removeJoinBuilderFromRootComposer,
+            ));
+    return composer;
+  }
 }
 
 class $$PendingReviewTransactionsTableTableManager extends RootTableManager<
@@ -7651,7 +7701,7 @@ class $$PendingReviewTransactionsTableTableManager extends RootTableManager<
     $$PendingReviewTransactionsTableUpdateCompanionBuilder,
     (PendingReviewTransaction, $$PendingReviewTransactionsTableReferences),
     PendingReviewTransaction,
-    PrefetchHooks Function({bool accountId})> {
+    PrefetchHooks Function({bool accountId, bool pairedAccountId})> {
   $$PendingReviewTransactionsTableTableManager(
       _$AppDatabase db, $PendingReviewTransactionsTable table)
       : super(TableManagerState(
@@ -7675,6 +7725,7 @@ class $$PendingReviewTransactionsTableTableManager extends RootTableManager<
             Value<String> payee = const Value.absent(),
             Value<String> reason = const Value.absent(),
             Value<String?> pairedPlaidTransactionId = const Value.absent(),
+            Value<int?> pairedAccountId = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
           }) =>
               PendingReviewTransactionsCompanion(
@@ -7686,6 +7737,7 @@ class $$PendingReviewTransactionsTableTableManager extends RootTableManager<
             payee: payee,
             reason: reason,
             pairedPlaidTransactionId: pairedPlaidTransactionId,
+            pairedAccountId: pairedAccountId,
             createdAt: createdAt,
           ),
           createCompanionCallback: ({
@@ -7697,6 +7749,7 @@ class $$PendingReviewTransactionsTableTableManager extends RootTableManager<
             required String payee,
             required String reason,
             Value<String?> pairedPlaidTransactionId = const Value.absent(),
+            Value<int?> pairedAccountId = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
           }) =>
               PendingReviewTransactionsCompanion.insert(
@@ -7708,6 +7761,7 @@ class $$PendingReviewTransactionsTableTableManager extends RootTableManager<
             payee: payee,
             reason: reason,
             pairedPlaidTransactionId: pairedPlaidTransactionId,
+            pairedAccountId: pairedAccountId,
             createdAt: createdAt,
           ),
           withReferenceMapper: (p0) => p0
@@ -7716,7 +7770,8 @@ class $$PendingReviewTransactionsTableTableManager extends RootTableManager<
                     $$PendingReviewTransactionsTableReferences(db, table, e)
                   ))
               .toList(),
-          prefetchHooksCallback: ({accountId = false}) {
+          prefetchHooksCallback: (
+              {accountId = false, pairedAccountId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -7744,6 +7799,17 @@ class $$PendingReviewTransactionsTableTableManager extends RootTableManager<
                         .id,
                   ) as T;
                 }
+                if (pairedAccountId) {
+                  state = state.withJoin(
+                    currentTable: table,
+                    currentColumn: table.pairedAccountId,
+                    referencedTable: $$PendingReviewTransactionsTableReferences
+                        ._pairedAccountIdTable(db),
+                    referencedColumn: $$PendingReviewTransactionsTableReferences
+                        ._pairedAccountIdTable(db)
+                        .id,
+                  ) as T;
+                }
 
                 return state;
               },
@@ -7767,7 +7833,7 @@ typedef $$PendingReviewTransactionsTableProcessedTableManager
         $$PendingReviewTransactionsTableUpdateCompanionBuilder,
         (PendingReviewTransaction, $$PendingReviewTransactionsTableReferences),
         PendingReviewTransaction,
-        PrefetchHooks Function({bool accountId})>;
+        PrefetchHooks Function({bool accountId, bool pairedAccountId})>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;

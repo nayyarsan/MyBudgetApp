@@ -45,7 +45,7 @@ class AppDatabase extends _$AppDatabase {
   PlaidDao get plaidDao => PlaidDao(this);
 
   @override
-  int get schemaVersion => 4;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -62,6 +62,12 @@ class AppDatabase extends _$AppDatabase {
       if (from < 4) {
         await m.createTable(plaidAccounts);
         await m.createTable(pendingReviewTransactions);
+      }
+      if (from < 5) {
+        await m.addColumn(
+          pendingReviewTransactions,
+          pendingReviewTransactions.pairedAccountId,
+        );
       }
     },
   );

@@ -69,7 +69,8 @@ class _BankSyncScreenState extends ConsumerState<BankSyncScreen> {
     final db = ref.read(databaseProvider);
     final plaidService = ref.read(plaidServiceProvider);
     await plaidService.disconnect();
-    await db.plaidDao.deletePlaidAccount(plaidAccountId);
+    // Revoking the token disconnects all accounts under the same Plaid item
+    await db.plaidDao.deleteAllPlaidAccounts();
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

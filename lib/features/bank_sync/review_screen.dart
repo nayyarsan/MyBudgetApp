@@ -76,17 +76,21 @@ class _ReviewTile extends ConsumerWidget {
             if (item.reason == 'ambiguous_transfer')
               TextButton(
                 onPressed: () async {
-                  // Insert both legs as transfer then dismiss
-                  await db.transactionsDao.insertTransaction(
-                    TransactionsCompanion(
-                      accountId: Value(item.accountId),
-                      amountCents: Value(item.amountCents),
-                      date: Value(item.date),
-                      payee: Value(item.payee),
-                      type: const Value('transfer'),
-                      importedFrom: const Value('plaid'),
-                    ),
-                  );
+                  final creditAccountId = item.pairedAccountId;
+                  if (creditAccountId != null) {
+                    // Insert debit leg (money out of debit account, going to credit account)
+                    await db.transactionsDao.insertTransaction(
+                      TransactionsCompanion(
+                        accountId: Value(item.accountId),
+                        amountCents: Value(item.amountCents),
+                        date: Value(item.date),
+                        payee: Value(item.payee),
+                        type: const Value('transfer'),
+                        toAccountId: Value(creditAccountId),
+                        importedFrom: const Value('plaid'),
+                      ),
+                    );
+                  }
                   await db.plaidDao.deletePendingReview(item.id);
                 },
                 child: const Text('Mark as Transfer'),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -22,6 +24,9 @@ class PlaidService {
   final FirebaseFunctions _functions;
   final FlutterSecureStorage _storage;
 
+  StreamSubscription? _successSub;
+  StreamSubscription? _exitSub;
+
   PlaidService({
     FirebaseFunctions? functions,
     FlutterSecureStorage? storage,
@@ -34,20 +39,28 @@ class PlaidService {
     required void Function() onSuccess,
     required void Function(String reason) onExit,
   }) async {
+    // Cancel any stale listeners from a previous attempt
+    _successSub?.cancel();
+    _exitSub?.cancel();
+
     final result =
         await _functions.httpsCallable('createLinkToken').call<Map>({});
     final linkToken = result.data['linkToken'] as String;
 
     final config = LinkTokenConfiguration(token: linkToken);
 
-    PlaidLink.onSuccess.listen((event) async {
+    _successSub = PlaidLink.onSuccess.listen((event) async {
+      _successSub?.cancel();
+      _exitSub?.cancel();
       await _functions.httpsCallable('exchangeToken').call<Map>({
         'publicToken': event.publicToken,
       });
       onSuccess();
     });
 
-    PlaidLink.onExit.listen((event) {
+    _exitSub = PlaidLink.onExit.listen((event) {
+      _successSub?.cancel();
+      _exitSub?.cancel();
       onExit(event.error?.displayMessage ?? 'cancelled');
     });
 

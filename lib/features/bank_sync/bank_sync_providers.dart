@@ -119,6 +119,7 @@ class BankSyncNotifier extends AsyncNotifier<SyncStatus> {
           payee: Value(pair.debit.payee),
           reason: const Value('ambiguous_transfer'),
           pairedPlaidTransactionId: Value(pair.credit.plaidId),
+          pairedAccountId: Value(accountMap[pair.credit.plaidAccountId]!),
         ));
       }
     }
