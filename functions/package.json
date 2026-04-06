@@ -10,7 +10,7 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "main": "index.js",
   "dependencies": {
@@ -19,6 +19,7 @@
     "plaid": "^21.0.0"
   },
   "devDependencies": {
+    "dotenv": "^17.4.0",
     "eslint": "^8.0.0",
     "eslint-config-google": "^0.14.0"
   },
