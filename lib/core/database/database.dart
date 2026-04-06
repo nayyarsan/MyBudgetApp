@@ -10,6 +10,7 @@ import 'daos/transactions_dao.dart';
 import 'daos/budget_dao.dart';
 import 'daos/budget_snapshots_dao.dart';
 import 'daos/recurring_queue_dao.dart';
+import 'daos/plaid_dao.dart';
 
 part 'database.g.dart';
 
@@ -23,6 +24,8 @@ part 'database.g.dart';
     NetWorthSnapshots,
     BudgetSnapshots,
     PendingRecurringQueue,
+    PlaidAccounts,
+    PendingReviewTransactions,
   ],
   daos: [
     AccountsDao,
@@ -31,6 +34,7 @@ part 'database.g.dart';
     BudgetDao,
     BudgetSnapshotsDao,
     RecurringQueueDao,
+    PlaidDao,
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -38,8 +42,10 @@ class AppDatabase extends _$AppDatabase {
 
   AppDatabase.forTesting() : super(NativeDatabase.memory());
 
+  PlaidDao get plaidDao => PlaidDao(this);
+
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 5;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -52,6 +58,16 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(monthlyBudgets, monthlyBudgets.rolledOverCents);
         await m.createTable(budgetSnapshots);
         await m.createTable(pendingRecurringQueue);
+      }
+      if (from < 4) {
+        await m.createTable(plaidAccounts);
+        await m.createTable(pendingReviewTransactions);
+      }
+      if (from < 5) {
+        await m.addColumn(
+          pendingReviewTransactions,
+          pendingReviewTransactions.pairedAccountId,
+        );
       }
     },
   );

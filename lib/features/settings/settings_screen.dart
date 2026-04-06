@@ -5,6 +5,7 @@ import '../../core/services/rollover_provider.dart';
 import '../auth/auth_providers.dart';
 import '../auth/firebase_auth_service.dart';
 import '../sync/sync_service.dart';
+import '../bank_sync/bank_sync_screen.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -204,6 +205,21 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ),
               trailing: isSignedIn ? const Icon(Icons.chevron_right) : null,
               onTap: isSignedIn && !_syncing ? _handleSync : null,
+            ),
+          ),
+
+          const Divider(),
+
+          // --- Bank Accounts section ---
+          const _SectionHeader(title: 'Bank Accounts'),
+          ListTile(
+            leading: const Icon(Icons.account_balance),
+            title: const Text('Bank Accounts'),
+            subtitle: const Text('Connect Bank of America via Plaid'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const BankSyncScreen()),
             ),
           ),
 

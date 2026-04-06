@@ -38,6 +38,10 @@ dependencies:
   local_auth: ^2.1.8
   flutter_secure_storage: ^9.0.0
 
+  # Bank sync
+  plaid_flutter: ^5.1.1
+  cloud_functions: ^5.6.2
+
   # Utilities
   intl: ^0.19.0
   uuid: ^4.3.3

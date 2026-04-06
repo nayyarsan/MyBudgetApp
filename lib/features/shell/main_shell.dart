@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../bank_sync/bank_sync_providers.dart';
+import '../bank_sync/review_screen.dart';
 import '../budget/budget_screen.dart';
 import '../transactions/transactions_screen.dart';
 import '../accounts/accounts_screen.dart';
 import '../analytics/analytics_screen.dart';
 import '../settings/settings_screen.dart';
 
-class MainShell extends StatefulWidget {
+class MainShell extends ConsumerStatefulWidget {
   const MainShell({super.key});
 
   @override
-  State<MainShell> createState() => _MainShellState();
+  ConsumerState<MainShell> createState() => _MainShellState();
 }
 
-class _MainShellState extends State<MainShell> {
+class _MainShellState extends ConsumerState<MainShell> {
   int _currentIndex = 0;
 
   final _screens = const [
@@ -24,11 +27,44 @@ class _MainShellState extends State<MainShell> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // Trigger non-blocking sync on app open
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(bankSyncProvider.notifier).sync();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final pendingCount = ref.watch(pendingReviewCountProvider).value ?? 0;
+
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
+      body: Column(
+        children: [
+          if (pendingCount > 0)
+            MaterialBanner(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              content: Text(
+                '$pendingCount transaction${pendingCount == 1 ? '' : 's'} need your review.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const ReviewScreen()),
+                  ),
+                  child: const Text('Review'),
+                ),
+              ],
+            ),
+          Expanded(
+            child: IndexedStack(
+              index: _currentIndex,
+              children: _screens,
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
